@@ -1,7 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.BoxLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
@@ -11,6 +15,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private static JTextField txtUser;
     private static JPasswordField pass;
     private static JTextArea logArea;
+    private Map<Integer, Long> keyPressMap = new HashMap<>();
+
 
     static final String newline = System.getProperty("line.separator");
 
@@ -73,6 +79,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
+        //TODO: Enforce size of UI elements make log big rest small
+
         // Setup Buttons
         button = new JButton("Clear");
         button.addActionListener(this);
@@ -129,6 +137,24 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
             }
         });
+    }
+
+    /**
+     * Check the rhythm and cadence of the user login.
+     */
+
+    private boolean checkCadence() {
+        // TODO: Implement this to check timing of user typing
+        // find out if key is pressed and how long it was
+        Long t = keyPressMap.get(KeyEvent.VK_SPACE);
+        if (t == null) {
+            // not pressed
+            return false;
+        } else {
+            // pressed for X milliseconds
+            long millis = t - System.currentTimeMillis();
+        }
+        return true;
     }
 
     /**
@@ -232,6 +258,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        keyPressMap.put(e.getKeyCode(), System.currentTimeMillis());
         displayInfo(e, "KEY PRESSED: ");
     }
 
@@ -241,6 +268,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        keyPressMap.remove(e.getKeyCode());
         displayInfo(e, "KEY RELEASED: ");
     }
 }
