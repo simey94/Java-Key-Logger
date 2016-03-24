@@ -15,7 +15,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private static JTextField txtUser;
     private static JPasswordField pass;
     private static JTextArea logArea;
-    private Map<Integer, Long> keyPressMap = new HashMap<>();
+    private Map<Character, Long> keyPressMap = new HashMap<>();
 
 
     static final String newline = System.getProperty("line.separator");
@@ -140,21 +140,33 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     }
 
     /**
-     * Check the rhythm and cadence of the user login.
+     * Create the cadence profile for the user.
      */
 
-    private boolean checkCadence() {
+    private void createCadence() {
         // TODO: Implement this to check timing of user typing
-        // find out if key is pressed and how long it was
-        Long t = keyPressMap.get(KeyEvent.VK_SPACE);
-        if (t == null) {
-            // not pressed
-            return false;
-        } else {
-            // pressed for X milliseconds
-            long millis = t - System.currentTimeMillis();
+        for (Map.Entry<Character, Long> entry : keyPressMap.entrySet()) {
+            // get previous character key and time
+            Character keyAsChar = entry.getKey();
+            long value = entry.getValue();
+            // get next character key and time
+            // calculate the difference between
+
         }
-        return true;
+    }
+
+    /**
+     * Testing and Debug method used to show
+     * the key character pressed and the time
+     * at which it was pressed
+     */
+
+    private void printCadence() {
+        for (Map.Entry<Character, Long> entry : keyPressMap.entrySet()) {
+            Character keyAsChar = entry.getKey();
+            long value = entry.getValue();
+            logArea.append("Key pressed: " + keyAsChar + " At Time: " + value + "\n");
+        }
     }
 
     /**
@@ -208,7 +220,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
             locationString += "right";
         } else if (location == KeyEvent.KEY_LOCATION_NUMPAD) {
             locationString += "numpad";
-        } else { // (location == KeyEvent.KEY_LOCATION_UNKNOWN)
+        } else {
+            // location == KeyEvent.KEY_LOCATION_UNKNOWN
             locationString += "unknown";
         }
 
@@ -249,7 +262,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        displayInfo(e, "KEY TYPED: ");
+        //displayInfo(e, "KEY TYPED: ");
     }
 
     /**
@@ -258,8 +271,9 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        keyPressMap.put(e.getKeyCode(), System.currentTimeMillis());
-        displayInfo(e, "KEY PRESSED: ");
+        keyPressMap.put(e.getKeyChar(), System.currentTimeMillis());
+        printCadence();
+        //displayInfo(e, "KEY PRESSED: ");
     }
 
     /**
@@ -268,7 +282,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        keyPressMap.remove(e.getKeyCode());
-        displayInfo(e, "KEY RELEASED: ");
+        //printCadence();
+        //displayInfo(e, "KEY RELEASED: ");
     }
 }
