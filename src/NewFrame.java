@@ -7,7 +7,7 @@ public class NewFrame extends JFrame {
         NewFrame frameTabel = new NewFrame();
     }
 
-    JLabel welcome = new JLabel("Welcome to a New Frame");
+    JLabel welcome = new JLabel("congratulations you have accessed ID’s area");
     JPanel panel = new JPanel();
 
     NewFrame(){

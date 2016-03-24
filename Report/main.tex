@@ -1,0 +1,106 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+
+\usepackage{graphicx}               % image packages
+\graphicspath{ {images/} }
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{float,subcaption, geometry}
+\usepackage[rightcaption]{sidecap}
+
+\usepackage[
+backend=biber,
+style=alphabetic,
+citestyle=authoryear-comp 
+]{biblatex}
+ 
+\addbibresource{cs4203_bib.bib}     %imports bib file
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\title{CS4203 Computer Security Practical 2: \\ Rhythmic Keylogger for Authentication}
+\author{120011995}
+\date{Due Date: 7 March 2016 \break \\ Word count: 3000 - 4000}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+A keylogger is a computer program developed for the purpose of monitoring and tracking what keys are entered on a computer keyboard. Whether this is a traditional desktop/laptop computer or a virtual mobile phone keyboard is irrelevant the program seeks to identify the keys that have been pressed. There are numerous legitimate use cases for keylogging, such as, auditing and accountability of computer usage in an office environment, as well as monitoring a person's mobile phone usage to ensure they do not incur any additional charges. However these programs can also be utilised to compromise the security of a system by collecting login credentials via monitoring of inputs. Passwords are not a truly unique identification mechanism, as if an attacker gains access to a valid pairing of username and password they an easily enter these into the system and gain access to sensitive information. Thus, there has been much research conducted to identify new methods of authentication such as, Passfaces \parencite{Dunphy}, Draw-a-Secret (DAS) \parencite{DunphyYan}, Background
+Draw-a-Secret (BDAS) \parencite{DunphyYan}. Although many of these processes work effectively, they suffer from new limitations such as memory decay which limits their practicality as a silver bullet to the problem of authentication. This has prompted researchers to identify areas which uniquely identify users and a hypothesis is that a password coupled with the rhythm and cadence at which a user types is more secure than the password on its own. This paper will explore this hypothesis and provide experimental evidence on the viability of using a rhythmic keylogger in conjunction with a password to improve the security of authentication.         
+
+\section{Problem Statement}
+Users spend a large proportion of time using computer systems typing inputs via a keyboard. Therefore users develop an individual technique of typing and implement  largely unique patterns when typing. The view of current research is that a profile of the patterns used in typing could be utilised to authenticate users together with a valid username and password combination. \\
+
+The typing pattern on a keyboard is considered a biometric behavioural characteristic that can be used to identify or authenticate users, the study of this discipline is called keystroke dynamics \parencite{keyStrokeDynamics}. The field of keystroke dynamics focuses on two differing areas of analysis, ``fixed text" and ``free text". Fixed text enforces that all users type the same sample of text, such as username and password combination or a small phrase. In contrast to this free text allows for all inputs by a user to be inspected, which is a much more powerful application of key stroke dynamics, allowing it to be applied to a larger number of applications. However, this comes at the expense of an increase in complexity of experimentation and computation as the free text does not have fixed, easily extracted characteristics \parencite{sznur2015advances}. The experiment conducted for this practical utilises the paradigm of fixed text, to ensure a measurable comparison of the rhythm used by users to type a set phrase. 
+
+\section{Relevant Background} \label{background}
+% History use of morse code 
+The monitoring of human characteristics for identification purposes during interaction with machines has been prevalent since morse code communication in World War 2. As each operator had their own unique typing style, closely listening to the typing rhythm of an operator could be used to effectively identify them \parencite{sznur2015advances}. The techniques utilised in this process have been extended upon to create the current keystroke dynamics algorithms. \\
+
+% Research attempts at cadence monitoring Cite some papers and their attempts
+Early research in the field of fixed text keystroke dynamics looked to improve the accuracy of the approach to ensure its viability in practice \parencite{Bergadano:2002}. To facilitate easier testing of fixed text keystroke dynamics systems, researchers complied a dataset of the typing rhythm data
+of volunteer users to enable rapid testing of systems \parencite{bello2010collection}. There has been much more success in development of fixed text systems as the complexity of algorithms and reliance on computing resources is vastly reduced in comparison to free text implementations. \\
+
+Much research has been conducted in the area of keystroke dynamics for free text, early work of \parencite{Gunetti:2005}, presented a method to compare typing samples of free text that could used to verify personal identity. The authors of this paper  presented the foundations of the idea of ``continuous authentication" of user throughout their time using a system and argued the assumption stated earlier in this report  that keystroke dynamics can beuseful in computer security as a complementary or alternative way to user authentication and as an aid to intrusion detection \parencite{Gunetti:2005}. The ideas proposed in this early paper have been developed upon by numerous research such as \parencite{contFreeText} and \parencite{sznur2015advances} which both look to further improve the paradigm of continuous authentication. \\
+
+% Keystroke Dynam Authentication
+Keystroke dynamics has proved to form a robust defence, improving the security of authorisation as there has yet to be a successful attack on a solidly built keystroke dynamics system \parencite{sznur2015advances}. This is in stark contrast to a system simply secured by passwords, as human nature dictates that users will use simple passwords to ensure they remember them. This is combination with the range of attacks that can be utilised to obtain a password such as social engineering, spyware, dictionary attack and mere brute force attacks \parencite{alsultan2013keystroke}, a keystroke dynamics system makes all of these approaches redundant. Systems simply secured by the username password techniques suffers from the security-usability trade-off dilemma \parencite{alsultan2013keystroke}, as they look to offer usability at the expense of security. Numerous other authentication techniques have been suggested however if they sacrifice usability for security they are unlikely to be widely adopted due to user pressure. This is why keystroke dynamics is an effective solution to the authentication problem, as it requires no further memory or interactions from the user, simply their typing behaviour which is used regardless when typing in authentication credentials, yet it provides a dramatic increase in security. The technique has not been perfected but it is an active research area which looks to improve the complexity and reliability of the techniques utilised to identify a user by their typing characteristics \parencite{sznur2015advances}. \\  
+
+The future of keystroke dynamics research will most likely surround the ideal of ``continuous authentication" which is the ability of a system  to constantly verify if the current user is the one who logged in \parencite{sznur2015advances}, which improves upon the simplistic approach keystroke dynamics only upon entry. Along with implementations of keystroke dynamics systems on the variety of devices available today, an effective solution has created for mobile phones \parencite{maiorana2011keystroke} which has the potential to generalise to a large proportion of devices. \\ 
+
+% Current industry attempts at cadence monitoring 
+There have also been copious attempts to utilise keystroke dynamics in industry. For example, Scout Analytics developed technology for its clients to stop people sharing user accounts without permission, i.e. giving a friend or colleague the id and password to their account so they can access the features of a paying subscriber. This looked to stop organisations buying a single account for an expensive resource and sharing this across an entire office. Scout used some Javascript timing features to watch how users type when they enter their login credentials for various services. The algorithms implemented need a minimum of 5 attempts at entering a phrase with a length of 12 characters in order to generate a typing ``cadence" \parencite{arsTech}. By utilising repeated logins the system could analyse the cadences and place them into distinct categories of digital patterns, each of which was assigned a digital serial number, which is utilised to ensure multiple different users are not logged on at once. A limitation of this approach is that the typing patterns are not globally unique, Scout suggests that 1 in 20,000 people share the same pattern, although the pattern can be combined with IP addresses and browser information, to uniquely identify a user for Scout's purposes \parencite{arsTech}. 
+
+\section{Experiment} \label{experiment}
+The framework used for this experiment was a Java program, important areas of the program can be found in Appendix Section \ref{appendix}. A high level description of its functionality can be seen below: \\
+
+For the purpose of this experiment a pattern is defined as a mix of rhythms with perhaps more than 2 complicated timings mixed together or one with fixed or relational times between each keystroke. A simple pattern is the same rhythm as in ta-ta-ta-ta but a patterned example could be a user thinking of a song or a marching or clapping rhythm and keying the strokes according to that melody
+
+\subsection{Hypothesis 1}
+\begin{center}
+\textit{ That a simple rhythm can be determined more easily than a more patterned one. A simple rhythm is defined as 1 or 2 distinct rhythms such as ta-ta-ta-ta or ta-tum-ta-tum where emphasis is given on the ta keystroke. Also, you may consider that the time taken is an element of its pattern. A rhythm is considered to be easily detected or broken if a high percentage of false cases are passed as valid}
+\end{center}
+
+\subsection{Hypothesis 2}
+\begin{center}
+\textit{That some patterns are more easily detected or broken than others.}
+\end{center}
+
+\subsection{Hypothesis 3}
+\begin{center}
+\textit{That there is an effect from the ID entry rhythm, specifically that its shortness may be a factor and affects overall false-positive acceptance}
+\end{center}
+
+
+\subsection{Hypothesis 4}
+\begin{center}
+\textit{That there is a length L over which the timings of the password and ID are
+irrelevant. That is, L is more predictive of detection than rhythm when L $\geq$ N characters.}
+\end{center}
+
+\section{Conclusion}
+% My experiment summary
+
+% General KD
+In general there is a large chance of the widespread adoption of keystroke dynamics as it does not compromise usability for the purpose of security and the process is transparent to the user. In the future, the techniques used in keystroke dynamics are likely to become extremely high entropy as algorithms and the resources of computer systems improve at a formidable rate, this will subsequently improve all forms of authentication security as keystroke dynamics in tandem with login credentials becomes the secure standard. This is a field that blends the lines between computer security and biometrics, which makes of high interest in the research indsutry but the apporach aslo has many practical applications.  
+
+\section{Results}
+
+\section{Appendix: Code Listings} \label{appendix}
+
+\medskip
+\printbibliography
+
+
+\end{document}
