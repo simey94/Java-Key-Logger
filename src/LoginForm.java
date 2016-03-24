@@ -4,18 +4,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     // UI elements
+    private static JLabel lblUsername;
+    private static JLabel lblPassword;
     private static JButton bLogin;
     private static JButton button;
     private static JTextField txtUser;
     private static JPasswordField pass;
     private static JTextArea logArea;
     private Map<Character, Long> keyPressMap = new HashMap<>();
+    private ArrayList<Long> cadenceProfile = new ArrayList<>();
+    private static double userCadence;
 
 
     static final String newline = System.getProperty("line.separator");
@@ -87,10 +92,20 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         bLogin = new JButton("Login");
         bLogin.addActionListener(this);
 
+        // Set up labels
+        // TODO: set location of these labels
+        lblUsername = new JLabel("Username:");
+        lblPassword = new JLabel("Password:");
+
         // Set up text fields
         txtUser = new JTextField(15);
-        pass = new JPasswordField(15);
+        txtUser.setMaximumSize(txtUser.getPreferredSize());
+        txtUser.setMinimumSize(txtUser.getPreferredSize());
         txtUser.addKeyListener(this);
+
+        pass = new JPasswordField(15);
+        pass.setMaximumSize(pass.getPreferredSize());
+        pass.setMinimumSize(pass.getPreferredSize());
         pass.addKeyListener(this);
 
         logArea = new JTextArea();
@@ -98,32 +113,35 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         JScrollPane scrollPane = new JScrollPane(logArea);
         scrollPane.setPreferredSize(new Dimension(375, 125));
 
+        lblUsername.setAlignmentX(pane.CENTER_ALIGNMENT);
         txtUser.setAlignmentX(pane.CENTER_ALIGNMENT);
+        lblPassword.setAlignmentX(pane.CENTER_ALIGNMENT);
         pass.setAlignmentX(pane.CENTER_ALIGNMENT);
         scrollPane.setAlignmentX(pane.CENTER_ALIGNMENT);
         bLogin.setAlignmentX(pane.CENTER_ALIGNMENT);
         button.setAlignmentX(pane.CENTER_ALIGNMENT);
 
-        //getContentPane().add(scrollPane, BorderLayout.CENTER);
-
+        pane.add(lblUsername);
         pane.add(txtUser);
+        pane.add(lblPassword);
         pane.add(pass);
         pane.add(scrollPane);
         pane.add(bLogin);
         pane.add(button);
-        actionlogin();
+        actionLogin();
     }
 
     /**
      * Handle user authentication.
      */
 
-    public void actionlogin(){
+    public void actionLogin() {
         bLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 String strUserName = txtUser.getText();
                 String strPass = pass.getText();
-                if(strUserName.equals("test") && strPass.equals("12345")) {
+                createCadence();
+                if (strUserName.equals("test") && strPass.equals("12345") && userCadence > 0) {
                     NewFrame regFace =new NewFrame();
                     regFace.setVisible(true);
                     dispose();
@@ -145,14 +163,53 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     private void createCadence() {
         // TODO: Implement this to check timing of user typing
+        // get first character key and time
         for (Map.Entry<Character, Long> entry : keyPressMap.entrySet()) {
-            // get previous character key and time
-            Character keyAsChar = entry.getKey();
-            long value = entry.getValue();
             // get next character key and time
-            // calculate the difference between
+            for (Map.Entry<Character, Long> entry2 : keyPressMap.entrySet()) {
+                // get first char vals
+                Character keyAsChar = entry.getKey();
+                long value = entry.getValue();
 
+                // get second char vals
+                Character keyAsChar2 = entry2.getKey();
+                long value2 = entry2.getValue();
+
+                // calculate the difference between
+                long timeDifference = value2 - value;
+                cadenceProfile.add(timeDifference);
+            }
         }
+
+        for (int i = 0; i < cadenceProfile.size(); i++) {
+            //System.out.print(cadenceProfile.get(i) + "\n");
+        }
+
+        // create average of profile
+        userCadence = calculateAverage(cadenceProfile);
+        System.out.print("user cadence: " + userCadence);
+    }
+
+    /**
+     * Calculates the average time between key presses
+     * stored in the cadenceProfile array list.
+     */
+
+    private double calculateAverage(ArrayList<Long> cadenceProfile) {
+        // TODO: Fix negative values big could be to do with long vs double vs int etc
+        // TODO: Get average to function correctly
+        double sum = 0;
+        if (!cadenceProfile.isEmpty()) {
+            System.out.print("cadence profile is not empty \n");
+            for (Long difference : cadenceProfile) {
+                System.out.print(difference + "\n");
+                sum += difference;
+            }
+            System.out.print("VAL OF SUM: " + sum + "\n");
+            double profileResult = sum / cadenceProfile.size();
+            return profileResult;
+        }
+        return sum;
     }
 
     /**
@@ -256,6 +313,20 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         logArea.requestFocusInWindow();
     }
 
+
+    /**
+     * ===============================================
+     *
+     *  keyPressed - when the key goes down
+     *  keyReleased - when the key comes up
+     *  keyTyped - when the unicode character represented by this key is sent by the keyboard to system input.
+     *
+     *  keyPressed is fired whenever any key press occurs.
+     *  keyTyped is fired when a key is pressed that can be converted into a unicode character
+     *
+     * ===============================================
+     */
+
     /**
      * Handle the key typed event from the text field.
      */
@@ -263,6 +334,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     @Override
     public void keyTyped(KeyEvent e) {
         //displayInfo(e, "KEY TYPED: ");
+        keyPressMap.put(e.getKeyChar(), System.currentTimeMillis());
+        printCadence();
     }
 
     /**
@@ -271,8 +344,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        keyPressMap.put(e.getKeyChar(), System.currentTimeMillis());
-        printCadence();
         //displayInfo(e, "KEY PRESSED: ");
     }
 
