@@ -82,7 +82,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
-        //TODO: Enforce size of UI elements make log big rest small
+        // TODO: Enforce size of UI elements make log big rest small
+        // TODO: Add CLI lib
 
         // Setup Buttons
         button = new JButton("Clear");

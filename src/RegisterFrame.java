@@ -1,9 +1,12 @@
+import org.apache.commons.lang3.time.StopWatch;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 
 /**
  * User Registration form.
@@ -23,6 +26,7 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private static JPasswordField pass4;
     private static JPasswordField pass5;
     private static JButton bRegister;
+    private StopWatch stopWatch = new StopWatch();
 
     // frame to return to
 
@@ -137,6 +141,8 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
      */
     @Override
     public void keyPressed(KeyEvent e) {
+        // start timing
+        stopWatch.start();
 
     }
 
@@ -149,7 +155,8 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
      */
     @Override
     public void keyReleased(KeyEvent e) {
-
+        // stop timing
+        stopWatch.stop();
     }
 
     /**
