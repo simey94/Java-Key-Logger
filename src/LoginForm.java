@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
@@ -15,13 +13,12 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private static JLabel lblPassword;
     private static JButton bLogin;
     private static JButton button;
+    private static JButton bRegister;
     private static JTextField txtUser;
     private static JPasswordField pass;
     private static JTextArea logArea;
-    private Map<Character, Long> keyPressMap = new HashMap<>();
+    private ArrayList<KeyPress> keyPressMap = new ArrayList<>();
     private ArrayList<Long> cadenceProfile = new ArrayList<>();
-    private static double userCadence;
-
 
     static final String newline = System.getProperty("line.separator");
 
@@ -91,6 +88,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         button.addActionListener(this);
         bLogin = new JButton("Login");
         bLogin.addActionListener(this);
+        bRegister = new JButton("Register");
+        bRegister.addActionListener(this);
 
         // Set up labels
         // TODO: set location of these labels
@@ -120,6 +119,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         scrollPane.setAlignmentX(pane.CENTER_ALIGNMENT);
         bLogin.setAlignmentX(pane.CENTER_ALIGNMENT);
         button.setAlignmentX(pane.CENTER_ALIGNMENT);
+        bRegister.setAlignmentX(pane.CENTER_ALIGNMENT);
 
         pane.add(lblUsername);
         pane.add(txtUser);
@@ -128,7 +128,9 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         pane.add(scrollPane);
         pane.add(bLogin);
         pane.add(button);
+        pane.add(bRegister);
         actionLogin();
+        registerUser();
     }
 
     /**
@@ -141,8 +143,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 String strUserName = txtUser.getText();
                 String strPass = pass.getText();
                 createCadence();
-                if (strUserName.equals("test") && strPass.equals("12345") && userCadence > 0) {
-                    NewFrame regFace =new NewFrame();
+                if (strUserName.equals("test") && strPass.equals("12345")) {
+                    NewFrame regFace = new NewFrame();
                     regFace.setVisible(true);
                     dispose();
                 } else {
@@ -157,37 +159,45 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         });
     }
 
+    public void registerUser() {
+        bRegister.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                // Open a new Frame
+                RegisterFrame registerForm = new RegisterFrame("Register");
+                registerForm.setVisible(true);
+                dispose();
+                setVisible(true);
+            }
+        });
+    }
+
     /**
      * Create the cadence profile for the user.
      */
 
     private void createCadence() {
-        // TODO: Implement this to check timing of user typing
+        // TODO: Implement this to check timing of user typing ---- Fix this logic
         // get first character key and time
-        for (Map.Entry<Character, Long> entry : keyPressMap.entrySet()) {
-            // get next character key and time
-            for (Map.Entry<Character, Long> entry2 : keyPressMap.entrySet()) {
-                // get first char vals
-                Character keyAsChar = entry.getKey();
-                long value = entry.getValue();
+        KeyPress value1;
+        KeyPress value2;
 
-                // get second char vals
-                Character keyAsChar2 = entry2.getKey();
-                long value2 = entry2.getValue();
-
-                // calculate the difference between
-                long timeDifference = value2 - value;
-                cadenceProfile.add(timeDifference);
+        for (int i = 0; i < keyPressMap.size(); i++) {
+            for (int j = 1; i < keyPressMap.size(); i++) {
+                while (keyPressMap.get(i) != null && keyPressMap.get(j) != null) {
+                    value1 = keyPressMap.get(i);
+                    value2 = keyPressMap.get(j);
+                    long timeDifference = (value2.timeStamp - value1.timeStamp);
+                    cadenceProfile.add(timeDifference);
+                }
             }
         }
 
         for (int i = 0; i < cadenceProfile.size(); i++) {
-            //System.out.print(cadenceProfile.get(i) + "\n");
+            System.out.print(cadenceProfile.get(i) + "\n");
         }
 
         // create average of profile
-        userCadence = calculateAverage(cadenceProfile);
-        System.out.print("user cadence: " + userCadence);
+        //userCadence = calculateAverage(cadenceProfile);
     }
 
     /**
@@ -195,18 +205,17 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
      * stored in the cadenceProfile array list.
      */
 
-    private double calculateAverage(ArrayList<Long> cadenceProfile) {
+    private long calculateAverage(ArrayList<Long> cadenceProfile) {
         // TODO: Fix negative values big could be to do with long vs double vs int etc
         // TODO: Get average to function correctly
-        double sum = 0;
+        long sum = 0;
         if (!cadenceProfile.isEmpty()) {
-            System.out.print("cadence profile is not empty \n");
             for (Long difference : cadenceProfile) {
-                System.out.print(difference + "\n");
+                System.out.print("Time diff: " + difference + "\n");
                 sum += difference;
             }
             System.out.print("VAL OF SUM: " + sum + "\n");
-            double profileResult = sum / cadenceProfile.size();
+            long profileResult = sum / cadenceProfile.size();
             return profileResult;
         }
         return sum;
@@ -215,19 +224,19 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     /**
      * Testing and Debug method used to show
      * the key character pressed and the time
-     * at which it was pressed
+     * at which it was pressed to the LogArea.
      */
 
     private void printCadence() {
-        for (Map.Entry<Character, Long> entry : keyPressMap.entrySet()) {
-            Character keyAsChar = entry.getKey();
-            long value = entry.getValue();
+        for (int i = 0; i < keyPressMap.size(); i++) {
+            Character keyAsChar = keyPressMap.get(i).getKeyPress();
+            long value = keyPressMap.get(i).getTimeStamp();
             logArea.append("Key pressed: " + keyAsChar + " At Time: " + value + "\n");
         }
     }
 
     /**
-     *  We have to jump through some hoops to avoid
+     * Jump through some hoops to avoid
      * trying to print non-printing characters
      * such as Shift.  (Not only do they not print,
      * but if you put them in a String, the characters
@@ -334,7 +343,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     @Override
     public void keyTyped(KeyEvent e) {
         //displayInfo(e, "KEY TYPED: ");
-        keyPressMap.put(e.getKeyChar(), System.currentTimeMillis());
+        KeyPress keyPress = new KeyPress(e.getKeyChar(), System.currentTimeMillis());
+        keyPressMap.add(keyPress);
         printCadence();
     }
 
