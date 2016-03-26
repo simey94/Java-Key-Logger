@@ -19,6 +19,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private static JTextArea logArea;
     private ArrayList<KeyPress> keyPressMap = new ArrayList<>();
     private ArrayList<Long> cadenceProfile = new ArrayList<>();
+    private Logger logger = new Logger();
 
     static final String newline = System.getProperty("line.separator");
 
@@ -144,17 +145,19 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 String strPass = pass.getText();
                 createCadence();
                 if (strUserName.equals("test") && strPass.equals("12345")) {
+                    logger.incrementSuccessfulLoginAttempts();
+                    logger.writeToLog();
                     NewFrame regFace = new NewFrame();
                     regFace.setVisible(true);
                     dispose();
                 } else {
-
                     JOptionPane.showMessageDialog(null,"Wrong Password / Username");
+                    logger.incrementFailedLoginAttempts();
+                    logger.writeToLog();
                     txtUser.setText("");
                     pass.setText("");
                     txtUser.requestFocus();
                 }
-
             }
         });
     }
