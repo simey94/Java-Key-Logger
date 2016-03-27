@@ -29,12 +29,14 @@ public class Storage {
         try {
             // TODO: opening in append mode
             FileOutputStream fileOut =
-                    new FileOutputStream("./Storage/users.ser");
+                    new FileOutputStream("./Storage/users.ser", true);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(user);
+            out.flush();
+            out.reset();
             out.close();
+            fileOut.flush();
             fileOut.close();
-            //deseralizeUser();
             System.out.printf("Serialized data is saved in /Storage/users.ser");
         } catch (IOException i) {
             i.printStackTrace();
@@ -45,8 +47,8 @@ public class Storage {
         ArrayList<User> savedUsers = new ArrayList<>();
         try {
             FileInputStream fileIn = new FileInputStream("./Storage/users.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
             while (true) {
+                ObjectInputStream in = new ObjectInputStream(fileIn);
                 try {
                     User u = (User) in.readObject();
                     savedUsers.add(u);
