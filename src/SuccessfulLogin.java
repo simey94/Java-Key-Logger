@@ -1,13 +1,15 @@
 import javax.swing.*;
 
 
-public class NewFrame extends JFrame {
+public class SuccessfulLogin extends JFrame {
 
-    JLabel welcome = new JLabel("Congratulations you have accessed id's area");
-    JPanel panel = new JPanel();
+    JLabel welcome;
+    JPanel panel;
 
-    NewFrame(){
+    SuccessfulLogin(String strUserName) {
         super("Successful Login");
+        panel = new JPanel();
+        welcome = new JLabel("Congratulations you have accessed " + strUserName + "'s area!");
         setSize(600, 300);
         setLocation(500,280);
         panel.setLayout (null);
@@ -20,5 +22,4 @@ public class NewFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
-
 }

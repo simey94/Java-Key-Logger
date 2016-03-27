@@ -11,7 +11,6 @@ import java.util.Map;
 
 public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
-    // UI elements
     private static JLabel lblUsername;
     private static JLabel lblPassword;
     private static JButton bLogin;
@@ -168,10 +167,10 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                     // Remove entry if key is null or equals 0.
                     if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(securePassword)) {
                         logger.incrementSuccessfulLoginAttempts();
-                        logger.writeToLog();
+                        logger.writeToLog(strUserName);
                         System.out.println("username: " + strUserName + "logged in");
-                        NewFrame regFace = new NewFrame();
-                        regFace.setVisible(true);
+                        SuccessfulLogin newFrame = new SuccessfulLogin(strUserName);
+                        newFrame.setVisible(true);
                         dispose();
                         successfulLogin = true;
                     }
@@ -180,7 +179,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 if (!successfulLogin) {
                     JOptionPane.showMessageDialog(null, "Wrong Password / Username");
                     logger.incrementFailedLoginAttempts();
-                    logger.writeToLog();
+                    logger.writeToLog(strUserName);
                     txtUser.setText("");
                     pass.setText("");
                     txtUser.requestFocus();
