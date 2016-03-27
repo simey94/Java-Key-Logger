@@ -21,7 +21,6 @@ public class Logger {
     public void writeToLog() {
         try {
             // true flag to open in append mode
-            System.out.printf("LOL");
             FileWriter out = new FileWriter("experiment.txt", true);
             for (int i = 0; i < successfulLoginAttempts; i++) {
                 System.out.printf("SUCCESS");

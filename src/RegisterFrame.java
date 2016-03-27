@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Hashtable;
 
 
 /**
@@ -27,16 +28,20 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private static JPasswordField pass5;
     private static JButton bRegister;
     private StopWatch stopWatch = new StopWatch();
+    private User user = new User();
+    private String username;
+    private String password;
+    private Hashtable<String, User> usersTable;
 
-    // frame to return to
 
-    public RegisterFrame(String name) {
+    public RegisterFrame(String name, Hashtable usersTable) {
         super(name);
+        this.usersTable = usersTable;
+        // UI Setup
         setLocation(500, 280);
         setSize(600, 800);
         addComponentsToPane(this.getContentPane());
         pack();
-        System.out.printf("DAVE IS A LUD");
         setVisible(true);
     }
 
@@ -117,7 +122,41 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         pane.add(lblPassword5);
         pane.add(pass5);
         pane.add(bRegister);
-        System.out.print("LOLOLOL");
+    }
+
+    public boolean inputValidation() {
+        String pass1Str = pass1.getText();
+        String pass2Str = pass2.getText();
+        String pass3Str = pass3.getText();
+        String pass4Str = pass4.getText();
+        String pass5Str = pass5.getText();
+        String usernameStr = txtUser.getText();
+
+        if (areAllEqual(pass1Str, pass2Str, pass3Str, pass4Str, pass5Str)) {
+            username = usernameStr;
+            password = pass1Str;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean areAllEqual(String... values) {
+        if (values.length == 0) {
+            return true; // Alternative below
+        }
+        String checkValue = values[0];
+        System.out.println(checkValue);
+        System.out.println(values.length);
+        for (int i = 1; i < values.length; i++) {
+            System.out.println(values[i]);
+            if (values[i].equals(checkValue)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -142,8 +181,9 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     @Override
     public void keyPressed(KeyEvent e) {
         // start timing
+        // stops, save, reset,start
         stopWatch.start();
-
+        recordTime();
     }
 
     /**
@@ -156,7 +196,20 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     @Override
     public void keyReleased(KeyEvent e) {
         // stop timing
+        recordTime();
+        // stops, save, reset,start
+        // TODO: Multiple stopwatches per field
+    }
+
+    /**
+     * Records the time to the users profile.
+     */
+    private void recordTime() {
         stopWatch.stop();
+        long time = stopWatch.getTime();
+        user.getTimings().add(time);
+        stopWatch.reset();
+        stopWatch.start();
     }
 
     /**
@@ -166,8 +219,23 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        // return to login page
-        setVisible(false);
-        dispose();
+        System.out.println("YOLOMCROLO");
+        // check all user values are correct
+        if (inputValidation()) {
+            // Init user object
+            user.setPassword(password);
+            System.out.println(password);
+            user.setUsername(username);
+            usersTable.put(username, user);
+
+            // Store updated user table
+            Storage storage = new Storage(user);
+            storage.seralizeUser();
+            setVisible(false);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "All passwords must have the same value!");
+            pass1.requestFocus();
+        }
     }
 }

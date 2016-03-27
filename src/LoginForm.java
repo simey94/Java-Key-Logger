@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
@@ -20,6 +21,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private ArrayList<KeyPress> keyPressMap = new ArrayList<>();
     private ArrayList<Long> cadenceProfile = new ArrayList<>();
     private Logger logger = new Logger();
+    private Hashtable<String, User> usersTable = new Hashtable<>();
 
     static final String newline = System.getProperty("line.separator");
 
@@ -167,7 +169,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         bRegister.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 // Open a new Frame
-                RegisterFrame registerForm = new RegisterFrame("Register");
+                RegisterFrame registerForm = new RegisterFrame("Register", usersTable);
                 registerForm.setVisible(true);
                 dispose();
                 setVisible(true);
