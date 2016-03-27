@@ -22,14 +22,6 @@ public class Storage {
     public void seralizeUser() {
         String passwordToHash = user.getPassword();
         System.out.println("USER PASS ========================== : " + user.getPassword());
-//        String salt = null;
-//        try {
-//            salt = getSalt();
-//            System.out.println("USER SALT ========================== : " + salt);
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        }
-
         String securePassword = get_SHA_1_SecurePassword(passwordToHash);
         user.setPassword(securePassword);
         System.out.println(securePassword);
@@ -88,8 +80,7 @@ public class Storage {
     public String get_SHA_1_SecurePassword(String passwordToHash) {
         String generatedPassword = null;
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            //md.update(salt.getBytes(("UTF-16")));
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] bytes = md.digest(passwordToHash.getBytes());
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < bytes.length; i++) {
@@ -98,16 +89,7 @@ public class Storage {
             generatedPassword = sb.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } //catch (UnsupportedEncodingException e) {
-        //e.printStackTrace();
-        // }
+        }
         return generatedPassword;
     }
-
-//    public String getSalt() throws NoSuchAlgorithmException {
-//        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-//        byte[] salt = new byte[16];
-//        sr.nextBytes(salt);
-//        return salt.toString();
-//    }
 }

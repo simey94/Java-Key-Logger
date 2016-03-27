@@ -161,13 +161,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
                 Storage storage = new Storage();
                 String securePassword;
-                //try {
-                // String salt = storage.getSalt();
                 securePassword = storage.get_SHA_1_SecurePassword(strPass);
                 System.out.println("secPass: " + securePassword);
-                // } catch (NoSuchAlgorithmException e) {
-                //   e.printStackTrace();
-                // }
 
                 // populate hash table with stored users
                 fetchUsersFromStore();
