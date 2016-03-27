@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 
@@ -32,6 +33,7 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private String username;
     private String password;
     private Hashtable<String, User> usersTable;
+    private ArrayList<Long> timings;
 
 
     public RegisterFrame(String name, Hashtable usersTable) {
@@ -132,6 +134,12 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         String pass5Str = pass5.getText();
         String usernameStr = txtUser.getText();
 
+        // check username
+        if (usernameStr.equals("") || usernameStr.equals(null)) {
+            return false;
+        }
+
+        // check password
         if (areAllEqual(pass1Str, pass2Str, pass3Str, pass4Str, pass5Str)) {
             username = usernameStr;
             password = pass1Str;
@@ -146,11 +154,8 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             return true; // Alternative below
         }
         String checkValue = values[0];
-        System.out.println(checkValue);
-        System.out.println(values.length);
         for (int i = 1; i < values.length; i++) {
-            System.out.println(values[i]);
-            if (values[i].equals(checkValue)) {
+            if (values[i].equals(checkValue) && !(values[i].equals(""))) {
                 return true;
             } else {
                 return false;
@@ -183,7 +188,6 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         // start timing
         // stops, save, reset,start
         stopWatch.start();
-        recordTime();
     }
 
     /**
@@ -207,7 +211,8 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private void recordTime() {
         stopWatch.stop();
         long time = stopWatch.getTime();
-        user.getTimings().add(time);
+        System.out.println("recorded time is : " + time);
+        timings.add(time);
         stopWatch.reset();
         stopWatch.start();
     }
@@ -224,6 +229,7 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             // Init user object
             user.setPassword(password);
             user.setUsername(username);
+            user.setTimings(timings);
             usersTable.put(username, user);
 
             // Store updated user table
@@ -232,7 +238,7 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             setVisible(false);
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "All passwords must have the same value!");
+            JOptionPane.showMessageDialog(null, "All passwords must have the same value! Username and Password cannot be NULL or empty!");
             pass1.requestFocus();
         }
     }
