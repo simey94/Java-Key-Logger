@@ -2,6 +2,7 @@ import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 
 /**
  * Class used to store username, passwords and timing values.
@@ -14,6 +15,9 @@ public class Storage {
 
     public Storage(User user) {
         this.user = user;
+    }
+
+    public Storage() {
     }
 
     public void seralizeUser() {
@@ -33,36 +37,44 @@ public class Storage {
 
         try {
             FileOutputStream fileOut =
-                    new FileOutputStream("/Users/michaelsime/CS4203_CompSec_KeyLogger/Storage/users.ser", true);
+                    new FileOutputStream("./Storage/users.ser", true);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(user);
             out.close();
             fileOut.close();
-            deseralizeUser();
+            //deseralizeUser();
             System.out.printf("Serialized data is saved in /Storage/users.ser");
         } catch (IOException i) {
             i.printStackTrace();
         }
     }
 
-    public void deseralizeUser() {
+    public ArrayList<User> deseralizeUser() {
+        ArrayList<User> savedUsers = new ArrayList<>();
         try {
-            FileInputStream fileIn = new FileInputStream("/Users/michaelsime/CS4203_CompSec_KeyLogger/Storage/users.ser");
+            FileInputStream fileIn = new FileInputStream("./Storage/users.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            User u = (User) in.readObject();
-            System.out.println("DESER name ======= " + u.getUsername());
-            System.out.println("DESER pass ======= " + u.getPassword());
-            System.out.println("DESER timings ======= " + u.getTimings());
-            in.close();
-            fileIn.close();
+            while (true) {
+                try {
+                    User u = (User) in.readObject();
+                    savedUsers.add(u);
+                    System.out.println("DESER name ======= " + u.getUsername());
+                    System.out.println("DESER pass ======= " + u.getPassword());
+                    System.out.println("DESER timings ======= " + u.getTimings());
+                } catch (EOFException e) {
+                    // Close readers
+                    in.close();
+                    fileIn.close();
+                    return savedUsers;
+                }
+            }
         } catch (IOException i) {
             i.printStackTrace();
-            return;
         } catch (ClassNotFoundException c) {
             System.out.println("User class not found");
             c.printStackTrace();
-            return;
         }
+        return savedUsers;
     }
 
     /**
@@ -72,7 +84,6 @@ public class Storage {
      *
      * ===============================================
      */
-
 
     private String get_SHA_1_SecurePassword(String passwordToHash, String salt) {
         String generatedPassword = null;

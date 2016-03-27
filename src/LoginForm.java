@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
 public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
@@ -137,6 +139,14 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         registerUser();
     }
 
+    public void fetchUsersFromStore() {
+        Storage storage = new Storage();
+        ArrayList<User> fetchedUsers = storage.deseralizeUser();
+        for (User user : fetchedUsers) {
+            usersTable.put(user.getUsername(), user);
+        }
+    }
+
     /**
      * Handle user authentication.
      */
@@ -146,15 +156,28 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
             public void actionPerformed(ActionEvent ae) {
                 String strUserName = txtUser.getText();
                 String strPass = pass.getText();
-                createCadence();
-                if (strUserName.equals("test") && strPass.equals("12345")) {
-                    logger.incrementSuccessfulLoginAttempts();
-                    logger.writeToLog();
-                    NewFrame regFace = new NewFrame();
-                    regFace.setVisible(true);
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(null,"Wrong Password / Username");
+                boolean successfulLogin = false;
+
+                // populate hash table with stored users
+                fetchUsersFromStore();
+                // iterate over keys
+                Iterator<Map.Entry<String, User>> it = usersTable.entrySet().iterator();
+                while (it.hasNext()) {
+                    Map.Entry<String, User> entry = it.next();
+                    System.out.println("username: " + entry.getKey() + "password: " + entry.getValue().getPassword());
+                    // Remove entry if key is null or equals 0.
+                    if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(strPass)) {
+                        logger.incrementSuccessfulLoginAttempts();
+                        logger.writeToLog();
+                        NewFrame regFace = new NewFrame();
+                        regFace.setVisible(true);
+                        dispose();
+                        successfulLogin = true;
+                    }
+                }
+                // otherwise its not correct credentials
+                if (successfulLogin == false) {
+                    JOptionPane.showMessageDialog(null, "Wrong Password / Username");
                     logger.incrementFailedLoginAttempts();
                     logger.writeToLog();
                     txtUser.setText("");

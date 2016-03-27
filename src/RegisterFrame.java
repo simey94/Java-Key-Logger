@@ -219,12 +219,10 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println("YOLOMCROLO");
         // check all user values are correct
         if (inputValidation()) {
             // Init user object
             user.setPassword(password);
-            System.out.println(password);
             user.setUsername(username);
             usersTable.put(username, user);
 
