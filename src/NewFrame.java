@@ -3,16 +3,16 @@ import javax.swing.*;
 
 public class NewFrame extends JFrame {
 
-    JLabel welcome = new JLabel("Congratulations you have accessed ID’s area");
+    JLabel welcome = new JLabel("Congratulations you have accessed id's area");
     JPanel panel = new JPanel();
 
     NewFrame(){
-        super("Welcome");
-        setSize(300,200);
+        super("Successful Login");
+        setSize(600, 300);
         setLocation(500,280);
         panel.setLayout (null);
 
-        welcome.setBounds(70,50,200,60);
+        welcome.setBounds(70, 50, 400, 60);
 
         panel.add(welcome);
 

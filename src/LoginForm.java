@@ -24,6 +24,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private ArrayList<Long> cadenceProfile = new ArrayList<>();
     private Logger logger = new Logger();
     private Hashtable<String, User> usersTable = new Hashtable<>();
+    private Storage storage = new Storage();
 
     static final String newline = System.getProperty("line.separator");
 
@@ -86,9 +87,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
-        // TODO: Enforce size of UI elements make log big rest small
         // TODO: Add CLI lib
-
         // Setup Buttons
         button = new JButton("Clear");
         button.addActionListener(this);
@@ -98,7 +97,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         bRegister.addActionListener(this);
 
         // Set up labels
-        // TODO: set location of these labels
         lblUsername = new JLabel("Username:");
         lblPassword = new JLabel("Password:");
 
@@ -140,9 +138,9 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     }
 
     public void fetchUsersFromStore() {
-        Storage storage = new Storage();
         ArrayList<User> fetchedUsers = storage.deseralizeUser();
         for (User user : fetchedUsers) {
+            System.out.println("fetchedUSer:" + user.getUsername() + " " + user.getPassword());
             usersTable.put(user.getUsername(), user);
         }
     }
@@ -158,11 +156,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 String strPass = pass.getText();
                 boolean successfulLogin = false;
 
-
-                Storage storage = new Storage();
                 String securePassword;
                 securePassword = storage.get_SHA_1_SecurePassword(strPass);
-                System.out.println("secPass: " + securePassword);
 
                 // populate hash table with stored users
                 fetchUsersFromStore();
@@ -170,11 +165,11 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 Iterator<Map.Entry<String, User>> it = usersTable.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry<String, User> entry = it.next();
-                    System.out.println("username: " + entry.getKey() + "\n password: " + entry.getValue().getPassword());
                     // Remove entry if key is null or equals 0.
                     if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(securePassword)) {
                         logger.incrementSuccessfulLoginAttempts();
                         logger.writeToLog();
+                        System.out.println("username: " + strUserName + "logged in");
                         NewFrame regFace = new NewFrame();
                         regFace.setVisible(true);
                         dispose();
@@ -182,7 +177,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                     }
                 }
                 // otherwise its not correct credentials
-                if (successfulLogin == false) {
+                if (!successfulLogin) {
                     JOptionPane.showMessageDialog(null, "Wrong Password / Username");
                     logger.incrementFailedLoginAttempts();
                     logger.writeToLog();
@@ -378,9 +373,9 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     @Override
     public void keyTyped(KeyEvent e) {
         //displayInfo(e, "KEY TYPED: ");
-        KeyPress keyPress = new KeyPress(e.getKeyChar(), System.currentTimeMillis());
-        keyPressMap.add(keyPress);
-        printCadence();
+//        KeyPress keyPress = new KeyPress(e.getKeyChar(), System.currentTimeMillis());
+//        keyPressMap.add(keyPress);
+//        printCadence();
     }
 
     /**

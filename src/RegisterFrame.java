@@ -32,8 +32,9 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private User user = new User();
     private String username;
     private String password;
+    private Storage storage = new Storage(user);
     private Hashtable<String, User> usersTable;
-    private ArrayList<Long> timings;
+    private ArrayList<Long> timings = new ArrayList<>();
 
 
     public RegisterFrame(String name, Hashtable usersTable) {
@@ -229,11 +230,18 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             // Init user object
             user.setPassword(password);
             user.setUsername(username);
+            for (int i = 0; i < timings.size(); i++) {
+                System.out.println("timing value " + i + " " + timings.get(i));
+            }
             user.setTimings(timings);
+
+            for (int i = 0; i < user.getTimings().size(); i++) {
+                System.out.println("User obj timing value " + i + " " + user.getTimings().get(i));
+            }
+
             usersTable.put(username, user);
 
             // Store updated user table
-            Storage storage = new Storage(user);
             storage.seralizeUser();
             setVisible(false);
             dispose();
