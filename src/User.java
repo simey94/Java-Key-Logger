@@ -7,10 +7,21 @@ import java.util.ArrayList;
  */
 
 public class User implements Serializable {
+    // Required for serilization
+    private static final long serialVersionUID = 2939771466342253014L;
     private String username;
-    // TODO: Encrypt this shit
     private String password;
     private ArrayList<Long> timings;
+
+    public User(String username, String password, ArrayList<Long> timings) {
+        this.username = username;
+        this.password = password;
+        this.timings = timings;
+    }
+
+    public User() {
+
+    }
 
     public String getUsername() {
         return username;
@@ -35,6 +46,4 @@ public class User implements Serializable {
     public void setTimings(ArrayList<Long> timings) {
         this.timings = timings;
     }
-
-
 }
