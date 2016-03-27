@@ -1,7 +1,6 @@
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 
 /**
@@ -23,21 +22,22 @@ public class Storage {
     public void seralizeUser() {
         String passwordToHash = user.getPassword();
         System.out.println("USER PASS ========================== : " + user.getPassword());
-        String salt = null;
-        try {
-            salt = getSalt();
-            System.out.println("USER SALT ========================== : " + salt);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+//        String salt = null;
+//        try {
+//            salt = getSalt();
+//            System.out.println("USER SALT ========================== : " + salt);
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
 
-        String securePassword = get_SHA_1_SecurePassword(passwordToHash, salt);
+        String securePassword = get_SHA_1_SecurePassword(passwordToHash);
         user.setPassword(securePassword);
         System.out.println(securePassword);
 
         try {
+            // TODO: opening in append mode
             FileOutputStream fileOut =
-                    new FileOutputStream("./Storage/users.ser", true);
+                    new FileOutputStream("./Storage/users.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(user);
             out.close();
@@ -85,11 +85,11 @@ public class Storage {
      * ===============================================
      */
 
-    private String get_SHA_1_SecurePassword(String passwordToHash, String salt) {
+    public String get_SHA_1_SecurePassword(String passwordToHash) {
         String generatedPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-1");
-            md.update(salt.getBytes(("UTF-16")));
+            //md.update(salt.getBytes(("UTF-16")));
             byte[] bytes = md.digest(passwordToHash.getBytes());
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < bytes.length; i++) {
@@ -98,16 +98,16 @@ public class Storage {
             generatedPassword = sb.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        } //catch (UnsupportedEncodingException e) {
+        //e.printStackTrace();
+        // }
         return generatedPassword;
     }
 
-    private String getSalt() throws NoSuchAlgorithmException {
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-        byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        return salt.toString();
-    }
+//    public String getSalt() throws NoSuchAlgorithmException {
+//        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
+//        byte[] salt = new byte[16];
+//        sr.nextBytes(salt);
+//        return salt.toString();
+//    }
 }

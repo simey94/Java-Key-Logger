@@ -158,15 +158,26 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 String strPass = pass.getText();
                 boolean successfulLogin = false;
 
+
+                Storage storage = new Storage();
+                String securePassword;
+                //try {
+                // String salt = storage.getSalt();
+                securePassword = storage.get_SHA_1_SecurePassword(strPass);
+                System.out.println("secPass: " + securePassword);
+                // } catch (NoSuchAlgorithmException e) {
+                //   e.printStackTrace();
+                // }
+
                 // populate hash table with stored users
                 fetchUsersFromStore();
                 // iterate over keys
                 Iterator<Map.Entry<String, User>> it = usersTable.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry<String, User> entry = it.next();
-                    System.out.println("username: " + entry.getKey() + "password: " + entry.getValue().getPassword());
+                    System.out.println("username: " + entry.getKey() + "\n password: " + entry.getValue().getPassword());
                     // Remove entry if key is null or equals 0.
-                    if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(strPass)) {
+                    if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(securePassword)) {
                         logger.incrementSuccessfulLoginAttempts();
                         logger.writeToLog();
                         NewFrame regFace = new NewFrame();
