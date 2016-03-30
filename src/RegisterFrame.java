@@ -215,7 +215,6 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         System.out.println("recorded time is : " + time);
         timings.add(time);
         stopWatch.reset();
-        stopWatch.start();
     }
 
     /**
