@@ -71,7 +71,7 @@ public class Storage {
     /**
      * ===============================================
      *
-     * SHA Encryption with Salting
+     *         SHA Encryption
      *
      * ===============================================
      */

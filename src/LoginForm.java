@@ -1,3 +1,5 @@
+import org.apache.commons.lang3.time.StopWatch;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,6 +21,9 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private static JTextField txtUser;
     private static JPasswordField pass;
     private static JTextArea logArea;
+    private StopWatch stopWatch = new StopWatch();
+    private ArrayList<Long> timings = new ArrayList<>();
+    // TODO: Remove KeyPress stopwatch once working
     private ArrayList<KeyPress> keyPressMap = new ArrayList<>();
     private ArrayList<Long> cadenceProfile = new ArrayList<>();
     private Logger logger = new Logger();
@@ -154,6 +159,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 String strUserName = txtUser.getText();
                 String strPass = pass.getText();
                 boolean successfulLogin = false;
+                boolean credentialsMatch = false;
 
                 String securePassword;
                 securePassword = storage.get_SHA_1_SecurePassword(strPass);
@@ -164,25 +170,40 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 Iterator<Map.Entry<String, User>> it = usersTable.entrySet().iterator();
                 while (it.hasNext()) {
                     Map.Entry<String, User> entry = it.next();
-                    // Remove entry if key is null or equals 0.
                     if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(securePassword)) {
-                        logger.incrementSuccessfulLoginAttempts();
-                        logger.writeToLog(strUserName);
-                        System.out.println("username: " + strUserName + "logged in");
-                        SuccessfulLogin newFrame = new SuccessfulLogin(strUserName);
-                        newFrame.setVisible(true);
-                        dispose();
-                        successfulLogin = true;
+                        credentialsMatch = true;
+                        if (compareTyping(entry.getValue())) {
+                            logger.incrementSuccessfulLoginAttempts();
+                            logger.writeToLog(strUserName);
+                            System.out.println("username: " + strUserName + "logged in");
+                            SuccessfulLogin newFrame = new SuccessfulLogin(strUserName);
+                            newFrame.setVisible(true);
+                            dispose();
+                            successfulLogin = true;
+                        }
                     }
                 }
                 // otherwise its not correct credentials
                 if (!successfulLogin) {
-                    JOptionPane.showMessageDialog(null, "Wrong Password / Username");
-                    logger.incrementFailedLoginAttempts();
-                    logger.writeToLog(strUserName);
-                    txtUser.setText("");
-                    pass.setText("");
-                    txtUser.requestFocus();
+                    if (credentialsMatch) {
+                        JOptionPane.showMessageDialog(null, "Typing cadence does not match!");
+                        logger.incrementFailedLoginAttempts();
+                        logger.writeToLog(strUserName);
+                        txtUser.setText("");
+                        pass.setText("");
+                        txtUser.requestFocus();
+                        // clear array list after failed attempt
+                        timings.clear();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Wrong username or password!");
+                        logger.incrementFailedLoginAttempts();
+                        logger.writeToLog(strUserName);
+                        txtUser.setText("");
+                        pass.setText("");
+                        txtUser.requestFocus();
+                        // clear array list after failed attempt
+                        timings.clear();
+                    }
                 }
             }
         });
@@ -198,6 +219,17 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 setVisible(true);
             }
         });
+    }
+
+    public boolean compareTyping(User user) {
+        int threshold = 10;
+        System.out.println("u avg: " + user.getAverageCadence());
+        System.out.println("\n timings avg: " + calculateAverage(timings));
+        if (Math.abs(calculateAverage(timings) - user.getAverageCadence()) <= threshold) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -243,7 +275,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 System.out.print("Time diff: " + difference + "\n");
                 sum += difference;
             }
-            System.out.print("VAL OF SUM: " + sum + "\n");
+            System.out.print("VAL OF LOGIN SUM: " + sum + "\n");
             long profileResult = sum / cadenceProfile.size();
             return profileResult;
         }
@@ -366,6 +398,17 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
      */
 
     /**
+     * Records the time to the users profile.
+     */
+    private void recordTime() {
+        stopWatch.stop();
+        long time = stopWatch.getTime();
+        System.out.println("recorded time is : " + time);
+        timings.add(time);
+        stopWatch.reset();
+    }
+
+    /**
      * Handle the key typed event from the text field.
      */
 
@@ -384,6 +427,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     @Override
     public void keyPressed(KeyEvent e) {
         //displayInfo(e, "KEY PRESSED: ");
+        stopWatch.start();
     }
 
     /**
@@ -392,7 +436,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        //printCadence();
         //displayInfo(e, "KEY RELEASED: ");
+        recordTime();
     }
 }

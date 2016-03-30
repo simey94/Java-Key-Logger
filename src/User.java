@@ -12,11 +12,13 @@ public class User implements Serializable {
     private String username;
     private String password;
     private ArrayList<Long> timings;
+    private Long averageCadence;
 
-    public User(String username, String password, ArrayList<Long> timings) {
+    public User(String username, String password, ArrayList<Long> timings, Long averageCadence) {
         this.username = username;
         this.password = password;
         this.timings = timings;
+        this.averageCadence = averageCadence;
     }
 
     public User() {
@@ -45,5 +47,13 @@ public class User implements Serializable {
 
     public void setTimings(ArrayList<Long> timings) {
         this.timings = timings;
+    }
+
+    public void setAverageCadence(Long averageCadence) {
+        this.averageCadence = averageCadence;
+    }
+
+    public Long getAverageCadence() {
+        return averageCadence;
     }
 }

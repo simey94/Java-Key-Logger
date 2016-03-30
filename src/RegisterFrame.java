@@ -217,6 +217,28 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         stopWatch.reset();
     }
 
+
+    /**
+     * Calculates the average time between key presses
+     * stored in the cadenceProfile array list.
+     */
+
+    private long calculateAverage(ArrayList<Long> cadenceProfile) {
+        // TODO: Fix negative values big could be to do with long vs double vs int etc
+        // TODO: Get average to function correctly
+        long sum = 0;
+        if (!cadenceProfile.isEmpty()) {
+            for (Long difference : cadenceProfile) {
+                System.out.print("Time diff: " + difference + "\n");
+                sum += difference;
+            }
+            System.out.print("VAL OF REGISTER SUM: " + sum + "\n");
+            long profileResult = sum / cadenceProfile.size();
+            return profileResult;
+        }
+        return sum;
+    }
+
     /**
      * Invoked when an action occurs.
      *
@@ -238,6 +260,7 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
                 System.out.println("User obj timing value " + i + " " + user.getTimings().get(i));
             }
 
+            user.setAverageCadence(calculateAverage(timings));
             usersTable.put(username, user);
 
             // Store updated user table
