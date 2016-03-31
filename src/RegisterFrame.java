@@ -35,6 +35,8 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private Storage storage = new Storage(user);
     private Hashtable<String, User> usersTable;
     private ArrayList<Long> timings = new ArrayList<>();
+    long keyPressedTime;
+    long KeyReleasedTime;
 
 
     public RegisterFrame(String name, Hashtable usersTable) {
@@ -188,7 +190,15 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     public void keyPressed(KeyEvent e) {
         // start timing
         // stops, save, reset,start
-        stopWatch.start();
+        if (timings.size() == 0) {
+            stopWatch.start();
+        } else {
+            long time = stopWatch.getTime();
+            System.out.println("time between key is: " + time);
+            timings.add(time);
+            stopWatch.reset();
+            stopWatch.start();
+        }
     }
 
     /**
@@ -202,8 +212,13 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     public void keyReleased(KeyEvent e) {
         // stop timing
         recordTime();
-        // stops, save, reset,start
-        // TODO: Multiple stopwatches per field
+    }
+
+    // TODO: Calculate time between key presses
+    private void calculateTimeBetweenKeyPress() {
+        // subtract key press from released
+        long timeBetweenKeys = keyPressedTime - KeyReleasedTime;
+        // add to timings array
     }
 
     /**
@@ -212,9 +227,10 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private void recordTime() {
         stopWatch.stop();
         long time = stopWatch.getTime();
-        System.out.println("recorded time is : " + time);
+        System.out.println("key held time is : " + time);
         timings.add(time);
         stopWatch.reset();
+        stopWatch.start();
     }
 
 

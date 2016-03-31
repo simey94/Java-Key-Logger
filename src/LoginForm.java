@@ -398,17 +398,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
      */
 
     /**
-     * Records the time to the users profile.
-     */
-    private void recordTime() {
-        stopWatch.stop();
-        long time = stopWatch.getTime();
-        System.out.println("recorded time is : " + time);
-        timings.add(time);
-        stopWatch.reset();
-    }
-
-    /**
      * Handle the key typed event from the text field.
      */
 
@@ -427,7 +416,15 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     @Override
     public void keyPressed(KeyEvent e) {
         //displayInfo(e, "KEY PRESSED: ");
-        stopWatch.start();
+        if (timings.size() == 0) {
+            stopWatch.start();
+        } else {
+            long time = stopWatch.getTime();
+            System.out.println("time between key is: " + time);
+            timings.add(time);
+            stopWatch.reset();
+            stopWatch.start();
+        }
     }
 
     /**
@@ -439,4 +436,17 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         //displayInfo(e, "KEY RELEASED: ");
         recordTime();
     }
+
+    /**
+     * Records the time to the users profile.
+     */
+    private void recordTime() {
+        stopWatch.stop();
+        long time = stopWatch.getTime();
+        System.out.println("key held time is : " + time);
+        timings.add(time);
+        stopWatch.reset();
+        stopWatch.start();
+    }
+
 }
