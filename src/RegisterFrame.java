@@ -37,6 +37,8 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private ArrayList<Long> timings = new ArrayList<>();
     long keyPressedTime;
     long KeyReleasedTime;
+    private boolean usernameError = false;
+    private boolean passwordError = false;
 
 
     public RegisterFrame(String name, Hashtable usersTable) {
@@ -130,15 +132,43 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     }
 
     public boolean inputValidation() {
-        String pass1Str = pass1.getPassword().toString();
-        String pass2Str = pass2.getPassword().toString();
-        String pass3Str = pass3.getPassword().toString();
-        String pass4Str = pass4.getPassword().toString();
-        String pass5Str = pass5.getPassword().toString();
+
+        if ((pass1.getPassword().length == 0)) {
+            System.out.println("pass1 length 0");
+            passwordError = true;
+            return false;
+        }
+        if ((pass2.getPassword().length == 0)) {
+            System.out.println("pass2 length 0");
+            passwordError = true;
+            return false;
+        }
+        if ((pass4.getPassword().length == 0)) {
+            System.out.println("pass3 length 0");
+            passwordError = true;
+            return false;
+        }
+        if ((pass4.getPassword().length == 0)) {
+            System.out.println("pass4 length 0");
+            passwordError = true;
+            return false;
+        }
+        if ((pass5.getPassword().length == 0)) {
+            System.out.println("pass5 length 0");
+            passwordError = true;
+            return false;
+        }
+
+        String pass1Str = String.valueOf(pass1.getPassword());
+        String pass2Str = String.valueOf(pass2.getPassword());
+        String pass3Str = String.valueOf(pass3.getPassword());
+        String pass4Str = String.valueOf(pass4.getPassword());
+        String pass5Str = String.valueOf(pass5.getPassword());
         String usernameStr = txtUser.getText();
 
         // check username
         if (usernameStr.equals("") || usernameStr.equals(null)) {
+            usernameError = true;
             return false;
         }
 
@@ -153,20 +183,31 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     }
 
     // TODO: This does not work correctly
-    public static boolean areAllEqual(String... values) {
+    public boolean areAllEqual(String... values) {
         if (values.length == 0) {
-            return true; // Alternative below
+            return true;
         }
         String checkValue = values[0];
         for (int i = 1; i < values.length; i++) {
-            if (values[i].equals(checkValue) && !(values[i].equals("")) && !(values[i].equals(null))) {
-                return true;
-            } else {
+            if (!(values[i].equals(checkValue))) {
+                System.out.println("PASS not the same");
                 return false;
             }
+//            if((values[i].toCharArray().length == 0) && (values[i].toString().equals(null))){
+//                System.out.println("LENGTH 0 or null");
+//                passwordError = true;
+//                return false;
+//            }
         }
+
         return true;
     }
+
+
+//    else if((values[i].equals("")) && (values[i].equals(null))) {
+//        passwordError = true;
+//        return false;
+//    }
 
     /**
      * Invoked when a key has been typed.
@@ -285,8 +326,17 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             setVisible(false);
             dispose();
         } else {
-            JOptionPane.showMessageDialog(null, "All passwords must have the same value! Username and Password cannot be NULL or empty!");
-            pass1.requestFocus();
+            if (usernameError) {
+                JOptionPane.showMessageDialog(null, "Username cannot be empty or null!");
+                txtUser.requestFocus();
+            }
+            if (passwordError) {
+                JOptionPane.showMessageDialog(null, "Password cannot be NULL or empty!");
+                pass1.requestFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "All passwords must have the same value!");
+                pass1.requestFocus();
+            }
         }
     }
 }
