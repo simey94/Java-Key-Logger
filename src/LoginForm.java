@@ -157,7 +157,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         bLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 String strUserName = txtUser.getText();
-                String strPass = pass.getText();
+                String strPass = pass.getPassword().toString();
                 boolean successfulLogin = false;
                 boolean credentialsMatch = false;
 

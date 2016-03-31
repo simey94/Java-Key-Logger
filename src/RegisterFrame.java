@@ -130,11 +130,11 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     }
 
     public boolean inputValidation() {
-        String pass1Str = pass1.getText();
-        String pass2Str = pass2.getText();
-        String pass3Str = pass3.getText();
-        String pass4Str = pass4.getText();
-        String pass5Str = pass5.getText();
+        String pass1Str = pass1.getPassword().toString();
+        String pass2Str = pass2.getPassword().toString();
+        String pass3Str = pass3.getPassword().toString();
+        String pass4Str = pass4.getPassword().toString();
+        String pass5Str = pass5.getPassword().toString();
         String usernameStr = txtUser.getText();
 
         // check username
@@ -152,13 +152,14 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         }
     }
 
+    // TODO: This does not work correctly
     public static boolean areAllEqual(String... values) {
         if (values.length == 0) {
             return true; // Alternative below
         }
         String checkValue = values[0];
         for (int i = 1; i < values.length; i++) {
-            if (values[i].equals(checkValue) && !(values[i].equals(""))) {
+            if (values[i].equals(checkValue) && !(values[i].equals("")) && !(values[i].equals(null))) {
                 return true;
             } else {
                 return false;
