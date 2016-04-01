@@ -11,14 +11,13 @@ public class User implements Serializable {
     private static final long serialVersionUID = 2939771466342253014L;
     private String username;
     private String password;
-    private ArrayList<Long> timings;
-    private Long averageCadence;
+    private ArrayList<Long> usernameTimings;
+    private ArrayList<Long> passwordTimings;
 
-    public User(String username, String password, ArrayList<Long> timings, Long averageCadence) {
+    public User(String username, String password, ArrayList<Long> usernameTimings, Long averageCadence) {
         this.username = username;
         this.password = password;
-        this.timings = timings;
-        this.averageCadence = averageCadence;
+        this.usernameTimings = usernameTimings;
     }
 
     public User() {
@@ -41,19 +40,20 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public ArrayList<Long> getTimings() {
-        return timings;
+    public ArrayList<Long> getUsernameTimings() {
+        return usernameTimings;
     }
 
-    public void setTimings(ArrayList<Long> timings) {
-        this.timings = timings;
+    public void setUsernameTimings(ArrayList<Long> usernameTimings) {
+        this.usernameTimings = usernameTimings;
     }
 
-    public void setAverageCadence(Long averageCadence) {
-        this.averageCadence = averageCadence;
+    public ArrayList<Long> getPasswordTimings() {
+        return passwordTimings;
     }
 
-    public Long getAverageCadence() {
-        return averageCadence;
+    public void setPasswordTimings(ArrayList<Long> passwordTimings) {
+        this.passwordTimings = passwordTimings;
     }
+
 }

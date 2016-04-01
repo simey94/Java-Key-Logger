@@ -9,7 +9,6 @@ import java.util.ArrayList;
  */
 
 public class Storage {
-    // TODO: Store in secure file then populate a hash table on program start
     private User user;
 
     public Storage(User user) {
@@ -21,10 +20,8 @@ public class Storage {
 
     public void seralizeUser() {
         String passwordToHash = user.getPassword();
-//        System.out.println("USER PASS ========================== : " + user.getPassword());
         String securePassword = get_SHA_1_SecurePassword(passwordToHash);
         user.setPassword(securePassword);
-//        System.out.println(securePassword);
 
         try {
             FileOutputStream fileOut =
@@ -49,9 +46,6 @@ public class Storage {
                 try {
                     User u = (User) in.readObject();
                     savedUsers.add(u);
-//                    System.out.println("DESER name ======= " + u.getUsername());
-//                    System.out.println("DESER pass ======= " + u.getPassword());
-//                    System.out.println("DESER timings ======= " + u.getTimings());
                 } catch (EOFException e) {
                     // Close readers
                     in.close();

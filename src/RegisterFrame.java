@@ -40,8 +40,10 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private ArrayList<Long> password1Timings = new ArrayList<>();
     private ArrayList<Long> password2Timings = new ArrayList<>();
     private boolean usernameError = false;
+    private boolean usernameMatchError = false;
     private boolean passwordError = false;
-    int threshold = 10;
+    private boolean passwordMatchError = false;
+    int threshold = 300;
 
 
     public RegisterFrame(String name, Hashtable usersTable) {
@@ -133,25 +135,33 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         String username2Str = txtUser2.getText();
 
         // check username
-        if (username1Str.equals("") || username1Str.equals(null) || !(username1Str.equals(username2Str))) {
+        if (username1Str.equals("") || username1Str.equals(null)) {
             usernameError = true;
             return false;
         }
 
         // check username
-        if (username2Str.equals("") || username2Str.equals(null) || !(username2Str.equals(username1Str))) {
+        if (username2Str.equals("") || username2Str.equals(null)) {
             usernameError = true;
             return false;
         }
 
-        if (pass1Str.equals("") || pass1Str.equals(null) || !(pass1Str.equals(pass1Str))) {
+        if (!(username1Str.equals(username2Str))) {
+            usernameMatchError = true;
+        }
+
+        if (pass1Str.equals("") || pass1Str.equals(null)) {
             passwordError = true;
             return false;
         }
 
-        if (pass2Str.equals("") || pass2Str.equals(null) || !(pass2Str.equals(pass2Str))) {
+        if (pass2Str.equals("") || pass2Str.equals(null)) {
             passwordError = true;
             return false;
+        }
+
+        if (!(pass1Str.equals(pass2Str))) {
+            passwordMatchError = true;
         }
 
         // Setup user values
@@ -160,9 +170,33 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         return true;
     }
 
-    public boolean entriesWithinThreshold() {
+    // TODO: Check that the two arrays are within a threshold of each other then add first to user object
+    public boolean entriesWithinThresholdUsername() {
+        boolean match = false;
+        for (int i = 0; i < username1Timings.size(); i++) {
+            for (int j = 0; j < username2Timings.size(); j++) {
+                if (Math.abs(username1Timings.get(i) - username2Timings.get(j)) <= threshold) {
+                    match = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return match;
+    }
 
-        return false;
+    private boolean entriesWithinThresholdPassword() {
+        boolean match = false;
+        for (int i = 0; i < password1Timings.size(); i++) {
+            for (int j = 0; j < password2Timings.size(); j++) {
+                if (Math.abs(password1Timings.get(i) - password2Timings.get(j)) <= threshold) {
+                    match = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return match;
     }
 
     /**
@@ -331,6 +365,13 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         }
     }
 
+    private void resetTimings() {
+        username1Timings.clear();
+        username2Timings.clear();
+        password1Timings.clear();
+        password2Timings.clear();
+    }
+
     /**
      * Invoked when an action occurs.
      *
@@ -339,27 +380,30 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
         // check all user values are correct
-        if (inputValidation()) {
+        boolean usernameTypingMatch = entriesWithinThresholdUsername();
+        boolean passwordTypingMatch = entriesWithinThresholdPassword();
+
+        if (inputValidation() && usernameTypingMatch && passwordTypingMatch) {
             // Init user object
             user.setPassword(password);
             user.setUsername(username);
             for (int i = 0; i < timings.size(); i++) {
                 System.out.println("timing value " + i + " " + timings.get(i));
             }
-            user.setTimings(timings);
+            user.setUsernameTimings(username1Timings);
+            user.setPasswordTimings(password1Timings);
 
-            for (int i = 0; i < user.getTimings().size(); i++) {
-                System.out.println("User obj timing value " + i + " " + user.getTimings().get(i));
+            for (int i = 0; i < user.getUsernameTimings().size(); i++) {
+                System.out.println("User obj timing value " + i + " " + user.getUsernameTimings().get(i));
             }
-            // Check user typing is similar i.e. within threshold of one another
-            //user.setAverageCadence(calculateAverage(timings));
-            usersTable.put(username, user);
 
+            usersTable.put(username, user);
             // Store updated user table
             storage.seralizeUser();
             setVisible(false);
             dispose();
         } else {
+            resetTimings();
             if (usernameError) {
                 JOptionPane.showMessageDialog(null, "Username cannot be empty or null!");
                 txtUser1.requestFocus();
@@ -367,8 +411,21 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             if (passwordError) {
                 JOptionPane.showMessageDialog(null, "Password cannot be NULL or empty!");
                 pass1.requestFocus();
-            } else {
-                JOptionPane.showMessageDialog(null, "All passwords must have the same value!");
+            }
+            if (!(usernameTypingMatch)) {
+                JOptionPane.showMessageDialog(null, "Timings for username typing are not similar enough!");
+                txtUser1.requestFocus();
+            }
+            if (!(passwordTypingMatch)) {
+                JOptionPane.showMessageDialog(null, "Timings for password typing are not similar enough!");
+                pass1.requestFocus();
+            }
+            if (usernameMatchError) {
+                JOptionPane.showMessageDialog(null, "Usernames must have the same value!");
+                pass1.requestFocus();
+            }
+            if (passwordMatchError) {
+                JOptionPane.showMessageDialog(null, "Password must have the same value!");
                 pass1.requestFocus();
             }
         }

@@ -21,18 +21,15 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private static JTextField txtUser;
     private static JPasswordField pass;
     private static JTextArea logArea;
-    private StopWatch stopWatch = new StopWatch();
     private StopWatch stopWatchUsername = new StopWatch();
     private StopWatch stopWatchPassword = new StopWatch();
-    private ArrayList<Long> timings = new ArrayList<>();
     private ArrayList<Long> usernameTimings = new ArrayList<>();
     private ArrayList<Long> passwordTimings = new ArrayList<>();
-    private ArrayList<Long> cadenceProfile = new ArrayList<>();
     private Logger logger = new Logger();
     private Hashtable<String, User> usersTable = new Hashtable<>();
     private Storage storage = new Storage();
-
     static final String newline = System.getProperty("line.separator");
+    private int threshold = 300;
 
     /**
      * Constructor
@@ -156,59 +153,98 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
      */
 
     public void actionLogin() {
-        bLogin.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                String strUserName = txtUser.getText();
-                String strPass = pass.getPassword().toString();
-                boolean successfulLogin = false;
-                boolean credentialsMatch = false;
+        bLogin.addActionListener(ae -> {
+            String strUserName = txtUser.getText();
+            String strPass = String.valueOf(pass.getPassword());
+            boolean successfulLogin = false;
+            boolean credentialsMatch = false;
 
-                String securePassword;
-                securePassword = storage.get_SHA_1_SecurePassword(strPass);
+            String securePassword;
+            securePassword = storage.get_SHA_1_SecurePassword(strPass);
 
-                // populate hash table with stored users
-                fetchUsersFromStore();
-                // iterate over keys
-                Iterator<Map.Entry<String, User>> it = usersTable.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry<String, User> entry = it.next();
-                    if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(securePassword)) {
-                        credentialsMatch = true;
-                        if (compareTyping(entry.getValue())) {
-                            logger.incrementSuccessfulLoginAttempts();
-                            logger.writeToLog(strUserName);
-                            System.out.println("username: " + strUserName + "logged in");
-                            SuccessfulLogin newFrame = new SuccessfulLogin(strUserName);
-                            newFrame.setVisible(true);
-                            dispose();
-                            successfulLogin = true;
-                        }
-                    }
-                }
-                // otherwise its not correct credentials
-                if (!successfulLogin) {
-                    if (credentialsMatch) {
-                        JOptionPane.showMessageDialog(null, "Typing cadence does not match!");
-                        logger.incrementFailedLoginAttempts();
+            // populate hash table with stored users
+            fetchUsersFromStore();
+            // iterate over keys
+            Iterator<Map.Entry<String, User>> it = usersTable.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<String, User> entry = it.next();
+                if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(securePassword)) {
+                    credentialsMatch = true;
+                    if (compareTyping(entry.getValue())) {
+                        logger.incrementSuccessfulLoginAttempts();
                         logger.writeToLog(strUserName);
-                        txtUser.setText("");
-                        pass.setText("");
-                        txtUser.requestFocus();
-                        // clear array list after failed attempt
-                        timings.clear();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Wrong username or password!");
-                        logger.incrementFailedLoginAttempts();
-                        logger.writeToLog(strUserName);
-                        txtUser.setText("");
-                        pass.setText("");
-                        txtUser.requestFocus();
-                        // clear array list after failed attempt
-                        timings.clear();
+                        System.out.println("username: " + strUserName + "logged in");
+                        SuccessfulLogin newFrame = new SuccessfulLogin(strUserName);
+                        newFrame.setVisible(true);
+                        dispose();
+                        successfulLogin = true;
                     }
                 }
             }
+            // otherwise its not correct credentials
+            if (!successfulLogin) {
+                if (credentialsMatch) {
+                    JOptionPane.showMessageDialog(null, "Typing cadence does not match!");
+                    logger.incrementFailedLoginAttempts();
+                    logger.writeToLog(strUserName);
+                    txtUser.setText("");
+                    pass.setText("");
+                    txtUser.requestFocus();
+                    // clear array list after failed attempt
+                    resetTimings();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Wrong username or password!");
+                    logger.incrementFailedLoginAttempts();
+                    logger.writeToLog(strUserName);
+                    txtUser.setText("");
+                    pass.setText("");
+                    txtUser.requestFocus();
+                    // clear array list after failed attempt
+                    resetTimings();
+                }
+            }
         });
+    }
+
+    private void resetTimings() {
+        usernameTimings.clear();
+        passwordTimings.clear();
+    }
+
+    private boolean compareTyping(User user) {
+        if (entriesWithinThresholdUsername(user) && entriesWithinThresholdPassword(user)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean entriesWithinThresholdUsername(User user) {
+        boolean match = false;
+        for (int i = 0; i < usernameTimings.size(); i++) {
+            for (int j = 0; j < user.getUsernameTimings().size(); j++) {
+                if (Math.abs(usernameTimings.get(i) - user.getUsernameTimings().get(j)) <= threshold) {
+                    match = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return match;
+    }
+
+    private boolean entriesWithinThresholdPassword(User user) {
+        boolean match = false;
+        for (int i = 0; i < passwordTimings.size(); i++) {
+            for (int j = 0; j < user.getPasswordTimings().size(); j++) {
+                if (Math.abs(passwordTimings.get(i) - user.getPasswordTimings().get(j)) <= threshold) {
+                    match = true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return match;
     }
 
     public void registerUser() {
@@ -221,38 +257,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 setVisible(true);
             }
         });
-    }
-
-    public boolean compareTyping(User user) {
-        int threshold = 10;
-        System.out.println("u avg: " + user.getAverageCadence());
-        System.out.println("\n timings avg: " + calculateAverage(timings));
-        if (Math.abs(calculateAverage(timings) - user.getAverageCadence()) <= threshold) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Calculates the average time between key presses
-     * stored in the cadenceProfile array list.
-     */
-
-    private long calculateAverage(ArrayList<Long> cadenceProfile) {
-        // TODO: Fix negative values big could be to do with long vs double vs int etc
-        // TODO: Get average to function correctly
-        long sum = 0;
-        if (!cadenceProfile.isEmpty()) {
-            for (Long difference : cadenceProfile) {
-                System.out.print("Time diff: " + difference + "\n");
-                sum += difference;
-            }
-            System.out.print("VAL OF LOGIN SUM: " + sum + "\n");
-            long profileResult = sum / cadenceProfile.size();
-            return profileResult;
-        }
-        return sum;
     }
 
     /**
