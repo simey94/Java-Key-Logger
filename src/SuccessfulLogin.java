@@ -19,7 +19,6 @@ public class SuccessfulLogin extends JFrame {
         panel.add(welcome);
 
         getContentPane().add(panel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 }

@@ -176,7 +176,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                         System.out.println("username: " + strUserName + "logged in");
                         SuccessfulLogin newFrame = new SuccessfulLogin(strUserName);
                         newFrame.setVisible(true);
-                        dispose();
                         successfulLogin = true;
                     }
                 }
@@ -340,10 +339,10 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //Clear the text components.
-        logArea.setText("");
-
+        txtUser.setText("");
+        pass.setText("");
         //Return the focus to the typing area.
-        logArea.requestFocusInWindow();
+        txtUser.requestFocusInWindow();
     }
 
 
