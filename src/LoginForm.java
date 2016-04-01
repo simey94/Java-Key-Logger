@@ -29,7 +29,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private Hashtable<String, User> usersTable = new Hashtable<>();
     private Storage storage = new Storage();
     static final String newline = System.getProperty("line.separator");
-    private int threshold = 300;
+    private int threshold = 100;
 
     /**
      * Constructor
@@ -168,16 +168,18 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
             Iterator<Map.Entry<String, User>> it = usersTable.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<String, User> entry = it.next();
+                System.out.println(entry.getValue().getUsernameTimings());
+                System.out.println(entry.getValue().getPasswordTimings());
                 if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(securePassword)) {
                     credentialsMatch = true;
                     if (compareTyping(entry.getValue())) {
                         resetTimings();
+                        successfulLogin = true;
                         logger.incrementSuccessfulLoginAttempts();
                         logger.writeToLog(strUserName);
                         System.out.println("username: " + strUserName + "logged in");
                         SuccessfulLogin newFrame = new SuccessfulLogin(strUserName);
                         newFrame.setVisible(true);
-                        successfulLogin = true;
                     }
                 }
             }
@@ -190,7 +192,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                     txtUser.setText("");
                     pass.setText("");
                     txtUser.requestFocus();
-                    // clear array list after failed attempt
                     resetTimings();
                 } else {
                     JOptionPane.showMessageDialog(null, "Wrong username or password!");
@@ -216,6 +217,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     }
 
     private boolean compareTyping(User user) {
+        System.out.println("User timings : " + user.getUsernameTimings());
+        System.out.println("Pass timings : " + user.getPasswordTimings());
         if (entriesWithinThresholdUsername(user) && entriesWithinThresholdPassword(user)) {
             return true;
         } else {
@@ -227,8 +230,9 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         boolean match = false;
         for (int i = 0; i < usernameTimings.size(); i++) {
             for (int j = 0; j < user.getUsernameTimings().size(); j++) {
-                if (Math.abs(usernameTimings.get(i) - user.getUsernameTimings().get(j)) <= threshold) {
+                if (Math.abs(usernameTimings.get(i).longValue() - user.getUsernameTimings().get(j).longValue()) <= threshold) {
                     match = true;
+                    i++;
                 } else {
                     return false;
                 }
@@ -241,8 +245,9 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
         boolean match = false;
         for (int i = 0; i < passwordTimings.size(); i++) {
             for (int j = 0; j < user.getPasswordTimings().size(); j++) {
-                if (Math.abs(passwordTimings.get(i) - user.getPasswordTimings().get(j)) <= threshold) {
+                if (Math.abs(passwordTimings.get(i).longValue() - user.getPasswordTimings().get(j).longValue()) <= threshold) {
                     match = true;
+                    i++;
                 } else {
                     return false;
                 }

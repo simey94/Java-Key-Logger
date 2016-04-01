@@ -172,10 +172,12 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     // TODO: Check that the two arrays are within a threshold of each other then add first to user object
     public boolean entriesWithinThresholdUsername() {
         boolean match = false;
-        for (int i = 0; i < username1Timings.size(); i++) {
+        for (int i = 0; i < username1Timings.size(); ) {
             for (int j = 0; j < username2Timings.size(); j++) {
-                if (Math.abs(username1Timings.get(i) - username2Timings.get(j)) <= threshold) {
+                long val = Math.abs(username1Timings.get(i).longValue() - username2Timings.get(j).longValue());
+                if (val <= threshold) {
                     match = true;
+                    i++;
                 } else {
                     return false;
                 }
@@ -186,10 +188,11 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
 
     private boolean entriesWithinThresholdPassword() {
         boolean match = false;
-        for (int i = 0; i < password1Timings.size(); i++) {
+        for (int i = 0; i < password1Timings.size(); ) {
             for (int j = 0; j < password2Timings.size(); j++) {
-                if (Math.abs(password1Timings.get(i) - password2Timings.get(j)) <= threshold) {
+                if (Math.abs(password1Timings.get(i).longValue() - password2Timings.get(j).longValue()) <= threshold) {
                     match = true;
+                    i++;
                 } else {
                     return false;
                 }
@@ -395,12 +398,14 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             user.setPassword(password);
             user.setUsername(username);
             user.setUsernameTimings(username1Timings);
+            System.out.println(user.getUsernameTimings());
             user.setPasswordTimings(password1Timings);
+            System.out.println(user.getPasswordTimings());
             // Stop timers and reset timing arrays
-            resetTimings();
             usersTable.put(username, user);
             // Store updated user table
             storage.seralizeUser();
+            resetTimings();
             setVisible(false);
             dispose();
         } else {

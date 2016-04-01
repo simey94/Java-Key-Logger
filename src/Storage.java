@@ -22,12 +22,16 @@ public class Storage {
         String passwordToHash = user.getPassword();
         String securePassword = get_SHA_1_SecurePassword(passwordToHash);
         user.setPassword(securePassword);
+        System.out.println("=========STORAGE==============\n");
+        System.out.println(user.getUsernameTimings());
+        System.out.println(user.getPasswordTimings());
 
         try {
             FileOutputStream fileOut =
                     new FileOutputStream("./Storage/users.ser", true);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(user);
+            out.flush();
             out.close();
             fileOut.flush();
             fileOut.close();
@@ -45,6 +49,11 @@ public class Storage {
                 ObjectInputStream in = new ObjectInputStream(fileIn);
                 try {
                     User u = (User) in.readObject();
+                    System.out.println("=====DECSE======");
+                    System.out.println(u.getUsername());
+                    System.out.println(u.getPassword());
+                    System.out.println(u.getUsernameTimings());
+                    System.out.println(u.getPasswordTimings());
                     savedUsers.add(u);
                 } catch (EOFException e) {
                     // Close readers
