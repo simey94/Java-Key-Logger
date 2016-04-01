@@ -22,7 +22,11 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private static JPasswordField pass;
     private static JTextArea logArea;
     private StopWatch stopWatch = new StopWatch();
+    private StopWatch stopWatchUsername = new StopWatch();
+    private StopWatch stopWatchPassword = new StopWatch();
     private ArrayList<Long> timings = new ArrayList<>();
+    private ArrayList<Long> usernameTimings = new ArrayList<>();
+    private ArrayList<Long> passwordTimings = new ArrayList<>();
     private ArrayList<Long> cadenceProfile = new ArrayList<>();
     private Logger logger = new Logger();
     private Hashtable<String, User> usersTable = new Hashtable<>();
@@ -358,9 +362,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        //displayInfo(e, "KEY TYPED: ");
-//        keyPressMap.add(keyPress);
-//        printCadence();
     }
 
     /**
@@ -369,15 +370,17 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        //displayInfo(e, "KEY PRESSED: ");
-        if (timings.size() == 0) {
-            stopWatch.start();
-        } else {
-            long time = stopWatch.getTime();
-            System.out.println("time between key is: " + time);
-            timings.add(time);
-            stopWatch.reset();
-            stopWatch.start();
+        int textFieldEntered = 0;
+
+        if (e.getSource() == txtUser) {
+            System.out.println("Key pressed in txtUser1");
+            textFieldEntered = 1;
+            recordTimeBetweenKeys(textFieldEntered);
+        }
+        if (e.getSource() == pass) {
+            System.out.println("Key pressed in pass");
+            textFieldEntered = 2;
+            recordTimeBetweenKeys(textFieldEntered);
         }
     }
 
@@ -387,20 +390,69 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        //displayInfo(e, "KEY RELEASED: ");
-        recordTime();
+        int textFieldEntered = 0;
+        if (e.getSource() == txtUser) {
+            System.out.println("Key released in txtUser1");
+            textFieldEntered = 1;
+        }
+        if (e.getSource() == pass) {
+            System.out.println("Key released in pass");
+            textFieldEntered = 2;
+        }
+        recordTime(textFieldEntered);
     }
+
+    private void recordTimeBetweenKeys(int textFieldEntered) {
+        if (textFieldEntered == 0) {
+            System.out.println("recordTimeBetweenKeys textFieldEntered was 0 error");
+            System.exit(1);
+        }
+        if (textFieldEntered == 1) {
+            if (usernameTimings.size() == 0) {
+                stopWatchUsername.start();
+            } else {
+                long time = stopWatchUsername.getTime();
+                System.out.println("time between key is: " + time);
+                usernameTimings.add(time);
+                stopWatchUsername.reset();
+                stopWatchUsername.start();
+            }
+        } else if (textFieldEntered == 2) {
+            if (passwordTimings.size() == 0) {
+                stopWatchPassword.start();
+            } else {
+                long time = stopWatchPassword.getTime();
+                System.out.println("time between key is: " + time);
+                passwordTimings.add(time);
+                stopWatchPassword.reset();
+                stopWatchPassword.start();
+            }
+        }
+    }
+
 
     /**
      * Records the time to the users profile.
      */
-    private void recordTime() {
-        stopWatch.stop();
-        long time = stopWatch.getTime();
-        System.out.println("key held time is : " + time);
-        timings.add(time);
-        stopWatch.reset();
-        stopWatch.start();
+    private void recordTime(int textFieldEntered) {
+        if (textFieldEntered == 0) {
+            System.out.println("textFieldEntered was 0 error");
+            System.exit(1);
+        }
+        if (textFieldEntered == 1) {
+            stopWatchUsername.stop();
+            long time = stopWatchUsername.getTime();
+            System.out.println("text 1 key held time is : " + time);
+            usernameTimings.add(time);
+            stopWatchUsername.reset();
+            stopWatchUsername.start();
+        } else if (textFieldEntered == 2) {
+            stopWatchPassword.stop();
+            long time = stopWatchPassword.getTime();
+            System.out.println("pass key held time is : " + time);
+            passwordTimings.add(time);
+            stopWatchPassword.reset();
+            stopWatchPassword.start();
+        }
     }
-
 }
