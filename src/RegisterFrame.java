@@ -34,7 +34,6 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private String password;
     private Storage storage = new Storage(user);
     private Hashtable<String, User> usersTable;
-    private ArrayList<Long> timings = new ArrayList<>();
     private ArrayList<Long> username1Timings = new ArrayList<>();
     private ArrayList<Long> username2Timings = new ArrayList<>();
     private ArrayList<Long> password1Timings = new ArrayList<>();
@@ -366,6 +365,14 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     }
 
     private void resetTimings() {
+        stopWatchUsername1.stop();
+        stopWatchUsername1.reset();
+        stopWatchUsername2.stop();
+        stopWatchUsername2.reset();
+        stopWatchPassword1.stop();
+        stopWatchPassword1.reset();
+        stopWatchPassword2.stop();
+        stopWatchPassword2.reset();
         username1Timings.clear();
         username2Timings.clear();
         password1Timings.clear();
@@ -387,16 +394,10 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             // Init user object
             user.setPassword(password);
             user.setUsername(username);
-            for (int i = 0; i < timings.size(); i++) {
-                System.out.println("timing value " + i + " " + timings.get(i));
-            }
             user.setUsernameTimings(username1Timings);
             user.setPasswordTimings(password1Timings);
-
-            for (int i = 0; i < user.getUsernameTimings().size(); i++) {
-                System.out.println("User obj timing value " + i + " " + user.getUsernameTimings().get(i));
-            }
-
+            // Stop timers and reset timing arrays
+            resetTimings();
             usersTable.put(username, user);
             // Store updated user table
             storage.seralizeUser();
@@ -406,27 +407,51 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             resetTimings();
             if (usernameError) {
                 JOptionPane.showMessageDialog(null, "Username cannot be empty or null!");
+                txtUser1.setText("");
                 txtUser1.requestFocus();
+                txtUser2.setText("");
+                pass1.setText("");
+                pass2.setText("");
             }
             if (passwordError) {
                 JOptionPane.showMessageDialog(null, "Password cannot be NULL or empty!");
-                pass1.requestFocus();
+                txtUser1.setText("");
+                txtUser1.requestFocus();
+                txtUser2.setText("");
+                pass1.setText("");
+                pass2.setText("");
             }
             if (!(usernameTypingMatch)) {
                 JOptionPane.showMessageDialog(null, "Timings for username typing are not similar enough!");
+                txtUser1.setText("");
                 txtUser1.requestFocus();
+                txtUser2.setText("");
+                pass1.setText("");
+                pass2.setText("");
             }
             if (!(passwordTypingMatch)) {
                 JOptionPane.showMessageDialog(null, "Timings for password typing are not similar enough!");
-                pass1.requestFocus();
+                txtUser1.setText("");
+                txtUser1.requestFocus();
+                txtUser2.setText("");
+                pass1.setText("");
+                pass2.setText("");
             }
             if (usernameMatchError) {
                 JOptionPane.showMessageDialog(null, "Usernames must have the same value!");
-                pass1.requestFocus();
+                txtUser1.setText("");
+                txtUser1.requestFocus();
+                txtUser2.setText("");
+                pass1.setText("");
+                pass2.setText("");
             }
             if (passwordMatchError) {
                 JOptionPane.showMessageDialog(null, "Password must have the same value!");
-                pass1.requestFocus();
+                txtUser1.setText("");
+                txtUser1.requestFocus();
+                txtUser2.setText("");
+                pass1.setText("");
+                pass2.setText("");
             }
         }
     }

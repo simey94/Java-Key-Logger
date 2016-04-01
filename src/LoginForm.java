@@ -171,6 +171,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                 if (entry.getKey().equals(strUserName) && entry.getValue().getPassword().equals(securePassword)) {
                     credentialsMatch = true;
                     if (compareTyping(entry.getValue())) {
+                        resetTimings();
                         logger.incrementSuccessfulLoginAttempts();
                         logger.writeToLog(strUserName);
                         System.out.println("username: " + strUserName + "logged in");
@@ -206,6 +207,10 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     }
 
     private void resetTimings() {
+        stopWatchUsername.stop();
+        stopWatchUsername.reset();
+        stopWatchPassword.stop();
+        stopWatchPassword.reset();
         usernameTimings.clear();
         passwordTimings.clear();
     }
