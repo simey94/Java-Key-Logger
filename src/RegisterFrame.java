@@ -15,19 +15,19 @@ import java.util.Hashtable;
  */
 public class RegisterFrame extends JFrame implements KeyListener, ActionListener {
 
-    private static JLabel lblUsername;
+    private static JLabel lblUsername1;
+    private static JLabel lblUsername2;
     private static JLabel lblPassword1;
     private static JLabel lblPassword2;
-    private static JLabel lblPassword3;
-    private static JLabel lblPassword4;
-    private static JLabel lblPassword5;
-    private static JTextField txtUser;
+    private static JTextField txtUser1;
+    private static JTextField txtUser2;
     private static JPasswordField pass1;
     private static JPasswordField pass2;
-    private static JPasswordField pass3;
-    private static JPasswordField pass4;
-    private static JPasswordField pass5;
     private static JButton bRegister;
+    private StopWatch stopWatchUsername1 = new StopWatch();
+    private StopWatch stopWatchUsername2 = new StopWatch();
+    private StopWatch stopWatchPassword1 = new StopWatch();
+    private StopWatch stopWatchPassword2 = new StopWatch();
     private StopWatch stopWatch = new StopWatch();
     private User user = new User();
     private String username;
@@ -35,10 +35,13 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private Storage storage = new Storage(user);
     private Hashtable<String, User> usersTable;
     private ArrayList<Long> timings = new ArrayList<>();
-    long keyPressedTime;
-    long KeyReleasedTime;
+    private ArrayList<Long> username1Timings = new ArrayList<>();
+    private ArrayList<Long> username2Timings = new ArrayList<>();
+    private ArrayList<Long> password1Timings = new ArrayList<>();
+    private ArrayList<Long> password2Timings = new ArrayList<>();
     private boolean usernameError = false;
     private boolean passwordError = false;
+    int threshold = 10;
 
 
     public RegisterFrame(String name, Hashtable usersTable) {
@@ -57,18 +60,22 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
         // Set up labels
-        lblUsername = new JLabel("Username:");
+        lblUsername1 = new JLabel("Username:");
+        lblUsername2 = new JLabel("Username:");
         lblPassword1 = new JLabel("Password:");
         lblPassword2 = new JLabel("Password:");
-        lblPassword3 = new JLabel("Password:");
-        lblPassword4 = new JLabel("Password:");
-        lblPassword5 = new JLabel("Password:");
 
         //Setup user fields
-        txtUser = new JTextField(15);
-        txtUser.setMaximumSize(txtUser.getPreferredSize());
-        txtUser.setMinimumSize(txtUser.getPreferredSize());
-        txtUser.addKeyListener(this);
+        txtUser1 = new JTextField(15);
+        txtUser1.setMaximumSize(txtUser1.getPreferredSize());
+        txtUser1.setMinimumSize(txtUser1.getPreferredSize());
+        txtUser1.addKeyListener(this);
+
+        //Setup user fields
+        txtUser2 = new JTextField(15);
+        txtUser2.setMaximumSize(txtUser2.getPreferredSize());
+        txtUser2.setMinimumSize(txtUser2.getPreferredSize());
+        txtUser2.addKeyListener(this);
 
         // Password fields used to get a cadence profile
         pass1 = new JPasswordField(15);
@@ -81,53 +88,29 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         pass2.setMinimumSize(pass2.getPreferredSize());
         pass2.addKeyListener(this);
 
-        pass3 = new JPasswordField(15);
-        pass3.setMaximumSize(pass3.getPreferredSize());
-        pass3.setMinimumSize(pass3.getPreferredSize());
-        pass3.addKeyListener(this);
-
-        pass4 = new JPasswordField(15);
-        pass4.setMaximumSize(pass4.getPreferredSize());
-        pass4.setMinimumSize(pass4.getPreferredSize());
-        pass4.addKeyListener(this);
-
-        pass5 = new JPasswordField(15);
-        pass5.setMaximumSize(pass5.getPreferredSize());
-        pass5.setMinimumSize(pass5.getPreferredSize());
-        pass5.addKeyListener(this);
-
         // add register button
         bRegister = new JButton("Register");
         bRegister.addActionListener(this);
 
         // UI Alignments
-        lblUsername.setAlignmentX(pane.CENTER_ALIGNMENT);
-        txtUser.setAlignmentX(pane.CENTER_ALIGNMENT);
+        lblUsername1.setAlignmentX(pane.CENTER_ALIGNMENT);
+        txtUser1.setAlignmentX(pane.CENTER_ALIGNMENT);
         lblPassword1.setAlignmentX(pane.CENTER_ALIGNMENT);
+        lblUsername2.setAlignmentX(pane.CENTER_ALIGNMENT);
+        txtUser1.setAlignmentX(pane.CENTER_ALIGNMENT);
         lblPassword2.setAlignmentX(pane.CENTER_ALIGNMENT);
-        lblPassword3.setAlignmentX(pane.CENTER_ALIGNMENT);
-        lblPassword4.setAlignmentX(pane.CENTER_ALIGNMENT);
-        lblPassword5.setAlignmentX(pane.CENTER_ALIGNMENT);
         pass1.setAlignmentX(pane.CENTER_ALIGNMENT);
         pass2.setAlignmentX(pane.CENTER_ALIGNMENT);
-        pass3.setAlignmentX(pane.CENTER_ALIGNMENT);
-        pass4.setAlignmentX(pane.CENTER_ALIGNMENT);
-        pass5.setAlignmentX(pane.CENTER_ALIGNMENT);
         bRegister.setAlignmentX(pane.CENTER_ALIGNMENT);
 
-        pane.add(txtUser);
-        pane.add(lblUsername);
-        pane.add(txtUser);
+        pane.add(lblUsername1);
+        pane.add(txtUser1);
         pane.add(lblPassword1);
         pane.add(pass1);
+        pane.add(lblUsername2);
+        pane.add(txtUser2);
         pane.add(lblPassword2);
         pane.add(pass2);
-        pane.add(lblPassword3);
-        pane.add(pass3);
-        pane.add(lblPassword4);
-        pane.add(pass4);
-        pane.add(lblPassword5);
-        pane.add(pass5);
         pane.add(bRegister);
     }
 
@@ -143,71 +126,44 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             passwordError = true;
             return false;
         }
-        if ((pass4.getPassword().length == 0)) {
-            System.out.println("pass3 length 0");
-            passwordError = true;
-            return false;
-        }
-        if ((pass4.getPassword().length == 0)) {
-            System.out.println("pass4 length 0");
-            passwordError = true;
-            return false;
-        }
-        if ((pass5.getPassword().length == 0)) {
-            System.out.println("pass5 length 0");
-            passwordError = true;
-            return false;
-        }
 
         String pass1Str = String.valueOf(pass1.getPassword());
         String pass2Str = String.valueOf(pass2.getPassword());
-        String pass3Str = String.valueOf(pass3.getPassword());
-        String pass4Str = String.valueOf(pass4.getPassword());
-        String pass5Str = String.valueOf(pass5.getPassword());
-        String usernameStr = txtUser.getText();
+        String username1Str = txtUser1.getText();
+        String username2Str = txtUser2.getText();
 
         // check username
-        if (usernameStr.equals("") || usernameStr.equals(null)) {
+        if (username1Str.equals("") || username1Str.equals(null) || !(username1Str.equals(username2Str))) {
             usernameError = true;
             return false;
         }
 
-        // check password
-        if (areAllEqual(pass1Str, pass2Str, pass3Str, pass4Str, pass5Str)) {
-            username = usernameStr;
-            password = pass1Str;
-            return true;
-        } else {
+        // check username
+        if (username2Str.equals("") || username2Str.equals(null) || !(username2Str.equals(username1Str))) {
+            usernameError = true;
             return false;
         }
-    }
 
-    // TODO: This does not work correctly
-    public boolean areAllEqual(String... values) {
-        if (values.length == 0) {
-            return true;
-        }
-        String checkValue = values[0];
-        for (int i = 1; i < values.length; i++) {
-            if (!(values[i].equals(checkValue))) {
-                System.out.println("PASS not the same");
-                return false;
-            }
-//            if((values[i].toCharArray().length == 0) && (values[i].toString().equals(null))){
-//                System.out.println("LENGTH 0 or null");
-//                passwordError = true;
-//                return false;
-//            }
+        if (pass1Str.equals("") || pass1Str.equals(null) || !(pass1Str.equals(pass1Str))) {
+            passwordError = true;
+            return false;
         }
 
+        if (pass2Str.equals("") || pass2Str.equals(null) || !(pass2Str.equals(pass2Str))) {
+            passwordError = true;
+            return false;
+        }
+
+        // Setup user values
+        username = username1Str;
+        password = pass1Str;
         return true;
     }
 
+    public boolean entriesWithinThreshold() {
 
-//    else if((values[i].equals("")) && (values[i].equals(null))) {
-//        passwordError = true;
-//        return false;
-//    }
+        return false;
+    }
 
     /**
      * Invoked when a key has been typed.
@@ -232,14 +188,27 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     public void keyPressed(KeyEvent e) {
         // start timing
         // stops, save, reset,start
-        if (timings.size() == 0) {
-            stopWatch.start();
-        } else {
-            long time = stopWatch.getTime();
-            System.out.println("time between key is: " + time);
-            timings.add(time);
-            stopWatch.reset();
-            stopWatch.start();
+        int textFieldEntered = 0;
+
+        if (e.getSource() == txtUser1) {
+            System.out.println("Key pressed in txtUser1");
+            textFieldEntered = 1;
+            recordTimeBetweenKeys(textFieldEntered);
+        }
+        if (e.getSource() == txtUser2) {
+            System.out.println("Key pressed in txtUser2");
+            textFieldEntered = 2;
+            recordTimeBetweenKeys(textFieldEntered);
+        }
+        if (e.getSource() == pass1) {
+            System.out.println("Key pressed in pass1");
+            textFieldEntered = 3;
+            recordTimeBetweenKeys(textFieldEntered);
+        }
+        if (e.getSource() == pass2) {
+            System.out.println("Key pressed in pass2");
+            textFieldEntered = 4;
+            recordTimeBetweenKeys(textFieldEntered);
         }
     }
 
@@ -253,48 +222,113 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     @Override
     public void keyReleased(KeyEvent e) {
         // stop timing
-        recordTime();
+        int textFieldEntered = 0;
+        if (e.getSource() == txtUser1) {
+            System.out.println("Key released in txtUser1");
+            textFieldEntered = 1;
+        }
+        if (e.getSource() == txtUser2) {
+            System.out.println("Key released in txtUser2");
+            textFieldEntered = 2;
+        }
+        if (e.getSource() == pass1) {
+            System.out.println("Key released in pass1");
+            textFieldEntered = 3;
+        }
+        if (e.getSource() == pass2) {
+            System.out.println("Key released in pass2");
+            textFieldEntered = 4;
+        }
+
+        recordTime(textFieldEntered);
     }
 
-    // TODO: Calculate time between key presses
-    private void calculateTimeBetweenKeyPress() {
-        // subtract key press from released
-        long timeBetweenKeys = keyPressedTime - KeyReleasedTime;
-        // add to timings array
+    private void recordTimeBetweenKeys(int textFieldEntered) {
+        if (textFieldEntered == 0) {
+            System.out.println("recordTimeBetweenKeys textFieldEntered was 0 error");
+            System.exit(1);
+        }
+        if (textFieldEntered == 1) {
+            if (username1Timings.size() == 0) {
+                stopWatchUsername1.start();
+            } else {
+                long time = stopWatchUsername1.getTime();
+                System.out.println("time between key is: " + time);
+                username1Timings.add(time);
+                stopWatchUsername1.reset();
+                stopWatchUsername1.start();
+            }
+        } else if (textFieldEntered == 2) {
+            if (username2Timings.size() == 0) {
+                stopWatchUsername2.start();
+            } else {
+                long time = stopWatchUsername2.getTime();
+                System.out.println("time between key is: " + time);
+                username2Timings.add(time);
+                stopWatchUsername2.reset();
+                stopWatchUsername2.start();
+            }
+        } else if (textFieldEntered == 3) {
+            if (password1Timings.size() == 0) {
+                stopWatchPassword1.start();
+            } else {
+                long time = stopWatchPassword1.getTime();
+                System.out.println("time between key is: " + time);
+                password1Timings.add(time);
+                stopWatchPassword1.reset();
+                stopWatchPassword1.start();
+            }
+        } else if (textFieldEntered == 4) {
+            if (password2Timings.size() == 0) {
+                stopWatchPassword2.start();
+            } else {
+                long time = stopWatchPassword2.getTime();
+                System.out.println("time between key is: " + time);
+                password2Timings.add(time);
+                stopWatchPassword2.reset();
+                stopWatchPassword2.start();
+            }
+        }
     }
 
     /**
      * Records the time to the users profile.
+     * @param textFieldEntered
      */
-    private void recordTime() {
-        stopWatch.stop();
-        long time = stopWatch.getTime();
-        System.out.println("key held time is : " + time);
-        timings.add(time);
-        stopWatch.reset();
-        stopWatch.start();
-    }
-
-
-    /**
-     * Calculates the average time between key presses
-     * stored in the cadenceProfile array list.
-     */
-
-    private long calculateAverage(ArrayList<Long> cadenceProfile) {
-        // TODO: Fix negative values big could be to do with long vs double vs int etc
-        // TODO: Get average to function correctly
-        long sum = 0;
-        if (!cadenceProfile.isEmpty()) {
-            for (Long difference : cadenceProfile) {
-                System.out.print("Time diff: " + difference + "\n");
-                sum += difference;
-            }
-            System.out.print("VAL OF REGISTER SUM: " + sum + "\n");
-            long profileResult = sum / cadenceProfile.size();
-            return profileResult;
+    private void recordTime(int textFieldEntered) {
+        if (textFieldEntered == 0) {
+            System.out.println("textFieldEntered was 0 error");
+            System.exit(1);
         }
-        return sum;
+        if (textFieldEntered == 1) {
+            stopWatchUsername1.stop();
+            long time = stopWatchUsername1.getTime();
+            System.out.println("text 1 key held time is : " + time);
+            username1Timings.add(time);
+            stopWatchUsername1.reset();
+            stopWatchUsername1.start();
+        } else if (textFieldEntered == 2) {
+            stopWatchUsername2.stop();
+            long time = stopWatchUsername2.getTime();
+            System.out.println("text2 key held time is : " + time);
+            username2Timings.add(time);
+            stopWatchUsername2.reset();
+            stopWatchUsername2.start();
+        } else if (textFieldEntered == 3) {
+            stopWatchPassword1.stop();
+            long time = stopWatchPassword1.getTime();
+            System.out.println("pass1 key held time is : " + time);
+            password1Timings.add(time);
+            stopWatchPassword1.reset();
+            stopWatchPassword1.start();
+        } else if (textFieldEntered == 4) {
+            stopWatchPassword2.stop();
+            long time = stopWatchPassword2.getTime();
+            System.out.println("pass2 key held time is : " + time);
+            password2Timings.add(time);
+            stopWatchPassword2.reset();
+            stopWatchPassword2.start();
+        }
     }
 
     /**
@@ -317,8 +351,8 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
             for (int i = 0; i < user.getTimings().size(); i++) {
                 System.out.println("User obj timing value " + i + " " + user.getTimings().get(i));
             }
-
-            user.setAverageCadence(calculateAverage(timings));
+            // Check user typing is similar i.e. within threshold of one another
+            //user.setAverageCadence(calculateAverage(timings));
             usersTable.put(username, user);
 
             // Store updated user table
@@ -328,7 +362,7 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         } else {
             if (usernameError) {
                 JOptionPane.showMessageDialog(null, "Username cannot be empty or null!");
-                txtUser.requestFocus();
+                txtUser1.requestFocus();
             }
             if (passwordError) {
                 JOptionPane.showMessageDialog(null, "Password cannot be NULL or empty!");

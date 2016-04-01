@@ -23,8 +23,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private static JTextArea logArea;
     private StopWatch stopWatch = new StopWatch();
     private ArrayList<Long> timings = new ArrayList<>();
-    // TODO: Remove KeyPress stopwatch once working
-    private ArrayList<KeyPress> keyPressMap = new ArrayList<>();
     private ArrayList<Long> cadenceProfile = new ArrayList<>();
     private Logger logger = new Logger();
     private Hashtable<String, User> usersTable = new Hashtable<>();
@@ -233,35 +231,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     }
 
     /**
-     * Create the cadence profile for the user.
-     */
-
-    private void createCadence() {
-        // TODO: Implement this to check timing of user typing ---- Fix this logic
-        // get first character key and time
-        KeyPress value1;
-        KeyPress value2;
-
-        for (int i = 0; i < keyPressMap.size(); i++) {
-            for (int j = 1; i < keyPressMap.size(); i++) {
-                while (keyPressMap.get(i) != null && keyPressMap.get(j) != null) {
-                    value1 = keyPressMap.get(i);
-                    value2 = keyPressMap.get(j);
-                    long timeDifference = (value2.timeStamp - value1.timeStamp);
-                    cadenceProfile.add(timeDifference);
-                }
-            }
-        }
-
-        for (int i = 0; i < cadenceProfile.size(); i++) {
-            System.out.print(cadenceProfile.get(i) + "\n");
-        }
-
-        // create average of profile
-        //userCadence = calculateAverage(cadenceProfile);
-    }
-
-    /**
      * Calculates the average time between key presses
      * stored in the cadenceProfile array list.
      */
@@ -280,20 +249,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
             return profileResult;
         }
         return sum;
-    }
-
-    /**
-     * Testing and Debug method used to show
-     * the key character pressed and the time
-     * at which it was pressed to the LogArea.
-     */
-
-    private void printCadence() {
-        for (int i = 0; i < keyPressMap.size(); i++) {
-            Character keyAsChar = keyPressMap.get(i).getKeyPress();
-            long value = keyPressMap.get(i).getTimeStamp();
-            logArea.append("Key pressed: " + keyAsChar + " At Time: " + value + "\n");
-        }
     }
 
     /**
@@ -404,7 +359,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     @Override
     public void keyTyped(KeyEvent e) {
         //displayInfo(e, "KEY TYPED: ");
-//        KeyPress keyPress = new KeyPress(e.getKeyChar(), System.currentTimeMillis());
 //        keyPressMap.add(keyPress);
 //        printCadence();
     }
