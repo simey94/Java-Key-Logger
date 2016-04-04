@@ -7,17 +7,6 @@ import java.io.IOException;
  */
 public class Logger {
 
-    private int successfulLoginAttempts;
-    private int failedLoginAttempts;
-
-    public void incrementSuccessfulLoginAttempts() {
-        successfulLoginAttempts++;
-    }
-
-    public void incrementFailedLoginAttempts() {
-        failedLoginAttempts++;
-    }
-
     public void writeToLog(String username, boolean success) {
         try {
             // true flag to open in append mode

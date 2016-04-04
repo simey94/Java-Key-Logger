@@ -29,7 +29,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private Hashtable<String, User> usersTable = new Hashtable<>();
     private Storage storage = new Storage();
     static final String newline = System.getProperty("line.separator");
-    private int threshold = 200;
+    private int threshold = 100;
 
     /**
      * Constructor
@@ -160,7 +160,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
             boolean credentialsMatch = false;
 
             String securePassword;
-            securePassword = storage.get_SHA_1_SecurePassword(strPass);
+            // Convert the String password to SHA256 Hash
+            securePassword = storage.get_SHA_256_SecurePassword(strPass);
 
             // populate hash table with stored users
             fetchUsersFromStore();
@@ -175,7 +176,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                     if (compareTyping(entry.getValue())) {
                         resetTimings();
                         successfulLogin = true;
-                        //logger.incrementSuccessfulLoginAttempts();
                         logger.writeToLog(strUserName, true);
                         System.out.println("username: " + strUserName + "logged in");
                         SuccessfulLogin newFrame = new SuccessfulLogin(strUserName);
@@ -187,7 +187,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
             if (!successfulLogin) {
                 if (credentialsMatch) {
                     JOptionPane.showMessageDialog(null, "Typing cadence does not match!");
-                    //logger.incrementFailedLoginAttempts();
                     logger.writeToLog(strUserName, false);
                     txtUser.setText("");
                     pass.setText("");
@@ -195,7 +194,6 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                     resetTimings();
                 } else {
                     JOptionPane.showMessageDialog(null, "Wrong username or password!");
-                    //logger.incrementFailedLoginAttempts();
                     logger.writeToLog(strUserName, false);
                     txtUser.setText("");
                     pass.setText("");
@@ -217,8 +215,10 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     }
 
     private boolean compareTyping(User user) {
-        System.out.println("User timings : " + user.getUsernameTimings());
-        System.out.println("Pass timings : " + user.getPasswordTimings());
+        //System.out.println("User timings : " + user.getUsernameTimings());
+        System.out.println("User entered pass timings: " + passwordTimings);
+        System.out.println("Stored Pass timings : " + user.getPasswordTimings());
+        // removed for hypo1 and hypo2
         if (entriesWithinThresholdUsername(user) && entriesWithinThresholdPassword(user)) {
             return true;
         } else {
@@ -257,14 +257,12 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     }
 
     public void registerUser() {
-        bRegister.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent ae) {
-                // Open a new Frame
-                RegisterFrame registerForm = new RegisterFrame("Register", usersTable);
-                registerForm.setVisible(true);
-                dispose();
-                setVisible(true);
-            }
+        bRegister.addActionListener(ae -> {
+            // Open a new Frame
+            RegisterFrame registerForm = new RegisterFrame("Register", usersTable);
+            registerForm.setVisible(true);
+            dispose();
+            setVisible(true);
         });
     }
 

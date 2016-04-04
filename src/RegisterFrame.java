@@ -28,7 +28,6 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private StopWatch stopWatchUsername2 = new StopWatch();
     private StopWatch stopWatchPassword1 = new StopWatch();
     private StopWatch stopWatchPassword2 = new StopWatch();
-    private StopWatch stopWatch = new StopWatch();
     private User user = new User();
     private String username;
     private String password;
@@ -42,7 +41,7 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private boolean usernameMatchError = false;
     private boolean passwordError = false;
     private boolean passwordMatchError = false;
-    int threshold = 200;
+    int threshold = 100;
 
 
     public RegisterFrame(String name, Hashtable usersTable) {
@@ -174,7 +173,8 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         boolean match = false;
         for (int i = 0; i < username1Timings.size(); ) {
             for (int j = 0; j < username2Timings.size(); j++) {
-                long val = Math.abs(username1Timings.get(i).longValue() - username2Timings.get(j).longValue());
+                long val = Math.abs(username1Timings.get(i).longValue()
+                        - username2Timings.get(j).longValue());
                 if (val <= threshold) {
                     match = true;
                     i++;
@@ -190,7 +190,8 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         boolean match = false;
         for (int i = 0; i < password1Timings.size(); ) {
             for (int j = 0; j < password2Timings.size(); j++) {
-                if (Math.abs(password1Timings.get(i).longValue() - password2Timings.get(j).longValue()) <= threshold) {
+                if (Math.abs(password1Timings.get(i).longValue()
+                        - password2Timings.get(j).longValue()) <= threshold) {
                     match = true;
                     i++;
                 } else {
@@ -393,6 +394,7 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
         boolean usernameTypingMatch = entriesWithinThresholdUsername();
         boolean passwordTypingMatch = entriesWithinThresholdPassword();
 
+        // removed for hypo1 and hypo2
         if (inputValidation() && usernameTypingMatch && passwordTypingMatch) {
             // Init user object
             user.setPassword(password);
