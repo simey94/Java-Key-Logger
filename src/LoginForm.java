@@ -29,7 +29,7 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
     private Hashtable<String, User> usersTable = new Hashtable<>();
     private Storage storage = new Storage();
     static final String newline = System.getProperty("line.separator");
-    private int threshold = 100;
+    private int threshold = 200;
 
     /**
      * Constructor
@@ -175,8 +175,8 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
                     if (compareTyping(entry.getValue())) {
                         resetTimings();
                         successfulLogin = true;
-                        logger.incrementSuccessfulLoginAttempts();
-                        logger.writeToLog(strUserName);
+                        //logger.incrementSuccessfulLoginAttempts();
+                        logger.writeToLog(strUserName, true);
                         System.out.println("username: " + strUserName + "logged in");
                         SuccessfulLogin newFrame = new SuccessfulLogin(strUserName);
                         newFrame.setVisible(true);
@@ -187,16 +187,16 @@ public class LoginForm extends JFrame implements KeyListener, ActionListener {
             if (!successfulLogin) {
                 if (credentialsMatch) {
                     JOptionPane.showMessageDialog(null, "Typing cadence does not match!");
-                    logger.incrementFailedLoginAttempts();
-                    logger.writeToLog(strUserName);
+                    //logger.incrementFailedLoginAttempts();
+                    logger.writeToLog(strUserName, false);
                     txtUser.setText("");
                     pass.setText("");
                     txtUser.requestFocus();
                     resetTimings();
                 } else {
                     JOptionPane.showMessageDialog(null, "Wrong username or password!");
-                    logger.incrementFailedLoginAttempts();
-                    logger.writeToLog(strUserName);
+                    //logger.incrementFailedLoginAttempts();
+                    logger.writeToLog(strUserName, false);
                     txtUser.setText("");
                     pass.setText("");
                     txtUser.requestFocus();

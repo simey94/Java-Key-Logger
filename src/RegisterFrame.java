@@ -42,7 +42,7 @@ public class RegisterFrame extends JFrame implements KeyListener, ActionListener
     private boolean usernameMatchError = false;
     private boolean passwordError = false;
     private boolean passwordMatchError = false;
-    int threshold = 300;
+    int threshold = 200;
 
 
     public RegisterFrame(String name, Hashtable usersTable) {

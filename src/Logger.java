@@ -18,16 +18,13 @@ public class Logger {
         failedLoginAttempts++;
     }
 
-    public void writeToLog(String username) {
+    public void writeToLog(String username, boolean success) {
         try {
             // true flag to open in append mode
             FileWriter out = new FileWriter("experiment.txt", true);
-            for (int i = 0; i < successfulLoginAttempts; i++) {
-                System.out.printf("SUCCESS");
+            if (success) {
                 out.write(username + " success" + "\n");
-            }
-            for (int j = 0; j < failedLoginAttempts; j++) {
-                System.out.printf("FAIL");
+            } else {
                 out.write(username + " failure" + "\n");
             }
             out.close();
