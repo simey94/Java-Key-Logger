@@ -10,6 +10,35 @@
 \usepackage{float,subcaption, geometry}
 \usepackage[rightcaption]{sidecap}
 
+\usepackage{pgfplots}
+\usepgfplotslibrary{statistics}
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{name}{rgb}{0.5,0.5,0.5}
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+\definecolor{lightgrey}{rgb}{0.9,0.9,0.9} %background colour
+ 
+\lstset{language=Java,
+frame=tb,
+basicstyle=\ttfamily,
+keywordstyle=\color{javapurple}\bfseries,
+stringstyle=\color{javagreen},
+commentstyle=\color{javagreen},
+morecomment=[s][\color{javadocblue}]{/**}{*/},
+numbers=left,
+numberstyle=\tiny\color{black},
+stepnumber=1,
+numbersep=10pt,
+tabsize=4,
+showspaces=false,
+showstringspaces=false,
+breaklines=true}
+
 \usepackage[
 backend=biber,
 style=alphabetic,
@@ -62,32 +91,355 @@ The future of keystroke dynamics research will most likely surround the ideal of
 % Current industry attempts at cadence monitoring 
 There have also been copious attempts to utilise keystroke dynamics in industry. For example, Scout Analytics developed technology for its clients to stop people sharing user accounts without permission, i.e. giving a friend or colleague the id and password to their account so they can access the features of a paying subscriber. This looked to stop organisations buying a single account for an expensive resource and sharing this across an entire office. Scout used some Javascript timing features to watch how users type when they enter their login credentials for various services. The algorithms implemented need a minimum of 5 attempts at entering a phrase with a length of 12 characters in order to generate a typing ``cadence" \parencite{arsTech}. By utilising repeated logins the system could analyse the cadences and place them into distinct categories of digital patterns, each of which was assigned a digital serial number, which is utilised to ensure multiple different users are not logged on at once. A limitation of this approach is that the typing patterns are not globally unique, Scout suggests that 1 in 20,000 people share the same pattern, although the pattern can be combined with IP addresses and browser information, to uniquely identify a user for Scout's purposes \parencite{arsTech}. 
 
-\section{Experiment} \label{experiment}
-The framework used for this experiment was a Java program, important areas of the program can be found in Appendix Section \ref{appendix}. A high level description of its functionality can be seen below: \\
+\section{Experiment Design and Setup} \label{experiment}
+The framework used for this experiment was a Java program, important areas of the program can be found in Appendix Section \ref{appendix}. A high level description of its functionality can be seen below in Section \ref{setup}. \\
 
-For the purpose of this experiment a pattern is defined as a mix of rhythms with perhaps more than 2 complicated usernameTimings mixed together or one with fixed or relational times between each keystroke. A simple pattern is the same rhythm as in ta-ta-ta-ta but a patterned example could be a user thinking of a song or a marching or clapping rhythm and keying the strokes according to that melody
+\subsection{Experiment Framework} \label{setup}
+For this practical I created a Java program which utilises the Java Interface KeyListener to monitor the keyboard input of the user and compile a typing cadence per user. Along with this monitoring I implemented a simple Java Swing User Interface (UI) to facilitate registration and login of users. The program keeps persistent storage of User objects by serialising them and writing them to a file, which can be subsequently read and the objects re-created whenever the program is launched. This process utilises the Java Serializable API which allows objects to be stored as a file. To facilitate easy and as repeatable as possible experimentation I implemented the logger class which was used to output the results of the experiment to a text file which could then be analysed and statistically reported upon. Another notable design feature was implementing a class for User objects so that they could be easily manipulated and stored throughout the entire program. Along with this as this practical was in the context of a Computer Security module I used the SHA-256 cryptographic one-way hash function to encode the passwords of users, thus ensuring the secure storage of user's passwords.       \\
+
+Figure \ref{fig:register} shows the form used to gain a profile of the user's typing rhythm whilst they enter login credentials. The UI is very simplistic but as this was not part of the requirements I did not want to spend time improving this as it had no impact on the functionality of the program or the success of the experiment. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{register}
+    \caption{User registration form}
+    \label{fig:register}
+\end{figure}
+
+Figure \ref{fig:failed_registration} shows the UI response when a user inputs incorrect details during the registration phase. This can be caused by entering either null or empty strings in the username or password input fields or by not typing the same password correctly in each password input field. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{failed_registration}
+    \caption{When a user inputs incorrect details for registration}
+    \label{fig:failed_registration}
+\end{figure}
+
+Once a user has successfully registered they can then return to the Login form and input their details. Figure \ref{fig:login} shows the Login screen of the UI. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{login}
+    \caption{User login form}
+    \label{fig:login}
+\end{figure}
+
+Along with checking the password of a user, the program will compare the typing rhythm and cadence to the profile set during registration. If the users credentials do not match some stored by the program or their typing characteristics are different than the profile set during registration the login attempt with be rejected. Figure \ref{fig:wrong_creds} shows the output when either of these two events occur.  
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{wrong_creds}
+    \caption{When a user inputs incorrect credentials i.e. they have not successfully registered}
+    \label{fig:wrong_creds}
+\end{figure}
+
+This can be contrasted to Figure \ref{fig:successful_login} which shows a user who has successfully logged on and receives a congratulations message along with their user ID.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{successful_login}
+    \caption{Successful Login displaying the User's id and congratulations message}
+    \label{fig:successful_login}
+\end{figure}
+
+\subsection{Experiment Design}
+The overall objective of this experiment was to explore the hypothesis that a password coupled with the normal rhythmic typing of the owner is more secure than the password on its own. The experiment will essentially assess the viability of adding the typing characteristics of an owner into the traditional username and password credentials authentication. \\ 
+
+For the purpose of this experiment a pattern is defined as a mix of rhythms with perhaps more than 2 complicated timings mixed together or one with fixed or relational times between each keystroke. A simple pattern is the same rhythm as in ta-ta-ta-ta but a patterned example could be a user thinking of a song or a marching or clapping rhythm and keying the strokes according to that melody. \\
+
+I chose to gain a profile of the user by requesting them to type their username once and password five times. This would allow me to ensure the rhythmic performance of the user was consistent across a multitude of results and was not an outlying result. I utilised 10 participants to test each of the hypotheses and each participant entered their credentials 10 times for each section. \\ 
+
+All experiments were conducted with a tolerance between the difference of the values within each login of 100ms. 
+
+\section{Experiment Results}
 
 \subsection{Hypothesis 1}
 \begin{center}
-\textit{ That a simple rhythm can be determined more easily than a more patterned one. A simple rhythm is defined as 1 or 2 distinct rhythms such as ta-ta-ta-ta or ta-tum-ta-tum where emphasis is given on the ta keystroke. Also, you may consider that the time taken is an element of its pattern. A rhythm is considered to be easily detected or broken if a high percentage of false cases are passed as valid}
+\textit{ That a simple rhythm can be determined more easily than a more patterned one. A simple rhythm is defined as 1 or 2 distinct rhythms such as ta-ta-ta-ta or ta-tum-ta-tum where emphasis is given on the ta keystroke. Also, you may consider that the time taken is an element of its pattern. A rhythm is considered to be easily detected or broken if a high percentage of false cases are passed as valid} \\
+
+\textbf{H0:} \textit{There	is	no significant	difference	in	the	success	(or	failure)	rate	of	simple	vs	complex	(distributed)	rhythms,	that	is	neither has	a	radically	higher	or	lower	access	or	denial	rate	than	the	other.} \newline \\
+
+\textbf{H1:} \textit{There is a difference in the	success	(or	failure)	rate	between	simple password rhythms	and	more complex rhythms.}
 \end{center}
+
+To test the first hypothesis I assigned each participant with a ID and Password pairing which contained a simple rhythm of repeated keys and repeated pairs of keys: ID: aaaaaa and Password: a1a1a1. I then assigned each of the participants a pairing of more complex credentials: ID: BbBbBb and Password: a2b3c4, which involved were more distributed around the keyboard and contained slightly more complex patterns. I then asked each participant to register their ID and password combination and then attempt to login in 10 times. The results of the user trial with both the simple and complex rhythm passwords is shown in Table \ref{table:1}. 
+
+{
+\begin{table} [H]
+\centering
+% TODO Table: First 5 participants simple rythm password
+\begin{tabular}{ |p{2cm}|p{4cm}|p{4cm}| p{4cm} | }
+\hline
+\multicolumn{4}{|c|}{\textbf{Hypothesis 1 Testing Results}} \\
+\hline
+\textbf{Participant} & \textbf{Success with Simple Rhythm} & \textbf{Success with Complex Rhythm} & \textbf{Total Success Percentage} \\
+\hline
+1 & 8 & 2 & 50\% \\
+\hline
+2 & 7 & 3 & 50\% \\
+\hline
+3 & 8 & 4 & 60\% \\
+\hline
+4 & 7 & 7 & 70\%  \\
+\hline
+5 & 6 & 4 & 50\% \\
+\hline
+6 & 5 & 6 & 55\% \\
+\hline
+7 & 6 & 7 & 65\% \\
+\hline
+8 & 5 & 5 & 50\% \\
+\hline
+9 & 9 & 7 & 80\% \\
+\hline
+10 & 7 & 8 & 75\% \\
+\hline
+\textbf{Total} & \textbf{68} & \textbf{53} & \\
+\hline
+\end{tabular}
+\caption{Table shows results of testing for hypothesis 1}
+\label{table:1}
+\end{table}
+}
+
+In accordance with the specification the difference is statistically significant if: 
+\begin{center}
+    $ |SimplePW.num(success)| < |ComplexPW.num(success) \times 1.1|$ \\
+    $ |68| < |53 \times 1.1| $ \\
+    $ |68| > |58.3| $
+\end{center}
+
+As total number of simple password successes is 68 and the total number of complex password successes multiplied by 1.1 is 58.3, the results show that there is a significant difference in the success rate between the simple and more complex rhythms.  Thus, the results prove that H1 is satisfied.
 
 \subsection{Hypothesis 2}
 \begin{center}
-\textit{That some patterns are more easily detected or broken than others.}
+\textit{That some patterns are more easily detected or broken than others.} \newline \\
+
+\textbf{H0:} \textit{that	there	is no significant difference in	the	detection (access)	rate	between	a	simple	and	a	complex	pattern	of	a password,} \newline \\
 \end{center}
+
+To test the hypothesis for this section I assigned the users the following ID and Password for the simple pattern, ID: aaaaaa, Password: a1a1a1. I utilised Test Case (TC) 1 as it contains a relatively simple pattern: a1a1a1. I then assigned the users a more complex ID and Password pairing of ID: QWEBNM, Password: zpxjc6. The second password contains a much more complex pattern which will facilitate a comparison betwen simple and complex patterns within the passwords. 
+
+{
+\begin{table} [H]
+\centering
+% TODO Table: First 5 participants simple rythm password
+\begin{tabular}{ |p{2cm}|p{4cm}|p{4cm}| p{4cm} | }
+\hline
+\multicolumn{4}{|c|}{\textbf{Hypothesis 2 Testing Results}} \\
+\hline
+\textbf{Participant} & \textbf{Success with Simple Pattern} & \textbf{Success with Complex Pattern} & \textbf{Total Success Percentage} \\
+\hline
+1 & 7 & 6 & 65\% \\
+\hline
+2 & 8 & 7 & 85\% \\
+\hline
+3 & 7 & 7 & 75\% \\
+\hline
+4 & 6 & 6 & 70\%  \\
+\hline
+5 & 6 & 6 & 60\% \\
+\hline
+6 & 5 & 6 & 55\% \\
+\hline
+7 & 8 & 7 & 80\% \\
+\hline
+8 & 6 & 4 & 45\% \\
+\hline
+9 & 7 & 7 & 75\% \\
+\hline
+10 & 6 & 5 & 55\% \\
+\hline
+\textbf{Total} & \textbf{66} & \textbf{61} & \\
+\hline
+\end{tabular}
+\caption{Table shows results of testing for hypothesis 2}
+\label{table:2}
+\end{table}
+}
+
+In accordance with the specification the difference is statistically significant if: 
+\begin{center}
+    $ |SimplePW.num(success)| < |ComplexPW.num(success) \times 1.1|$ \\
+    $ |66| < |61 \times 1.1| $ \\
+    $ |66| < |67.1| $
+\end{center}
+
+As the total number of simple password successes is 66 and the total number of complex password successes multiplied by 1.1 is 67.1, the results disprove the null hypothesis H0. Thus, this experiment shows that there is no significant difference in the detection (access) rates between simple and complex patterns of passwords. 
 
 \subsection{Hypothesis 3}
 \begin{center}
-\textit{That there is an effect from the ID entry rhythm, specifically that its shortness may be a factor and affects overall false-positive acceptance}
+\textit{That there is an effect from the ID entry rhythm, specifically that its shortness may be a factor and affects overall false-positive acceptance} \newline \\
+
+\textbf{H0:} \textit{That adding the ID	into the	pattern makes no significant	difference in the detection	rate.} \newline \\
 \end{center}
+
+For this hypothesis I repeated the experiment of hypothesis 2, however I included the username in the rhythm creator. This would mean that the user's typing characteristics for both the entrance of their username and password were recorded by the system and added to a profile.  
+
+{
+\begin{table} [H]
+\centering
+\begin{tabular}{ |p{2cm}|p{4cm}|p{4cm}| p{4cm} | }
+\hline
+\multicolumn{4}{|c|}{\textbf{Hypothesis 3 Testing Results (Simple Rhythm)}} \\
+\hline
+\textbf{Participant} & \textbf{Success without Username} & \textbf{Success with Username} & \textbf{Total Success Percentage} \\
+\hline
+1 & 7 & 9 & 80\% \\
+\hline
+2 & 8 & 8 & 80\% \\
+\hline
+3 & 7 & 6 & 65\% \\
+\hline
+4 & 6 & 7 & 65\%  \\
+\hline
+5 & 6 & 7 & 65\% \\
+\hline
+6 & 5 & 4 & 45\% \\
+\hline
+7 & 8 & 6 & 70\% \\
+\hline
+8 & 6 & 5 & 55\% \\
+\hline
+9 & 7 & 8 & 75\% \\
+\hline
+10 & 6 & 7 & 65\% \\
+\hline
+\textbf{Total} & \textbf{66} & \textbf{66} & \\
+\hline
+\end{tabular}
+\caption{Table shows results of testing for Hypothesis 3 with the complex rhythm credentials}
+\label{table:3}
+\end{table}
+}
+
+In accordance with the specification the difference is statistically significant if: 
+\begin{center}
+    $ |IDPW.num(success)| < |PW.num(success) \times 1.1|$ \\
+    $ |66| < |66 \times 1.1| $ \\
+    $ |66| < |72.6| $
+\end{center} 
+
+When more simple usernames are introduced to the authentication process there is not a statistically significant difference in the success rate of login attempts when compared to users just entering passwords. This possibly due to the lack of complexity of the usernames and as they are simple patterns users may find them easy to repeat over time.  
+
+{
+\begin{table} [H]
+\centering
+% TODO Table: First 5 participants simple rythm password
+\begin{tabular}{ |p{2cm}|p{4cm}|p{4cm}| p{4cm} | }
+\hline
+\multicolumn{4}{|c|}{\textbf{Hypothesis 3 Testing Results (Complex Rhythm)}} \\
+\hline
+\textbf{Participant} & \textbf{Success without Username} & \textbf{Success with Username} & \textbf{Total Success Percentage} \\
+\hline
+1 & 6 & 5 & 55\% \\
+\hline
+2 & 7 & 4 & 55\% \\
+\hline
+3 & 7 & 4 & 55\% \\
+\hline
+4 & 6 & 3 & 45\%  \\
+\hline
+5 & 6 & 2 & 40\% \\
+\hline
+6 & 6 & 4 & 50\% \\
+\hline
+7 & 7 & 6 & 65\% \\
+\hline
+8 & 4 & 4 & 40\% \\
+\hline
+9 & 7 & 5 & 60\% \\
+\hline
+10 & 5 & 3 & 40\% \\
+\hline
+\textbf{Total} & \textbf{66} & \textbf{40} & \\
+\hline
+\end{tabular}
+\caption{Table shows results of testing for Hypothesis 3 with the complex rhythm credentials}
+\label{table:4}
+\end{table}
+}
+
+In accordance with the specification the difference is statistically significant if: 
+\begin{center}
+    $ |IDPW.num(success)| < |PW.num(success) \times 1.1|$ \\
+    $ |40| < |66 \times 1.1| $ \\
+    $ |40| < |72.6| $
+\end{center} 
+
+There is however a statistically significant difference when complex usernames are utilised in combination with complex passwords. Table \ref{table:4} shows that the total number of successful logins dropped from 66 to 40 when the complex username was introduced.   
 
 
 \subsection{Hypothesis 4}
 \begin{center}
-\textit{That there is a length L over which the usernameTimings of the password and ID are
-irrelevant. That is, L is more predictive of detection than rhythm when L $\geq$ N characters.}
+\textit{That there is a length L over which the timings of the password and ID are
+irrelevant. That is, L is more predictive of detection than rhythm when L $\geq$ N characters.} \newline \\
+
+\textbf{H0:} \textit{There	is	no	length	L	(=ID+PW) which	effects	a	change	in	the	rhythm detection	rate.} \newline \\
+
+\textbf{H1:} \textit{There	is	a	length	L	which	affects	the	rhythm	detection	rate.}
 \end{center}
+
+For this hypothesis I created three sets of username and password combinations, short (12 characters), medium (20 characters) and long (36 characters). These pairs are shown in the list below: 
+
+\begin{enumerate}
+    \item Small - ID: abcdef, Password: lkjhgf
+    \item Medium - ID: qwebnm1056, Password: wdxcybza19
+    \item Long - ID:zxc123bnm0, Password: asdfghjklmnbvcxz
+\end{enumerate}
+
+{
+\begin{table} [H]
+\centering
+% TODO Table: First 5 participants simple rythm password
+\begin{tabular}{ |p{2cm}|p{2cm}|p{2cm}| p{2cm}| p{2cm}| }
+\hline
+\multicolumn{5}{|c|}{\textbf{Hypothesis 4 Testing Results}} \\
+\hline
+\textbf{Participant} & \textbf{Success short} & \textbf{Success medium} & \textbf{Success long}  & \textbf{Total Success Percentage} \\
+\hline
+1 & 8 & 0 & 0 &  0\% \\
+\hline
+2 & 7 & 0 & 0 & 0\% \\
+\hline
+3 & 7 & 0 & 0 & 0\% \\
+\hline
+4 & 9 & 0 & 0 & 0\%  \\
+\hline
+5 & 8 & 0 & 0 & 0\% \\
+\hline
+6 & 5 & 0 & 0 & 0\% \\
+\hline
+7 & 7 & 0 & 0 & 0\% \\
+\hline
+8 & 6 & 0 & 0 & 0\% \\
+\hline
+9 & 7 & 0 & 0 & 0\% \\
+\hline
+10 & 6 & 0 & 0 & 0\% \\
+\hline
+\textbf{Total} & \textbf{70} & \textbf{0} & \textbf{0} & \textbf{0} \\
+\hline
+\end{tabular}
+\caption{Table shows results of testing for Hypothesis 3 with the complex rhythm credentials}
+\label{table:5}
+\end{table}
+}
+
+
+\subsection{Extension: Hypothesis 5}
+\begin{center}
+\textit{Does the meaning of a word have any effect on the success of a user logging in} \newline \\
+\end{center}
+
+\subsection{Extension: Hypothesis 6}
+\begin{center}
+\textit{Are users more efficient with their own passwords} \newline \\
+\end{center}
+
+\section{Future Work}
+For this experiment to have real scientific weight it would need to be completed at a much larger scale with an increased number of participants from a variety of demographics. It would be very interesting to test the viability of typing characteristics in an authentication environment as it could enhance the security of a large range of systems that are reliant upon traditional username and password authentication. One area which requires a depth of future research is the threshold at which a timing value is accepted as if this value is too little it may make logging in for legitimate users more complicated which in turn would be detrimental to the uptake of the typing characteristics in an authentication environment. Conversely, if this value is too lenient it may allow illegitimate users access to a system which make it no more secure than the traidtional username and passowrd authentication. 
 
 \section{Conclusion}
 % My experiment summary
@@ -95,9 +447,209 @@ irrelevant. That is, L is more predictive of detection than rhythm when L $\geq$
 % General KD
 In general there is a large chance of the widespread adoption of keystroke dynamics as it does not compromise usability for the purpose of security and the process is transparent to the user. In the future, the techniques used in keystroke dynamics are likely to become extremely high entropy as algorithms and the resources of computer systems improve at a formidable rate, this will subsequently improve all forms of authentication security as keystroke dynamics in tandem with login credentials becomes the secure standard. This is a field that blends the lines between computer security and biometrics, which makes of high interest in the research indsutry but the apporach aslo has many practical applications.  
 
-\section{Results}
-
 \section{Appendix: Code Listings} \label{appendix}
+
+\subsection{Profile Creation}
+The following methods were utilised to record the time a user pressed a key for as well as the time between keypresses. These methods utilise the Apache Commons StopWatch( \url{http://bit.ly/2275sOL}) class to record the timings.  
+
+\begin{lstlisting}
+    /**
+     * Handle the key pressed event from the text field.
+     */
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int textFieldEntered = 0;
+
+        if (e.getSource() == txtUser) {
+            System.out.println("Key pressed in txtUser1");
+            textFieldEntered = 1;
+            recordTimeBetweenKeys(textFieldEntered);
+        }
+        if (e.getSource() == pass) {
+            System.out.println("Key pressed in pass");
+            textFieldEntered = 2;
+            recordTimeBetweenKeys(textFieldEntered);
+        }
+    }
+
+    /**
+     * Handle the key released event from the text field.
+     */
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        int textFieldEntered = 0;
+        if (e.getSource() == txtUser) {
+            System.out.println("Key released in txtUser1");
+            textFieldEntered = 1;
+        }
+        if (e.getSource() == pass) {
+            System.out.println("Key released in pass");
+            textFieldEntered = 2;
+        }
+        recordTime(textFieldEntered);
+    }
+
+    private void recordTimeBetweenKeys(int textFieldEntered) {
+        if (textFieldEntered == 0) {
+            System.out.println("recordTimeBetweenKeys textFieldEntered was 0 error");
+            System.exit(1);
+        }
+        if (textFieldEntered == 1) {
+            if (usernameTimings.size() == 0) {
+                stopWatchUsername.start();
+            } else {
+                long time = stopWatchUsername.getTime();
+                System.out.println("time between key is: " + time);
+                usernameTimings.add(time);
+                stopWatchUsername.reset();
+                stopWatchUsername.start();
+            }
+        } else if (textFieldEntered == 2) {
+            if (passwordTimings.size() == 0) {
+                stopWatchPassword.start();
+            } else {
+                long time = stopWatchPassword.getTime();
+                System.out.println("time between key is: " + time);
+                passwordTimings.add(time);
+                stopWatchPassword.reset();
+                stopWatchPassword.start();
+            }
+        }
+    }
+
+
+    /**
+     * Records the time to the users profile.
+     */
+    private void recordTime(int textFieldEntered) {
+        if (textFieldEntered == 0) {
+            System.out.println("textFieldEntered was 0 error");
+            System.exit(1);
+        }
+        if (textFieldEntered == 1) {
+            stopWatchUsername.stop();
+            long time = stopWatchUsername.getTime();
+            System.out.println("text 1 key held time is : " + time);
+            usernameTimings.add(time);
+            stopWatchUsername.reset();
+            stopWatchUsername.start();
+        } else if (textFieldEntered == 2) {
+            stopWatchPassword.stop();
+            long time = stopWatchPassword.getTime();
+            System.out.println("pass key held time is : " + time);
+            passwordTimings.add(time);
+            stopWatchPassword.reset();
+            stopWatchPassword.start();
+        }
+    }
+\end{lstlisting}
+
+\subsection{Rhythm checker}
+This code is utilised when registering a user to ensure that the values of each of the timings arrays are within the threshold value (which is set globally at 100ms) of one another.I chose to use array lists for timings with the values added being the the time a key was pressed for (key released - key pressed) and the time between key presses.
+\begin{lstlisting}
+    public boolean entriesWithinThresholdUsername() {
+        boolean match = false;
+        for (int i = 0; i < username1Timings.size(); ) {
+            for (int j = 0; j < username2Timings.size(); j++) {
+                long val = Math.abs(username1Timings.get(i).longValue()
+                        - username2Timings.get(j).longValue());
+                if (val <= threshold) {
+                    match = true;
+                    i++;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return match;
+    }
+
+    private boolean entriesWithinThresholdPassword() {
+        boolean match = false;
+        for (int i = 0; i < password1Timings.size(); ) {
+            for (int j = 0; j < password2Timings.size(); j++) {
+                if (Math.abs(password1Timings.get(i).longValue()
+                        - password2Timings.get(j).longValue()) <= threshold) {
+                    match = true;
+                    i++;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return match;
+    }
+\end{lstlisting}
+
+\subsection{Persistent Storage of User Profiles}
+I utilised the Java Serilizable API to write user profiles to a persistent file for storage. 
+\begin{lstlisting}
+    public void seralizeUser() {
+        String passwordToHash = user.getPassword();
+        String securePassword = get_SHA_256_SecurePassword(passwordToHash);
+        user.setPassword(securePassword);
+        try {
+            FileOutputStream fileOut =
+                    new FileOutputStream("./Storage/users.ser", true);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(user);
+            out.flush();
+            out.close();
+            fileOut.flush();
+            fileOut.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    public ArrayList<User> deseralizeUser() {
+        ArrayList<User> savedUsers = new ArrayList<>();
+        try {
+            FileInputStream fileIn = new FileInputStream("./Storage/users.ser");
+            while (true) {
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                try {
+                    User u = (User) in.readObject();
+                    savedUsers.add(u);
+                } catch (EOFException e) {
+                    // Close readers
+                    in.close();
+                    fileIn.close();
+                    return savedUsers;
+                }
+            }
+        } catch (IOException i) {
+            i.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            System.out.println("User class not found");
+            c.printStackTrace();
+        }
+        return savedUsers;
+    }
+\end{lstlisting}
+
+\subsection{Password Hashing}
+I used a SHA-256 Hash to store the passwords of users to ensure that they were stored safely. 
+
+\begin{lstlisting}
+    public String get_SHA_256_SecurePassword(String passwordToHash) {
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] bytes = md.digest(passwordToHash.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++) {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+    }
+\end{lstlisting}
 
 \medskip
 \printbibliography
