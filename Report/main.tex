@@ -11,6 +11,7 @@
 \usepackage[rightcaption]{sidecap}
 
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.13}
 \usepgfplotslibrary{statistics}
 
 \usepackage{listings}
@@ -87,15 +88,15 @@ Early research in the field of fixed text keystroke dynamics looked to improve t
 of volunteer users to enable rapid testing of systems \parencite{bello2010collection}. There has been much more success in development of fixed text systems as the complexity of algorithms and reliance on computing resources is vastly reduced in comparison to free text implementations. 
 
 \paragraph{}
-Much research has been conducted in the area of keystroke dynamics for free text, early work of \parencite{Gunetti:2005}, presented a method to compare typing samples of free text that could used to verify personal identity. The authors of this paper  presented the foundations of the idea of ``continuous authentication" of user throughout their time using a system and argued the assumption stated earlier in this report  that keystroke dynamics can beuseful in computer security as a complementary or alternative way to user authentication and as an aid to intrusion detection \parencite{Gunetti:2005}. The ideas proposed in this early paper have been developed upon by numerous research such as \parencite{contFreeText} and \parencite{sznur2015advances} which both look to further improve the paradigm of continuous authentication. 
+Much research has been conducted in the area of keystroke dynamics for free text, early work of \parencite{Gunetti:2005}, presented a method to compare typing samples of free text that could used to verify personal identity. The authors of this paper  presented the foundations of the idea of ``continuous authentication", which is the ability of a system  to constantly verify if the current user is the one who originally logged in \parencite{sznur2015advances}. Furthermore, they argued the premise stated earlier in this report that keystroke dynamics can be useful in computer security as a complementary or alternative method to user authentication and as an aid to intrusion detection \parencite{Gunetti:2005}. The ideas proposed in this early paper have been developed upon by numerous research such as \parencite{contFreeText} and \parencite{sznur2015advances} which both look to further improve the paradigm of continuous authentication. 
 
 \paragraph{}
 % Keystroke Dynam Authentication
-Keystroke dynamics has proved to form a robust defence, improving the security of authorisation as there has yet to be a successful attack on a solidly built keystroke dynamics system \parencite{sznur2015advances}. This is in stark contrast to a system simply secured by passwords, as human nature dictates that users will use simple passwords to ensure they remember them. This is combination with the range of attacks that can be utilised to obtain a password such as social engineering, spyware, dictionary attack and mere brute force attacks \parencite{alsultan2013keystroke}, a keystroke dynamics system makes all of these approaches redundant. Systems simply secured by the username password techniques suffers from the security-usability trade-off dilemma \parencite{alsultan2013keystroke}, as they look to offer usability at the expense of security. Numerous other authentication techniques have been suggested however if they sacrifice usability for security they are unlikely to be widely adopted due to user pressure. This is why keystroke dynamics is an effective solution to the authentication problem, as it requires no further memory or interactions from the user, simply their typing behaviour which is used regardless when typing in authentication credentials, yet it provides a dramatic increase in security. The technique has not been perfected but it is an active research area which looks to improve the complexity and reliability of the techniques utilised to identify a user by their typing characteristics \parencite{sznur2015advances}. 
+Keystroke dynamics has proved to form a robust defence, improving the security of authorisation as there has yet to be a successful attack on a solidly built keystroke dynamics system \parencite{sznur2015advances}. This is in stark contrast to a system simply secured by passwords, as human nature dictates that users will use simple passwords to ensure they remember them. This is combination with the range of attacks that can be utilised to obtain a password such as social engineering, spyware, dictionary attack and mere brute force attacks \parencite{alsultan2013keystroke}. A keystroke dynamics system makes all of these approaches redundant. Systems simply secured by the username password techniques suffers from the security-usability trade-off dilemma \parencite{alsultan2013keystroke}, as they look to offer usability at the expense of security. Numerous other authentication techniques have been suggested however if they sacrifice usability for security they are unlikely to be widely adopted due to user pressure. This is why keystroke dynamics is an effective solution to the authentication problem, as it requires no further memory or interactions from the user, simply their typing behaviour which is used regardless when typing in authentication credentials, yet it provides a dramatic increase in security. The technique has not been perfected but it is an active research area which looks to improve the complexity and reliability of the techniques utilised to identify a user by their typing characteristics \parencite{sznur2015advances}. 
 
 \paragraph{}
 
-The future of keystroke dynamics research will most likely surround the ideal of ``continuous authentication" which is the ability of a system  to constantly verify if the current user is the one who logged in \parencite{sznur2015advances}, which improves upon the simplistic approach keystroke dynamics only upon entry. Along with implementations of keystroke dynamics systems on the variety of devices available today, an effective solution has created for mobile phones \parencite{maiorana2011keystroke} which has the potential to generalise to a large proportion of devices.  
+The future of keystroke dynamics research will most likely surround the ideal of continuous authentication which improves upon the simplistic approach keystroke dynamics only upon entry to a system. In addition, implementations of keystroke dynamics systems are available on a variety of devices available today, an effective solution has created for mobile phones \parencite{maiorana2011keystroke} which has the potential to generalise to a large proportion of mobile devices.  
 
 \paragraph{}
 % Current industry attempts at cadence monitoring 
@@ -107,7 +108,7 @@ The framework used for this experiment was a Java program, important areas of th
 
 \subsection{Experiment Framework} \label{setup}
 \paragraph{}
-For this practical I created a Java program which utilises the Java Interface KeyListener to monitor the keyboard input of the user and compile a typing cadence per user. Along with this monitoring I implemented a simple Java Swing User Interface (UI) to facilitate registration and login of users. The program keeps persistent storage of User objects by serialising them and writing them to a file, which can be subsequently read and the objects re-created whenever the program is launched. This process utilises the Java Serializable API which allows objects to be stored as a file. To facilitate easy and as repeatable as possible experimentation I implemented the logger class which was used to output the results of the experiment to a text file which could then be analysed and statistically reported upon. Another notable design feature was implementing a class for User objects so that they could be easily manipulated and stored throughout the entire program. Along with this as this practical was in the context of a Computer Security module I used the SHA-256 cryptographic one-way hash function to encode the passwords of users, thus ensuring the secure storage of user's passwords.       
+For this practical I created a Java program which utilises the Java Interface KeyListener to monitor the keyboard input of the user and compile a typing timings profile per user. Along with this monitoring I implemented a simple Java Swing User Interface (UI) to facilitate registration and login of users. The program keeps persistent storage of User objects by serialising them and writing them to a file, which can be subsequently read and the objects re-created whenever the program is launched. This process utilises the Java Serializable API which allows objects to be stored as a file. To facilitate easy and as repeatable as possible experimentation I implemented the Logger class which was used to output the results of the experiment to a text file which could then be analysed and statistically reported upon. Another notable design feature was implementing a class for User objects so that they could be easily manipulated and stored throughout the entire program. Along with this as this practical was in the context of a Computer Security module I used the SHA-256 cryptographic one-way hash function to encode the passwords of users, thus ensuring the secure storage of user's passwords.       
 \paragraph{}
 Figure \ref{fig:register} shows the form used to gain a profile of the user's typing rhythm whilst they enter login credentials. The UI is very simplistic but as this was not part of the requirements I did not want to spend time improving this as it had no impact on the functionality of the program or the success of the experiment. 
 
@@ -119,13 +120,34 @@ Figure \ref{fig:register} shows the form used to gain a profile of the user's ty
 \end{figure}
 
 \paragraph{}
-Figure \ref{fig:failed_registration} shows the UI response when a user inputs incorrect details during the registration phase. This can be caused by entering either null or empty strings in the username or password input fields or by not typing the same password correctly in each password input field. 
+Figure \ref{fig:id_same_val} to Figure \ref{fig:timings_pass} shows the UI response when a user inputs incorrect details during the registration phase. This can be caused by entering either null or empty strings in the username or password input fields or by not typing the same password correctly in each password input field. 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{failed_registration}
+    \includegraphics[width=0.6\textwidth]{id_same_val}
     \caption{When a user inputs incorrect details for registration}
-    \label{fig:failed_registration}
+    \label{fig:id_same_val}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{timings_id}
+    \caption{When a user inputs incorrect details for registration}
+    \label{fig:timings_id}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pass_vals}
+    \caption{When a user inputs incorrect details for registration}
+    \label{fig:pass_vals}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{timings_pass}
+    \caption{When a user inputs incorrect details for registration}
+    \label{fig:timings_pass}
 \end{figure}
 
 Once a user has successfully registered they can then return to the Login form and input their details. Figure \ref{fig:login} shows the Login screen of the UI. 
@@ -138,14 +160,21 @@ Once a user has successfully registered they can then return to the Login form a
 \end{figure}
 
 \paragraph{}
-Along with checking the password of a user, the program will compare the typing rhythm and cadence to the profile set during registration. If the users credentials do not match some stored by the program or their typing characteristics are different than the profile set during registration the login attempt with be rejected. Figure \ref{fig:wrong_creds} shows the output when either of these two events occur.  
+Along with checking the password of a user, the program will compare the typing rhythm and cadence to the profile set during registration. If the users credentials do not match some stored by the program or their typing characteristics are different than the profile set during registration the login attempt with be rejected. Figure \ref{fig:wrong_creds} shows the output when the user enters incorrect credentials whilst Figure \ref{fig:typing_cadence} shows an unsuccessful login attempt due to incorrect typing characteristics.
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{wrong_creds}
-    \caption{When a user inputs incorrect credentials i.e. they have not successfully registered}
+    \caption{When a user inputs incorrect credentials i.e. no match can be found in stored users}
     \label{fig:wrong_creds}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{typing_cadence}
+    \caption{When a user's typing characteristics do not matched those stored}
+    \label{fig:typing_cadence}
 \end{figure}
 
 This can be contrasted to Figure \ref{fig:successful_login} which shows a user who has successfully logged on and receives a congratulations message along with their user ID.
@@ -153,7 +182,7 @@ This can be contrasted to Figure \ref{fig:successful_login} which shows a user w
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\textwidth]{successful_login}
-    \caption{Successful Login displaying the User's id and congratulations message}
+    \caption{Successful Login displaying the user's ID and a congratulations message}
     \label{fig:successful_login}
 \end{figure}
 
@@ -249,8 +278,9 @@ In accordance with the specification the difference is statistically significant
     \begin{tikzpicture}
   \begin{axis}
     [
-    ytick={1,2},
-    yticklabels={Success Repeated Keys, Success Distributed Password},
+    boxplot/draw direction=y,
+    xtick={1,2},
+    xticklabels={Repeated Keys, Distributed Password},
     ]
     \addplot+[
     boxplot prepared={
@@ -352,8 +382,9 @@ In accordance with the specification the difference is statistically significant
     \begin{tikzpicture}
   \begin{axis}
     [
-    ytick={1,2},
-    yticklabels={Success Simple, Success Complex},
+    boxplot/draw direction=y,
+    xtick={1,2},
+    xticklabels={Success Simple, Success Complex},
     ]
     \addplot+[
     boxplot prepared={
@@ -516,8 +547,9 @@ There is however a statistically significant difference when complex usernames a
     \begin{tikzpicture}
   \begin{axis}
     [
-    ytick={1,2,3,4},
-    yticklabels={Success Simple No Username, Success Simple Username, Success Complex No Username, Success Complex Username},
+    boxplot/draw direction=y,
+    xtick={1,2,3,4},
+    xticklabels={SNU, SU, CNU, CU},
     ]
     \addplot+[
     boxplot prepared={
@@ -557,7 +589,7 @@ There is however a statistically significant difference when complex usernames a
     ] coordinates {};
   \end{axis}
 \end{tikzpicture}
-    \caption{The results of Hypothesis 3 testing represented in a Box Plot}
+    \caption{The results of Hypothesis 3 testing represented in a Box Plot. Key: Simple No Username (SNU), Simple Username (SU), Complex No Username (CNU), Complex Username}
     \label{fig:boxPlotHyp3}
 \end{figure}
 
@@ -638,8 +670,9 @@ For this hypothesis I had tested with a tolerance of 100ms however this meant th
     \begin{tikzpicture}
   \begin{axis}
     [
-    ytick={1,2,3},
-    yticklabels={Success Small, Success Medium, Success Long},
+    boxplot/draw direction=y,
+    xtick={1,2,3},
+    xticklabels={Short, Medium, Long},
     ]
     \addplot+[
     boxplot prepared={
@@ -736,8 +769,9 @@ For this hypothesis I had tested with a tolerance of 100ms however this meant th
     \begin{tikzpicture}
   \begin{axis}
     [
-    ytick={1,2},
-    yticklabels={Success Simple, Success Complex},
+    boxplot/draw direction=y,
+    xtick={1,2},
+    xticklabels={Success Simple, Success Complex},
     ]
     \addplot+[
     boxplot prepared={
@@ -830,8 +864,9 @@ For this hypothesis I tested the password entry of users using a simple to memor
     \begin{tikzpicture}
   \begin{axis}
     [
-    ytick={1,2},
-    yticklabels={Success Simple, Success Complex},
+    boxplot/draw direction=y,
+    xtick={1,2},
+    xticklabels={Success Simple, Success Complex},
     ]
     \addplot+[
     boxplot prepared={
