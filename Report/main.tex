@@ -65,38 +65,50 @@ citestyle=authoryear-comp
 \maketitle
 
 \section{Introduction}
+\paragraph{}
 A keylogger is a computer program developed for the purpose of monitoring and tracking what keys are entered on a computer keyboard. Whether this is a traditional desktop/laptop computer or a virtual mobile phone keyboard is irrelevant the program seeks to identify the keys that have been pressed. There are numerous legitimate use cases for keylogging, such as, auditing and accountability of computer usage in an office environment, as well as monitoring a person's mobile phone usage to ensure they do not incur any additional charges. However these programs can also be utilised to compromise the security of a system by collecting login credentials via monitoring of inputs. Passwords are not a truly unique identification mechanism, as if an attacker gains access to a valid pairing of username and password they an easily enter these into the system and gain access to sensitive information. Thus, there has been much research conducted to identify new methods of authentication such as, Passfaces \parencite{Dunphy}, Draw-a-Secret (DAS) \parencite{DunphyYan}, Background
 Draw-a-Secret (BDAS) \parencite{DunphyYan}. Although many of these processes work effectively, they suffer from new limitations such as memory decay which limits their practicality as a silver bullet to the problem of authentication. This has prompted researchers to identify areas which uniquely identify users and a hypothesis is that a password coupled with the rhythm and cadence at which a user types is more secure than the password on its own. This paper will explore this hypothesis and provide experimental evidence on the viability of using a rhythmic keylogger in conjunction with a password to improve the security of authentication.         
 
 \section{Problem Statement}
-Users spend a large proportion of time using computer systems typing inputs via a keyboard. Therefore users develop an individual technique of typing and implement  largely unique patterns when typing. The view of current research is that a profile of the patterns used in typing could be utilised to authenticate users together with a valid username and password combination. \\
+\paragraph{}
+Users spend a large proportion of time using computer systems typing inputs via a keyboard. Therefore users develop an individual technique of typing and implement  largely unique patterns when typing. The view of current research is that a profile of the patterns used in typing could be utilised to authenticate users together with a valid username and password combination. 
 
+\paragraph{}
 The typing pattern on a keyboard is considered a biometric behavioural characteristic that can be used to identify or authenticate users, the study of this discipline is called keystroke dynamics \parencite{keyStrokeDynamics}. The field of keystroke dynamics focuses on two differing areas of analysis, ``fixed text" and ``free text". Fixed text enforces that all users type the same sample of text, such as username and password combination or a small phrase. In contrast to this free text allows for all inputs by a user to be inspected, which is a much more powerful application of key stroke dynamics, allowing it to be applied to a larger number of applications. However, this comes at the expense of an increase in complexity of experimentation and computation as the free text does not have fixed, easily extracted characteristics \parencite{sznur2015advances}. The experiment conducted for this practical utilises the paradigm of fixed text, to ensure a measurable comparison of the rhythm used by users to type a set phrase. 
 
 \section{Relevant Background} \label{background}
 % History use of morse code 
-The monitoring of human characteristics for identification purposes during interaction with machines has been prevalent since morse code communication in World War 2. As each operator had their own unique typing style, closely listening to the typing rhythm of an operator could be used to effectively identify them \parencite{sznur2015advances}. The techniques utilised in this process have been extended upon to create the current keystroke dynamics algorithms. \\
+\paragraph{}
+The monitoring of human characteristics for identification purposes during interaction with machines has been prevalent since morse code communication in World War 2. As each operator had their own unique typing style, closely listening to the typing rhythm of an operator could be used to effectively identify them \parencite{sznur2015advances}. The techniques utilised in this process have been extended upon to create the current keystroke dynamics algorithms. 
 
+\paragraph{}
 % Research attempts at cadence monitoring Cite some papers and their attempts
 Early research in the field of fixed text keystroke dynamics looked to improve the accuracy of the approach to ensure its viability in practice \parencite{Bergadano:2002}. To facilitate easier testing of fixed text keystroke dynamics systems, researchers complied a dataset of the typing rhythm data
-of volunteer users to enable rapid testing of systems \parencite{bello2010collection}. There has been much more success in development of fixed text systems as the complexity of algorithms and reliance on computing resources is vastly reduced in comparison to free text implementations. \\
+of volunteer users to enable rapid testing of systems \parencite{bello2010collection}. There has been much more success in development of fixed text systems as the complexity of algorithms and reliance on computing resources is vastly reduced in comparison to free text implementations. 
 
-Much research has been conducted in the area of keystroke dynamics for free text, early work of \parencite{Gunetti:2005}, presented a method to compare typing samples of free text that could used to verify personal identity. The authors of this paper  presented the foundations of the idea of ``continuous authentication" of user throughout their time using a system and argued the assumption stated earlier in this report  that keystroke dynamics can beuseful in computer security as a complementary or alternative way to user authentication and as an aid to intrusion detection \parencite{Gunetti:2005}. The ideas proposed in this early paper have been developed upon by numerous research such as \parencite{contFreeText} and \parencite{sznur2015advances} which both look to further improve the paradigm of continuous authentication. \\
+\paragraph{}
+Much research has been conducted in the area of keystroke dynamics for free text, early work of \parencite{Gunetti:2005}, presented a method to compare typing samples of free text that could used to verify personal identity. The authors of this paper  presented the foundations of the idea of ``continuous authentication" of user throughout their time using a system and argued the assumption stated earlier in this report  that keystroke dynamics can beuseful in computer security as a complementary or alternative way to user authentication and as an aid to intrusion detection \parencite{Gunetti:2005}. The ideas proposed in this early paper have been developed upon by numerous research such as \parencite{contFreeText} and \parencite{sznur2015advances} which both look to further improve the paradigm of continuous authentication. 
 
+\paragraph{}
 % Keystroke Dynam Authentication
-Keystroke dynamics has proved to form a robust defence, improving the security of authorisation as there has yet to be a successful attack on a solidly built keystroke dynamics system \parencite{sznur2015advances}. This is in stark contrast to a system simply secured by passwords, as human nature dictates that users will use simple passwords to ensure they remember them. This is combination with the range of attacks that can be utilised to obtain a password such as social engineering, spyware, dictionary attack and mere brute force attacks \parencite{alsultan2013keystroke}, a keystroke dynamics system makes all of these approaches redundant. Systems simply secured by the username password techniques suffers from the security-usability trade-off dilemma \parencite{alsultan2013keystroke}, as they look to offer usability at the expense of security. Numerous other authentication techniques have been suggested however if they sacrifice usability for security they are unlikely to be widely adopted due to user pressure. This is why keystroke dynamics is an effective solution to the authentication problem, as it requires no further memory or interactions from the user, simply their typing behaviour which is used regardless when typing in authentication credentials, yet it provides a dramatic increase in security. The technique has not been perfected but it is an active research area which looks to improve the complexity and reliability of the techniques utilised to identify a user by their typing characteristics \parencite{sznur2015advances}. \\  
+Keystroke dynamics has proved to form a robust defence, improving the security of authorisation as there has yet to be a successful attack on a solidly built keystroke dynamics system \parencite{sznur2015advances}. This is in stark contrast to a system simply secured by passwords, as human nature dictates that users will use simple passwords to ensure they remember them. This is combination with the range of attacks that can be utilised to obtain a password such as social engineering, spyware, dictionary attack and mere brute force attacks \parencite{alsultan2013keystroke}, a keystroke dynamics system makes all of these approaches redundant. Systems simply secured by the username password techniques suffers from the security-usability trade-off dilemma \parencite{alsultan2013keystroke}, as they look to offer usability at the expense of security. Numerous other authentication techniques have been suggested however if they sacrifice usability for security they are unlikely to be widely adopted due to user pressure. This is why keystroke dynamics is an effective solution to the authentication problem, as it requires no further memory or interactions from the user, simply their typing behaviour which is used regardless when typing in authentication credentials, yet it provides a dramatic increase in security. The technique has not been perfected but it is an active research area which looks to improve the complexity and reliability of the techniques utilised to identify a user by their typing characteristics \parencite{sznur2015advances}. 
 
-The future of keystroke dynamics research will most likely surround the ideal of ``continuous authentication" which is the ability of a system  to constantly verify if the current user is the one who logged in \parencite{sznur2015advances}, which improves upon the simplistic approach keystroke dynamics only upon entry. Along with implementations of keystroke dynamics systems on the variety of devices available today, an effective solution has created for mobile phones \parencite{maiorana2011keystroke} which has the potential to generalise to a large proportion of devices. \\ 
+\paragraph{}
 
+The future of keystroke dynamics research will most likely surround the ideal of ``continuous authentication" which is the ability of a system  to constantly verify if the current user is the one who logged in \parencite{sznur2015advances}, which improves upon the simplistic approach keystroke dynamics only upon entry. Along with implementations of keystroke dynamics systems on the variety of devices available today, an effective solution has created for mobile phones \parencite{maiorana2011keystroke} which has the potential to generalise to a large proportion of devices.  
+
+\paragraph{}
 % Current industry attempts at cadence monitoring 
 There have also been copious attempts to utilise keystroke dynamics in industry. For example, Scout Analytics developed technology for its clients to stop people sharing user accounts without permission, i.e. giving a friend or colleague the id and password to their account so they can access the features of a paying subscriber. This looked to stop organisations buying a single account for an expensive resource and sharing this across an entire office. Scout used some Javascript timing features to watch how users type when they enter their login credentials for various services. The algorithms implemented need a minimum of 5 attempts at entering a phrase with a length of 12 characters in order to generate a typing ``cadence" \parencite{arsTech}. By utilising repeated logins the system could analyse the cadences and place them into distinct categories of digital patterns, each of which was assigned a digital serial number, which is utilised to ensure multiple different users are not logged on at once. A limitation of this approach is that the typing patterns are not globally unique, Scout suggests that 1 in 20,000 people share the same pattern, although the pattern can be combined with IP addresses and browser information, to uniquely identify a user for Scout's purposes \parencite{arsTech}. 
 
 \section{Experiment Design and Setup} \label{experiment}
-The framework used for this experiment was a Java program, important areas of the program can be found in Appendix Section \ref{appendix}. A high level description of its functionality can be seen below in Section \ref{setup}. \\
+\paragraph{}
+The framework used for this experiment was a Java program, important areas of the program can be found in Appendix Section \ref{appendix}. A high level description of its functionality can be seen below in Section \ref{setup}. 
 
 \subsection{Experiment Framework} \label{setup}
-For this practical I created a Java program which utilises the Java Interface KeyListener to monitor the keyboard input of the user and compile a typing cadence per user. Along with this monitoring I implemented a simple Java Swing User Interface (UI) to facilitate registration and login of users. The program keeps persistent storage of User objects by serialising them and writing them to a file, which can be subsequently read and the objects re-created whenever the program is launched. This process utilises the Java Serializable API which allows objects to be stored as a file. To facilitate easy and as repeatable as possible experimentation I implemented the logger class which was used to output the results of the experiment to a text file which could then be analysed and statistically reported upon. Another notable design feature was implementing a class for User objects so that they could be easily manipulated and stored throughout the entire program. Along with this as this practical was in the context of a Computer Security module I used the SHA-256 cryptographic one-way hash function to encode the passwords of users, thus ensuring the secure storage of user's passwords.       \\
-
+\paragraph{}
+For this practical I created a Java program which utilises the Java Interface KeyListener to monitor the keyboard input of the user and compile a typing cadence per user. Along with this monitoring I implemented a simple Java Swing User Interface (UI) to facilitate registration and login of users. The program keeps persistent storage of User objects by serialising them and writing them to a file, which can be subsequently read and the objects re-created whenever the program is launched. This process utilises the Java Serializable API which allows objects to be stored as a file. To facilitate easy and as repeatable as possible experimentation I implemented the logger class which was used to output the results of the experiment to a text file which could then be analysed and statistically reported upon. Another notable design feature was implementing a class for User objects so that they could be easily manipulated and stored throughout the entire program. Along with this as this practical was in the context of a Computer Security module I used the SHA-256 cryptographic one-way hash function to encode the passwords of users, thus ensuring the secure storage of user's passwords.       
+\paragraph{}
 Figure \ref{fig:register} shows the form used to gain a profile of the user's typing rhythm whilst they enter login credentials. The UI is very simplistic but as this was not part of the requirements I did not want to spend time improving this as it had no impact on the functionality of the program or the success of the experiment. 
 
 \begin{figure}[H]
@@ -106,6 +118,7 @@ Figure \ref{fig:register} shows the form used to gain a profile of the user's ty
     \label{fig:register}
 \end{figure}
 
+\paragraph{}
 Figure \ref{fig:failed_registration} shows the UI response when a user inputs incorrect details during the registration phase. This can be caused by entering either null or empty strings in the username or password input fields or by not typing the same password correctly in each password input field. 
 
 \begin{figure}[H]
@@ -124,6 +137,7 @@ Once a user has successfully registered they can then return to the Login form a
     \label{fig:login}
 \end{figure}
 
+\paragraph{}
 Along with checking the password of a user, the program will compare the typing rhythm and cadence to the profile set during registration. If the users credentials do not match some stored by the program or their typing characteristics are different than the profile set during registration the login attempt with be rejected. Figure \ref{fig:wrong_creds} shows the output when either of these two events occur.  
 
 
@@ -144,26 +158,32 @@ This can be contrasted to Figure \ref{fig:successful_login} which shows a user w
 \end{figure}
 
 \subsection{Experiment Design}
-The overall objective of this experiment was to explore the hypothesis that a password coupled with the normal rhythmic typing of the owner is more secure than the password on its own. The experiment will essentially assess the viability of adding the typing characteristics of an owner into the traditional username and password credentials authentication. \\ 
+\paragraph{}
+The overall objective of this experiment was to explore the hypothesis that a password coupled with the normal rhythmic typing of the owner is more secure than the password on its own. The experiment will essentially assess the viability of adding the typing characteristics of an owner into the traditional username and password credentials authentication. 
 
-For the purpose of this experiment a pattern is defined as a mix of rhythms with perhaps more than 2 complicated timings mixed together or one with fixed or relational times between each keystroke. A simple pattern is the same rhythm as in ta-ta-ta-ta but a patterned example could be a user thinking of a song or a marching or clapping rhythm and keying the strokes according to that melody. \\
+\paragraph{}
+For the purpose of this experiment a pattern is defined as a mix of rhythms with perhaps more than 2 complicated timings mixed together or one with fixed or relational times between each keystroke. A simple pattern is the same rhythm as in ta-ta-ta-ta but a patterned example could be a user thinking of a song or a marching or clapping rhythm and keying the strokes according to that melody. 
 
-I chose to gain a profile of the user by requesting them to type their username once and password five times. This would allow me to ensure the rhythmic performance of the user was consistent across a multitude of results and was not an outlying result. I utilised 10 participants to test each of the hypotheses and each participant entered their credentials 10 times for each section. \\ 
+\paragraph{}
+I chose to gain a profile of the user by requesting them to type their username once and password five times. This would allow me to ensure the rhythmic performance of the user was consistent across a multitude of results and was not an outlying result. I utilised 10 participants to test each of the hypotheses and each participant entered their credentials 10 times for each section. 
 
+\paragraph{}
 All experiments were conducted with a tolerance between the difference of the values within each login of 100ms. 
 
 \section{Experiment Results}
 
 \subsection{Hypothesis 1}
 \begin{center}
-\textit{ That a simple rhythm can be determined more easily than a more patterned one. A simple rhythm is defined as 1 or 2 distinct rhythms such as ta-ta-ta-ta or ta-tum-ta-tum where emphasis is given on the ta keystroke. Also, you may consider that the time taken is an element of its pattern. A rhythm is considered to be easily detected or broken if a high percentage of false cases are passed as valid} \\
+\textit{Compare	(expected)	rhythms	from	repeated	keys	or	pairs	of	keys	
+against	passwords that are	distributed	around	the	keyboard.} \newline \\
 
 \textbf{H0:} \textit{There	is	no significant	difference	in	the	success	(or	failure)	rate	of	simple	vs	complex	(distributed)	rhythms,	that	is	neither has	a	radically	higher	or	lower	access	or	denial	rate	than	the	other.} \newline \\
 
+% There is a diff and it those that are simple in one area are more successful than those distriubted
 \textbf{H1:} \textit{There is a difference in the	success	(or	failure)	rate	between	simple password rhythms	and	more complex rhythms.}
 \end{center}
 
-To test the first hypothesis I assigned each participant with a ID and Password pairing which contained a simple rhythm of repeated keys and repeated pairs of keys: ID: aaaaaa and Password: a1a1a1. I then assigned each of the participants a pairing of more complex credentials: ID: BbBbBb and Password: a2b3c4, which involved were more distributed around the keyboard and contained slightly more complex patterns. I then asked each participant to register their ID and password combination and then attempt to login in 10 times. The results of the user trial with both the simple and complex rhythm passwords is shown in Table \ref{table:1}. 
+To test the first hypothesis I assigned each participant with a ID and Password pairing which contained a simple rhythm of repeated keys and repeated pairs of keys: ID: aaaaaa and Password: a1a1a1. I then assigned each of the participants a pairing of more complex credentials: ID: BbBbBb and Password: zpxjc6, which involved were more distributed around the keyboard and contained slightly more complex patterns. I then asked each participant to register their ID and password combination and then attempt to login in 10 times. The results of the user trial with both the simple and complex rhythm passwords is shown in Table \ref{table:1}. 
 
 {
 \begin{table} [H]
@@ -175,11 +195,11 @@ To test the first hypothesis I assigned each participant with a ID and Password 
 \hline
 \textbf{Participant} & \textbf{Success with Simple Rhythm} & \textbf{Success with Complex Rhythm} & \textbf{Total Success Percentage} \\
 \hline
-1 & 8 & 2 & 50\% \\
+1 & 8 & 6 & 70\% \\
 \hline
-2 & 7 & 3 & 50\% \\
+2 & 7 & 5 & 60\% \\
 \hline
-3 & 8 & 4 & 60\% \\
+3 & 8 & 6 & 70\% \\
 \hline
 4 & 7 & 7 & 70\%  \\
 \hline
@@ -193,9 +213,23 @@ To test the first hypothesis I assigned each participant with a ID and Password 
 \hline
 9 & 9 & 7 & 80\% \\
 \hline
-10 & 7 & 8 & 75\% \\
+10 & 7 & 7 & 70\% \\
 \hline
-\textbf{Total} & \textbf{68} & \textbf{53} & \\
+\textbf{Total} & \textbf{68} & \textbf{60} & \\
+\hline
+\textbf{Average} & \textbf{6.8} & \textbf{6} & \textbf{64\%} \\
+\hline
+\textbf{Maximum} & \textbf{9} & \textbf{7} & \textbf{80\%} \\
+\hline
+\textbf{Minimum} & \textbf{5} & \textbf{4} & \textbf{50\%} \\
+\hline
+\textbf{Range} & \textbf{4} & \textbf{3} & \textbf{30\%} \\
+\hline
+\textbf{Median} & \textbf{7} & \textbf{6} & \\
+\hline
+\textbf{Lower Quartile} & \textbf{6} & \textbf{5.25} & \\
+\hline
+\textbf{Upper Quartile} & \textbf{7.75} & \textbf{7} & \\
 \hline
 \end{tabular}
 \caption{Table shows results of testing for hypothesis 1}
@@ -210,16 +244,49 @@ In accordance with the specification the difference is statistically significant
     $ |68| > |58.3| $
 \end{center}
 
+\begin{figure} [H]
+    \centering
+    \begin{tikzpicture}
+  \begin{axis}
+    [
+    ytick={1,2},
+    yticklabels={Success Repeated Keys, Success Distributed Password},
+    ]
+    \addplot+[
+    boxplot prepared={
+      median=7,
+      upper quartile=7.75,
+      lower quartile=6,
+      upper whisker=9,
+      lower whisker=5
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=6,
+      upper quartile=7,
+      lower quartile=5.25,
+      upper whisker=7,
+      lower whisker=4
+    },
+    ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
+    \caption{The results of Hypothesis 1 testing represented in a Box Plot}
+    \label{fig:boxPlotHyp1}
+\end{figure}
+
 As total number of simple password successes is 68 and the total number of complex password successes multiplied by 1.1 is 58.3, the results show that there is a significant difference in the success rate between the simple and more complex rhythms.  Thus, the results prove that H1 is satisfied.
 
 \subsection{Hypothesis 2}
 \begin{center}
 \textit{That some patterns are more easily detected or broken than others.} \newline \\
 
+% H0 for this one as there is no sig difference between different patterns
 \textbf{H0:} \textit{that	there	is no significant difference in	the	detection (access)	rate	between	a	simple	and	a	complex	pattern	of	a password,} \newline \\
 \end{center}
 
-To test the hypothesis for this section I assigned the users the following ID and Password for the simple pattern, ID: aaaaaa, Password: a1a1a1. I utilised Test Case (TC) 1 as it contains a relatively simple pattern: a1a1a1. I then assigned the users a more complex ID and Password pairing of ID: QWEBNM, Password: zpxjc6. The second password contains a much more complex pattern which will facilitate a comparison betwen simple and complex patterns within the passwords. 
+To test the hypothesis for this section I assigned the users the following ID and Password for the simple pattern, ID: aaaaaa, Password: a1a1a1. I utilised Test Case (TC) 1 as it contains a relatively simple pattern: a1a1a1. I then assigned the users a more complex ID and Password pairing of ID: QWEBNM, Password: a2b3c4. The second password contains a much more complex pattern which will facilitate a comparison between simple and complex patterns within the passwords. 
 
 {
 \begin{table} [H]
@@ -233,25 +300,39 @@ To test the hypothesis for this section I assigned the users the following ID an
 \hline
 1 & 7 & 6 & 65\% \\
 \hline
-2 & 8 & 7 & 85\% \\
+2 & 8 & 7 & 75\% \\
 \hline
-3 & 7 & 7 & 75\% \\
+3 & 7 & 4 & 55\% \\
 \hline
 4 & 6 & 6 & 70\%  \\
 \hline
-5 & 6 & 6 & 60\% \\
+5 & 6 & 4 & 50\% \\
 \hline
 6 & 5 & 6 & 55\% \\
 \hline
-7 & 8 & 7 & 80\% \\
+7 & 8 & 7 & 75\% \\
 \hline
-8 & 6 & 4 & 45\% \\
+8 & 6 & 4 & 50\% \\
 \hline
-9 & 7 & 7 & 75\% \\
+9 & 7 & 7 & 70\% \\
 \hline
 10 & 6 & 5 & 55\% \\
 \hline
-\textbf{Total} & \textbf{66} & \textbf{61} & \\
+\textbf{Total} & \textbf{66} & \textbf{56} & \\
+\hline
+\textbf{Average} & \textbf{6.6} & \textbf{5.6} & \textbf{61\%} \\
+\hline
+\textbf{Maximum} & \textbf{8} & \textbf{7} & \textbf{75\%} \\
+\hline
+\textbf{Minimum} & \textbf{5} & \textbf{4} & \textbf{50\%} \\
+\hline
+\textbf{Range} & \textbf{3} & \textbf{3} & \textbf{50\%} \\
+\hline
+\textbf{Median} & \textbf{6.5} & \textbf{6} & \\
+\hline
+\textbf{Lower Quartile} & \textbf{6} & \textbf{4.25} & \\
+\hline
+\textbf{Upper Quartile} & \textbf{7} & \textbf{6.75} & \\
 \hline
 \end{tabular}
 \caption{Table shows results of testing for hypothesis 2}
@@ -265,6 +346,38 @@ In accordance with the specification the difference is statistically significant
     $ |66| < |61 \times 1.1| $ \\
     $ |66| < |67.1| $
 \end{center}
+
+\begin{figure} [H]
+    \centering
+    \begin{tikzpicture}
+  \begin{axis}
+    [
+    ytick={1,2},
+    yticklabels={Success Simple, Success Complex},
+    ]
+    \addplot+[
+    boxplot prepared={
+      median=6.5,
+      upper quartile=7,
+      lower quartile=6,
+      upper whisker=8,
+      lower whisker=5
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=6,
+      upper quartile=6.75,
+      lower quartile=4.25,
+      upper whisker=7,
+      lower whisker=4
+    },
+    ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
+    \caption{The results of Hypothesis 2 testing represented in a Box Plot}
+    \label{fig:boxPlotHyp2}
+\end{figure}
 
 As the total number of simple password successes is 66 and the total number of complex password successes multiplied by 1.1 is 67.1, the results disprove the null hypothesis H0. Thus, this experiment shows that there is no significant difference in the detection (access) rates between simple and complex patterns of passwords. 
 
@@ -286,27 +399,41 @@ For this hypothesis I repeated the experiment of hypothesis 2, however I include
 \hline
 \textbf{Participant} & \textbf{Success without Username} & \textbf{Success with Username} & \textbf{Total Success Percentage} \\
 \hline
-1 & 7 & 9 & 80\% \\
+1 & 7 & 6 & 65\% \\
 \hline
 2 & 8 & 8 & 80\% \\
 \hline
-3 & 7 & 6 & 65\% \\
+3 & 7 & 5 & 60\% \\
 \hline
-4 & 6 & 7 & 65\%  \\
+4 & 6 & 5 & 55\%  \\
 \hline
-5 & 6 & 7 & 65\% \\
+5 & 6 & 4 & 50\% \\
 \hline
-6 & 5 & 4 & 45\% \\
+6 & 5 & 3 & 40\% \\
 \hline
 7 & 8 & 6 & 70\% \\
 \hline
-8 & 6 & 5 & 55\% \\
+8 & 6 & 4 & 50\% \\
 \hline
-9 & 7 & 8 & 75\% \\
+9 & 7 & 7 & 70\% \\
 \hline
-10 & 6 & 7 & 65\% \\
+10 & 7 & 6 & 65\% \\
 \hline
-\textbf{Total} & \textbf{66} & \textbf{66} & \\
+\textbf{Total} & \textbf{66} & \textbf{54} & \\
+\hline
+\textbf{Average} & \textbf{6.7} & \textbf{5.4} & \textbf{60.5\%} \\
+\hline
+\textbf{Maximum} & \textbf{8} & \textbf{8} & \textbf{80\%} \\
+\hline
+\textbf{Minimum} & \textbf{5} & \textbf{3} & \textbf{40\%} \\
+\hline
+\textbf{Range} & \textbf{3} & \textbf{5} & \textbf{40\%} \\
+\hline
+\textbf{Median} & \textbf{7} & \textbf{5.5} & \\
+\hline
+\textbf{Lower Quartile} & \textbf{6} & \textbf{4.25} & \\
+\hline
+\textbf{Upper Quartile} & \textbf{7} & \textbf{6} & \\
 \hline
 \end{tabular}
 \caption{Table shows results of testing for Hypothesis 3 with the complex rhythm credentials}
@@ -337,23 +464,37 @@ When more simple usernames are introduced to the authentication process there is
 \hline
 2 & 7 & 4 & 55\% \\
 \hline
-3 & 7 & 4 & 55\% \\
+3 & 7 & 5 & 60\% \\
 \hline
 4 & 6 & 3 & 45\%  \\
 \hline
-5 & 6 & 2 & 40\% \\
+5 & 5 & 4 & 45\% \\
 \hline
-6 & 6 & 4 & 50\% \\
+6 & 5 & 3 & 40\% \\
 \hline
-7 & 7 & 6 & 65\% \\
+7 & 6 & 6 & 60\% \\
 \hline
-8 & 4 & 4 & 40\% \\
+8 & 4 & 3 & 35\% \\
 \hline
 9 & 7 & 5 & 60\% \\
 \hline
 10 & 5 & 3 & 40\% \\
 \hline
-\textbf{Total} & \textbf{66} & \textbf{40} & \\
+\textbf{Total} & \textbf{58} & \textbf{41} & \\
+\hline
+\textbf{Average} & \textbf{5.8} & \textbf{4.1} & \textbf{49.5\%} \\
+\hline
+\textbf{Maximum} & \textbf{7} & \textbf{6} & \textbf{60\%} \\
+\hline
+\textbf{Minimum} & \textbf{4} & \textbf{3} & \textbf{35\%} \\
+\hline
+\textbf{Range} & \textbf{3} & \textbf{3} & \textbf{25\%} \\
+\hline
+\textbf{Median} & \textbf{6} & \textbf{4} & \\
+\hline
+\textbf{Lower Quartile} & \textbf{5} & \textbf{3} & \\
+\hline
+\textbf{Upper Quartile} & \textbf{6.75} & \textbf{5} & \\
 \hline
 \end{tabular}
 \caption{Table shows results of testing for Hypothesis 3 with the complex rhythm credentials}
@@ -368,8 +509,57 @@ In accordance with the specification the difference is statistically significant
     $ |40| < |72.6| $
 \end{center} 
 
-There is however a statistically significant difference when complex usernames are utilised in combination with complex passwords. Table \ref{table:4} shows that the total number of successful logins dropped from 66 to 40 when the complex username was introduced.   
+There is however a statistically significant difference when complex usernames are utilised in combination with complex passwords. Table \ref{table:4} shows that the total number of successful logins dropped from 66 to 40 when the complex username was introduced. \\ 
 
+\begin{figure} [H]
+    \centering
+    \begin{tikzpicture}
+  \begin{axis}
+    [
+    ytick={1,2,3,4},
+    yticklabels={Success Simple No Username, Success Simple Username, Success Complex No Username, Success Complex Username},
+    ]
+    \addplot+[
+    boxplot prepared={
+      median=7,
+      upper quartile=6,
+      lower quartile=7,
+      upper whisker=8,
+      lower whisker=5
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=5.5,
+      upper quartile=6,
+      lower quartile=4.25,
+      upper whisker=8,
+      lower whisker=3
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=6,
+      upper quartile=6.75,
+      lower quartile=5,
+      upper whisker=7,
+      lower whisker=4
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=4,
+      upper quartile=5,
+      lower quartile=3,
+      upper whisker=6,
+      lower whisker=3
+    },
+    ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
+    \caption{The results of Hypothesis 3 testing represented in a Box Plot}
+    \label{fig:boxPlotHyp3}
+\end{figure}
 
 \subsection{Hypothesis 4}
 \begin{center}
@@ -384,10 +574,12 @@ irrelevant. That is, L is more predictive of detection than rhythm when L $\geq$
 For this hypothesis I created three sets of username and password combinations, short (12 characters), medium (20 characters) and long (36 characters). These pairs are shown in the list below: 
 
 \begin{enumerate}
-    \item Small - ID: abcdef, Password: lkjhgf
-    \item Medium - ID: qwebnm1056, Password: wdxcybza19
-    \item Long - ID:zxc123bnm0, Password: asdfghjklmnbvcxz
+    \item Small - ID: abcdef, Password: asdfgh
+    \item Medium - ID: abcdef1056, Password: asdfghjk10
+    \item Long - ID:abcdef10567, Password: asdfghjk10lmnbv
 \end{enumerate}
+
+For this hypothesis I had tested with a tolerance of 100ms however this meant that registering became a very complex task so I therefore increased the tolerance to 200ms to ensure user's could register easily but there was still large degree of accuracy when recording the user's keystroke dynamics profile. 
 
 {
 \begin{table} [H]
@@ -399,44 +591,272 @@ For this hypothesis I created three sets of username and password combinations, 
 \hline
 \textbf{Participant} & \textbf{Success short} & \textbf{Success medium} & \textbf{Success long}  & \textbf{Total Success Percentage} \\
 \hline
-1 & 8 & 0 & 0 &  0\% \\
+1 & 8 & 6 & 5 & 63.33\% \\
 \hline
-2 & 7 & 0 & 0 & 0\% \\
+2 & 7 & 7 & 6 & 66.66\% \\
 \hline
-3 & 7 & 0 & 0 & 0\% \\
+3 & 7 & 4 & 4 & 50\% \\
 \hline
-4 & 9 & 0 & 0 & 0\%  \\
+4 & 9 & 7 & 6 & 73.33\%  \\
 \hline
-5 & 8 & 0 & 0 & 0\% \\
+5 & 8 & 5 & 4 & 56.66\% \\
 \hline
-6 & 5 & 0 & 0 & 0\% \\
+6 & 5 & 2 & 1 & 26.66\% \\
 \hline
-7 & 7 & 0 & 0 & 0\% \\
+7 & 7 & 6 & 4 & 56.66\% \\
 \hline
-8 & 6 & 0 & 0 & 0\% \\
+8 & 6 & 4 & 3 & 43.33\% \\
 \hline
-9 & 7 & 0 & 0 & 0\% \\
+9 & 7 & 5 & 4 & 53.33\% \\
 \hline
-10 & 6 & 0 & 0 & 0\% \\
+10 & 6 & 4 & 2 & 40\% \\
 \hline
-\textbf{Total} & \textbf{70} & \textbf{0} & \textbf{0} & \textbf{0} \\
+\textbf{Total} & \textbf{70} & \textbf{50} & \textbf{39} & \\
+\hline
+\textbf{Average} & \textbf{7} & \textbf{5} & \textbf{3.9} & \textbf{53\%} \\
+\hline
+\textbf{Maximum} & \textbf{9} & \textbf{7} & \textbf{6} & \textbf{80\%} \\
+\hline
+\textbf{Minimum} & \textbf{5} & \textbf{2} & \textbf{1} & \textbf{26.66\%} \\
+\hline
+\textbf{Range} & \textbf{4} & \textbf{5} & \textbf{5} & \textbf{46.66\%} \\
+\hline
+\textbf{Median} & \textbf{7} & \textbf{5} & \textbf{4} & \\
+\hline
+\textbf{Lower Quartile} & \textbf{6.25} & \textbf{4} & \textbf{3.25} &  \\
+\hline
+\textbf{Upper Quartile}& \textbf{7.75} & \textbf{6} & \textbf{4.75} &  \\
 \hline
 \end{tabular}
-\caption{Table shows results of testing for Hypothesis 3 with the complex rhythm credentials}
+\caption{Table shows results of testing for Hypothesis 4 with the differing length of credentials}
 \label{table:5}
 \end{table}
 }
 
+\begin{figure} [H]
+    \centering
+    \begin{tikzpicture}
+  \begin{axis}
+    [
+    ytick={1,2,3},
+    yticklabels={Success Small, Success Medium, Success Long},
+    ]
+    \addplot+[
+    boxplot prepared={
+      median=7,
+      upper quartile=7.75,
+      lower quartile=6.25,
+      upper whisker=9,
+      lower whisker=5
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=5,
+      upper quartile=6,
+      lower quartile=4,
+      upper whisker=7,
+      lower whisker=2
+    },
+    ] coordinates {};
+     \addplot+[
+    boxplot prepared={
+      median=4,
+      upper quartile=4.75,
+      lower quartile=3.25,
+      upper whisker=6,
+      lower whisker=1
+    },
+    ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
+    \caption{The results of Hypothesis 4 testing represented in a Box Plot}
+    \label{fig:boxPlotHyp4}
+\end{figure}
 
 \subsection{Extension: Hypothesis 5}
 \begin{center}
-\textit{Does the meaning of a word have any effect on the success of a user logging in} \newline \\
+\textit{Does the meaning of a word have any effect on the success of a user logging in? Comparing a password with meaning versus a password without meaning} \newline \\
 \end{center}
+
+{
+\begin{table} [H]
+\centering
+% TODO Table: First 5 participants simple rythm password
+\begin{tabular}{ |p{2cm}|p{4cm}|p{4cm}| p{4cm} | }
+\hline
+\multicolumn{4}{|c|}{\textbf{Hypothesis 5 Testing Results}} \\
+\hline
+\textbf{Participant} & \textbf{Success Meaning} & \textbf{Success no Meaning} & \textbf{Total Success Percentage} \\
+\hline
+1 & 8 & 7 & 75\% \\
+\hline
+2 & 7 & 7 & 70\% \\
+\hline
+3 & 7 & 6 & 65\% \\
+\hline
+4 & 9 & 8 & 85\%  \\
+\hline
+5 & 8 & 8 & 80\% \\
+\hline
+6 & 7 & 6 & 65\% \\
+\hline
+7 & 7 & 7 & 70\% \\
+\hline
+8 & 6 & 6 & 60\% \\
+\hline
+9 & 7 & 6 & 65\% \\
+\hline
+10 & 8 & 7 & 75\% \\
+\hline
+\textbf{Total} & \textbf{74} & \textbf{68} & \\
+\hline
+\textbf{Average} & \textbf{7.4} & \textbf{6.8} & \textbf{71\%} \\
+\hline
+\textbf{Maximum} & \textbf{9} & \textbf{8} & \textbf{85\%} \\
+\hline
+\textbf{Minimum} & \textbf{6} & \textbf{6} & \textbf{60\%} \\
+\hline
+\textbf{Range} & \textbf{3} & \textbf{2} & \textbf{25\%} \\
+\hline
+\textbf{Median} & \textbf{7} & \textbf{7} & \\
+\hline
+\textbf{Lower Quartile} & \textbf{7} & \textbf{6} & \\
+\hline
+\textbf{Upper Quartile} & \textbf{8} & \textbf{7} & \\
+\hline
+\end{tabular}
+\caption{Table shows results of testing for Hypothesis 5 with the complex rhythm credentials}
+\label{table:6}
+\end{table}
+}
+
+\begin{figure} [H]
+    \centering
+    \begin{tikzpicture}
+  \begin{axis}
+    [
+    ytick={1,2},
+    yticklabels={Success Simple, Success Complex},
+    ]
+    \addplot+[
+    boxplot prepared={
+      median=7,
+      upper quartile=8,
+      lower quartile=7,
+      upper whisker=9,
+      lower whisker=6
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=7,
+      upper quartile=7,
+      lower quartile=6,
+      upper whisker=8,
+      lower whisker=6
+    },
+    ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
+    \caption{The results of Hypothesis 5 testing represented in a Box Plot}
+    \label{fig:boxPlotHyp5}
+\end{figure}
 
 \subsection{Extension: Hypothesis 6}
 \begin{center}
-\textit{Are users more efficient with their own passwords} \newline \\
+\textit{Does the complexity of the memory of the password have effect on success rate of passwords?} \newline \\
 \end{center}
+
+For this hypothesis I tested the password entry of users using a simple to memorise password and a complex to memorise password. Simple password: asdfghjk and Complex password: wdxcybza. 
+
+
+{
+\begin{table} [H]
+\centering
+% TODO Table: First 5 participants simple rythm password
+\begin{tabular}{ |p{2cm}|p{4cm}|p{4cm}| p{4cm} | }
+\hline
+\multicolumn{4}{|c|}{\textbf{Hypothesis 6 Testing Results}} \\
+\hline
+\textbf{Participant} & \textbf{Success Simple Memory} & \textbf{Success Complex Memory} & \textbf{Total Success Percentage} \\
+\hline
+1 & 8 & 5 & 65\% \\
+\hline
+2 & 7 & 5 & 60\% \\
+\hline
+3 & 8 & 5 & 65\% \\
+\hline
+4 & 9 & 6 & 75\%  \\
+\hline
+5 & 8 & 6 & 70\% \\
+\hline
+6 & 6 & 3 & 45\% \\
+\hline
+7 & 7 & 5 & 60\% \\
+\hline
+8 & 6 & 4 & 50\% \\
+\hline
+9 & 7 & 3 & 50\% \\
+\hline
+10 & 7 & 6 & 65\% \\
+\hline
+\textbf{Total} & \textbf{73} & \textbf{48} & \\
+\hline
+\textbf{Average} & \textbf{7.3} & \textbf{4.8} & \textbf{60.5\%} \\
+\hline
+\textbf{Maximum} & \textbf{9} & \textbf{6} & \textbf{75\%} \\
+\hline
+\textbf{Minimum} & \textbf{6} & \textbf{3} & \textbf{45\%} \\
+\hline
+\textbf{Range} & \textbf{3} & \textbf{3} & \textbf{30\%} \\
+\hline
+\textbf{Median} & \textbf{7} & \textbf{5} & \\
+\hline
+\textbf{Lower Quartile} & \textbf{7} & \textbf{4.25} & \\
+\hline
+\textbf{Upper Quartile} & \textbf{8} & \textbf{5.75} & \\
+\hline
+\end{tabular}
+\caption{Table shows results of testing for Hypothesis 6 with the complex rhythm credentials}
+\label{table:7}
+\end{table}
+}
+
+
+
+\begin{figure} [H]
+    \centering
+    \begin{tikzpicture}
+  \begin{axis}
+    [
+    ytick={1,2},
+    yticklabels={Success Simple, Success Complex},
+    ]
+    \addplot+[
+    boxplot prepared={
+      median=7,
+      upper quartile=8,
+      lower quartile=7,
+      upper whisker=9,
+      lower whisker=6
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=5,
+      upper quartile=5.75,
+      lower quartile=4.25,
+      upper whisker=6,
+      lower whisker=3
+    },
+    ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
+    \caption{The results of Hypothesis 6 testing represented in a Box Plot}
+    \label{fig:boxPlotHyp6}
+\end{figure}
+
 
 \section{Future Work}
 For this experiment to have real scientific weight it would need to be completed at a much larger scale with an increased number of participants from a variety of demographics. It would be very interesting to test the viability of typing characteristics in an authentication environment as it could enhance the security of a large range of systems that are reliant upon traditional username and password authentication. One area which requires a depth of future research is the threshold at which a timing value is accepted as if this value is too little it may make logging in for legitimate users more complicated which in turn would be detrimental to the uptake of the typing characteristics in an authentication environment. Conversely, if this value is too lenient it may allow illegitimate users access to a system which make it no more secure than the traidtional username and passowrd authentication. 
