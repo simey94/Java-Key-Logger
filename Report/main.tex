@@ -191,20 +191,22 @@ This can be contrasted to Figure \ref{fig:successful_login} which shows a user w
 The overall objective of this experiment was to explore the hypothesis that a password coupled with the normal rhythmic typing of the owner is more secure than the password on its own. The experiment will essentially assess the viability of adding the typing characteristics of an owner into the traditional username and password credentials authentication. 
 
 \paragraph{}
-For the purpose of this experiment a pattern is defined as a mix of rhythms with perhaps more than 2 complicated timings mixed together or one with fixed or relational times between each keystroke. A simple pattern is the same rhythm as in ta-ta-ta-ta but a patterned example could be a user thinking of a song or a marching or clapping rhythm and keying the strokes according to that melody. 
+For the purpose of this experiment a pattern is defined as ``a mix of rhythms with perhaps more than 2 complicated timings mixed together or one with fixed or relational times between each keystroke. A simple pattern is the same rhythm as in ta-ta-ta-ta but a patterned example could be a user thinking of a song or a marching or clapping rhythm and keying the strokes according to that melody". 
 
 \paragraph{}
-I chose to gain a profile of the user by requesting them to type their username once and password five times. This would allow me to ensure the rhythmic performance of the user was consistent across a multitude of results and was not an outlying result. I utilised 10 participants to test each of the hypotheses and each participant entered their credentials 10 times for each section. 
+I chose to gain a profile of the user by requesting them to type their username once and password five times. This would allow me to ensure the rhythmic performance of the user was consistent across a multitude of results and was not an outlying result. I utilised 10 participants to test each of the hypotheses and each participant entered their credentials 10 times for each section. I would to thank the participants and acknowledge them for their time.
 
 \paragraph{}
-All experiments were conducted with a tolerance between the difference of the values within each login of 100ms. 
+All experiments were conducted with a tolerance between the difference of the values within each login of 100ms (0.1 of a second). 
+
+\paragraph{}
+For most of the hypothesis presented I conducted a paired sampled (within subjects) t test to measure whether the results of the two conditions of the experiments were statistically different from one another. I therefore set up each experiment to contain a null hypothesis H0 which assumes there is no significant difference  between the two result sets. The experiment would also contain H1 which assumes that there is a significant difference between the two sets of results. For all experiments in this practical I used the significance level of 5\% (0.05) as this is a widely accepted research standard. Therefore, if the calculated p value of the t-test was less than 0.05 then the difference is significant therefore we can reject the null hypothesis, otherwise if the p value is greater than 0.05 then the results show that the difference is not significant and we fail to reject the null hypothesis. All statistics calculated for this report can be found in the \textit{Statistics} spreadsheet file in the project directory. The t test approach was not suitable to be applied to hypothesis 4 as I had included 3 values therefore this uses the formulae suggested in the specification.  \\
 
 \section{Experiment Results}
 
 \subsection{Hypothesis 1}
 \begin{center}
-\textit{Compare	(expected)	rhythms	from	repeated	keys	or	pairs	of	keys	
-against	passwords that are	distributed	around	the	keyboard.} \newline \\
+\textit{Compare	(expected) rhythms	from	repeated	keys	or	pairs	of	keys against	passwords that are	distributed	around	the	keyboard.} \newline \\
 
 \textbf{H0:} \textit{There	is	no significant	difference	in	the	success	(or	failure)	rate	of	simple	vs	complex	(distributed)	rhythms,	that	is	neither has	a	radically	higher	or	lower	access	or	denial	rate	than	the	other.} \newline \\
 
@@ -212,7 +214,7 @@ against	passwords that are	distributed	around	the	keyboard.} \newline \\
 \textbf{H1:} \textit{There is a difference in the	success	(or	failure)	rate	between	simple password rhythms	and	more complex rhythms.}
 \end{center}
 
-To test the first hypothesis I assigned each participant with a ID and Password pairing which contained a simple rhythm of repeated keys and repeated pairs of keys: ID: aaaaaa and Password: a1a1a1. I then assigned each of the participants a pairing of more complex credentials: ID: BbBbBb and Password: zpxjc6, which involved were more distributed around the keyboard and contained slightly more complex patterns. I then asked each participant to register their ID and password combination and then attempt to login in 10 times. The results of the user trial with both the simple and complex rhythm passwords is shown in Table \ref{table:1}. 
+To test the first hypothesis I assigned each participant with a ID and Password pairing which contained a simple rhythm of repeated pairs of keys: ID: aaaaaa and Password: a1a1a1. I then assigned each of the participants a pairing of more complex credentials: ID: BbBbBb and Password: zpxjc6. This pairing involved keys that were more distributed around the keyboard and contained a slightly more complex pattern. I then asked each participant to register their ID and password combination and then attempt to login in 10 times. The results of the user trial with both the simple repeated keys pattern and the complex distributed rhythm passwords is shown in Table \ref{table:1}. 
 
 {
 \begin{table} [H]
@@ -222,7 +224,7 @@ To test the first hypothesis I assigned each participant with a ID and Password 
 \hline
 \multicolumn{4}{|c|}{\textbf{Hypothesis 1 Testing Results}} \\
 \hline
-\textbf{Participant} & \textbf{Success with Simple Rhythm} & \textbf{Success with Complex Rhythm} & \textbf{Total Success Percentage} \\
+\textbf{Participant} & \textbf{Success Repeated Keys} & \textbf{Success Distributed Keys} & \textbf{Total Success Percentage} \\
 \hline
 1 & 8 & 6 & 70\% \\
 \hline
@@ -266,12 +268,7 @@ To test the first hypothesis I assigned each participant with a ID and Password 
 \end{table}
 }
 
-In accordance with the specification the difference is statistically significant if: 
-\begin{center}
-    $ |SimplePW.num(success)| < |ComplexPW.num(success) \times 1.1|$ \\
-    $ |68| < |53 \times 1.1| $ \\
-    $ |68| > |58.3| $
-\end{center}
+As shown in the table the total number of successes for the simple repeated keys pattern was 68 and the total successes with a more distributed pattern was 60. The average number for the participants entering a simple pattern was 6.8 whilst this decreased to 6 when a distributed password was introduced. Again the maximum number of successful logins for repeated keys. Further highlighting this trend of more successes using repeated keys was the median value which was 7 for the repeated keys pattern and 6 for the complex distributed patterned password. Overall it is evident from the table that users had more success logging in when given a simple repeated keys pattern in comparison to a password which contained a pattern of keys distributed around the keyboard. The results of this experiment are graphically presented as a box plot in Figure \ref{fig:boxPlotHyp1}, which shows that the results are similar to one another, as they largely overlap.    
 
 \begin{figure} [H]
     \centering
@@ -302,21 +299,22 @@ In accordance with the specification the difference is statistically significant
     ] coordinates {};
   \end{axis}
 \end{tikzpicture}
-    \caption{The results of Hypothesis 1 testing represented in a Box Plot}
+    \caption{The results of Hypothesis 1 Testing.}
     \label{fig:boxPlotHyp1}
 \end{figure}
 
-As total number of simple password successes is 68 and the total number of complex password successes multiplied by 1.1 is 58.3, the results show that there is a significant difference in the success rate between the simple and more complex rhythms.  Thus, the results prove that H1 is satisfied.
+The results of the t test for this returned the value 0.043421145 which is < than 0.05, therefore the difference is statistically significant. Thus, we can reject the null hypothesis and accept H1 which states there is a difference in the	success	(or	failure) rate between simple password rhythms and	more complex rhythms. The resulting p value is however close to the threshold value therefore this experiment may require further research to ensure this value is consistent. 
 
 \subsection{Hypothesis 2}
 \begin{center}
 \textit{That some patterns are more easily detected or broken than others.} \newline \\
 
 % H0 for this one as there is no sig difference between different patterns
-\textbf{H0:} \textit{that	there	is no significant difference in	the	detection (access)	rate	between	a	simple	and	a	complex	pattern	of	a password,} \newline \\
+\textbf{H0:} \textit{That	there	is no significant difference in	the	detection (access)	rate	between	a	simple	and	a	complex	pattern	of	a password.} \newline \\
+\textbf{H1:} \textit{That	there	is a significant difference in	the	detection (access)	rate	between	a	simple	and	a	complex	pattern	of	a password.} \newline \\
 \end{center}
 
-To test the hypothesis for this section I assigned the users the following ID and Password for the simple pattern, ID: aaaaaa, Password: a1a1a1. I utilised Test Case (TC) 1 as it contains a relatively simple pattern: a1a1a1. I then assigned the users a more complex ID and Password pairing of ID: QWEBNM, Password: a2b3c4. The second password contains a much more complex pattern which will facilitate a comparison between simple and complex patterns within the passwords. 
+To test the hypothesis for this section I assigned the users the following ID and Password for the simple pattern, ID: aaaaaa, Password: a1a1a1. I utilised Test Case (TC) 1 as it contains a relatively simple pattern: a1a1a1. I then assigned the users a more complex ID and Password pairing of ID: qwebnm, Password: a2b3c4. The second password contains a much more complex pattern which will facilitate a comparison between simple and complex patterns within the passwords. 
 
 {
 \begin{table} [H]
@@ -370,12 +368,7 @@ To test the hypothesis for this section I assigned the users the following ID an
 \end{table}
 }
 
-In accordance with the specification the difference is statistically significant if: 
-\begin{center}
-    $ |SimplePW.num(success)| < |ComplexPW.num(success) \times 1.1|$ \\
-    $ |66| < |61 \times 1.1| $ \\
-    $ |66| < |67.1| $
-\end{center}
+As shown by Table \ref{table:2} the total number of successful logins using a simple pattern password was 66 whilst this decreased to 56 when a complex pattern was utilised. The average also shows that simple patterns granted more successful logins as it was 6.6 which again fell to 5.6 when a complex pattern was utilised. The median values also affirm the idea that simple passwords allow for more successful logins as the median for simple passwords was 6.5, in contrast the median of complex patterned passwords was 6. Overall the table shows that users had an easier time authenticating with a simple pattern as opposed to a complex pattern. The results of this table are illustrated in Figure \ref{fig:boxPlotHyp2}, which shows the results for a simple pattern were much less sporadic largely concentrated between 6 and 7, whilst the success of the complex ranged from 4.5 to 6.5. There also a small overlap between the plots.  
 
 \begin{figure} [H]
     \centering
@@ -410,13 +403,23 @@ In accordance with the specification the difference is statistically significant
     \label{fig:boxPlotHyp2}
 \end{figure}
 
-As the total number of simple password successes is 66 and the total number of complex password successes multiplied by 1.1 is 67.1, the results disprove the null hypothesis H0. Thus, this experiment shows that there is no significant difference in the detection (access) rates between simple and complex patterns of passwords. 
+A statical comparison was conducted with a 10\% threshold to see if there is a statistically significant difference between the results. \\
+
+In accordance with the specification the difference is statistically significant if: 
+\begin{center}
+    $ |SimplePW.num(success)| < |ComplexPW.num(success) \times 1.1|$ \\
+    $ |66| < |56 \times 1.1| $ \\
+    $ |66| < |61.6| $
+\end{center}
+
+As 66 is not less than 61.6 the results show that there is a statistically significant difference between the two detection rates. As the success rate of complex patterns passwords is significantly lower than that of a simple patterned password. 
 
 \subsection{Hypothesis 3}
 \begin{center}
 \textit{That there is an effect from the ID entry rhythm, specifically that its shortness may be a factor and affects overall false-positive acceptance} \newline \\
 
-\textbf{H0:} \textit{That adding the ID	into the	pattern makes no significant	difference in the detection	rate.} \newline \\
+\textbf{H0:} \textit{That adding the ID	into the pattern makes no significant difference in the detection	rate.} \newline \\
+\textbf{H1:} \textit{That adding the ID	into the pattern makes a significant	difference in the detection	rate.} \newline \\
 \end{center}
 
 For this hypothesis I repeated the experiment of hypothesis 2, however I included the username in the rhythm creator. This would mean that the user's typing characteristics for both the entrance of their username and password were recorded by the system and added to a profile.  
@@ -467,20 +470,23 @@ For this hypothesis I repeated the experiment of hypothesis 2, however I include
 \textbf{Upper Quartile} & \textbf{7} & \textbf{6} & \\
 \hline
 \end{tabular}
-\caption{Table shows results of testing for Hypothesis 3 with the complex rhythm credentials}
+\caption{Table shows results of testing for Hypothesis 3 with the simple rhythm credentials}
 \label{table:3}
 \end{table}
 }
 
+Table \ref{table:3} shows that the total number of successes using a simple rhythm password without a username was 66 this figure decreased to 54 when a username was introduced. Along with this the average number of successes was 6.7 without a username and again this fell to 5.4 when a username was introduced. The median value further demonstrates this downward trend as it is 7 for a simple rhythm password without a username and the median value when a username is introduced is 5.5.  
+
 In accordance with the specification the difference is statistically significant if: 
 \begin{center}
     $ |IDPW.num(success)| < |PW.num(success) \times 1.1|$ \\
-    $ |66| < |66 \times 1.1| $ \\
-    $ |66| < |72.6| $
+    $ |54| < |66 \times 1.1| $ \\
+    $ |54| < |72.6| $
 \end{center} 
 
-When more simple usernames are introduced to the authentication process there is not a statistically significant difference in the success rate of login attempts when compared to users just entering passwords. This possibly due to the lack of complexity of the usernames and as they are simple patterns users may find them easy to repeat over time.  
+Therefore the for a simple rhythm password the results satisfy H0, such that there was not a significant difference in the detection rate when a username is introduced along with a password. My rationale for this is that the longer a string is the more chance there is for a mistake in typing to occur, however this is explored in Hypothesis 4 in Section \ref{hypo4}.
 
+When more simple usernames are introduced to the authentication process there is not a statistically significant difference in the success rate of login attempts when compared to users just entering passwords. This possibly due to the lack of complexity of the usernames and as they are simple patterns users may find them easy to repeat over time.  
 {
 \begin{table} [H]
 \centering
@@ -533,14 +539,19 @@ When more simple usernames are introduced to the authentication process there is
 \end{table}
 }
 
+Table \ref{table:4} shows that the total number of successes using a complex rhythm password without a username was 58 this figure decreased to 41 when a username was introduced. Furthermore, the average number of successes was 5.8 without a username and again this fell to 4.1 when a username was introduced to the experiment. The median value of the complex rhythm without a username was 6 and this again fell to 4 when a username wad added.
+
 In accordance with the specification the difference is statistically significant if: 
 \begin{center}
     $ |IDPW.num(success)| < |PW.num(success) \times 1.1|$ \\
-    $ |40| < |66 \times 1.1| $ \\
-    $ |40| < |72.6| $
+    $ |41| < |58 \times 1.1| $ \\
+    $ |41| < |63.8| $
 \end{center} 
 
-There is however a statistically significant difference when complex usernames are utilised in combination with complex passwords. Table \ref{table:4} shows that the total number of successful logins dropped from 66 to 40 when the complex username was introduced. \\ 
+% My rationale for this is that the longer a string is the more chance there is for a mistake in typing to occur, however this is explored in Hypothesis 4 in Section \ref{hypo4}.
+Therefore the for a complex rhythm password the results satisfy H0, such that there was not a significant difference in the detection rate when a username is introduced along with a password. \\
+
+The results from both Table \ref{table:3} and Table \ref{table:4} are represented in Figure \ref{fig:boxPlotHyp3}. This illustrates the general trend that when a username is introduced the number of successful attempts decreases. As both points SNU and CNU are much higher than SU and CU. In addition, there is no overlap between each of the pairs of values.   
 
 \begin{figure} [H]
     \centering
@@ -593,7 +604,7 @@ There is however a statistically significant difference when complex usernames a
     \label{fig:boxPlotHyp3}
 \end{figure}
 
-\subsection{Hypothesis 4}
+\subsection{Hypothesis 4} \label{hypo4}
 \begin{center}
 \textit{That there is a length L over which the timings of the password and ID are
 irrelevant. That is, L is more predictive of detection than rhythm when L $\geq$ N characters.} \newline \\
@@ -611,12 +622,9 @@ For this hypothesis I created three sets of username and password combinations, 
     \item Long - ID:abcdef10567, Password: asdfghjk10lmnbv
 \end{enumerate}
 
-For this hypothesis I had tested with a tolerance of 100ms however this meant that registering became a very complex task so I therefore increased the tolerance to 200ms to ensure user's could register easily but there was still large degree of accuracy when recording the user's keystroke dynamics profile. 
-
 {
 \begin{table} [H]
 \centering
-% TODO Table: First 5 participants simple rythm password
 \begin{tabular}{ |p{2cm}|p{2cm}|p{2cm}| p{2cm}| p{2cm}| }
 \hline
 \multicolumn{5}{|c|}{\textbf{Hypothesis 4 Testing Results}} \\
@@ -665,6 +673,8 @@ For this hypothesis I had tested with a tolerance of 100ms however this meant th
 \end{table}
 }
 
+Table \ref{table:5} illustrates the results of the Hypothesis 4 experiment. It shows a clear downward tend in the number of successes as the length of the string increases. As the total number of successes for a short length password is 70 this falls to 50 when the password length was increased to the medium length and the number of successes drops to 39 for long password strings. This downward trend is also shown in Figure \ref{fig:boxPlotHyp4}. 
+
 \begin{figure} [H]
     \centering
     \begin{tikzpicture}
@@ -707,10 +717,30 @@ For this hypothesis I had tested with a tolerance of 100ms however this meant th
     \label{fig:boxPlotHyp4}
 \end{figure}
 
+In accordance with the specification the difference is statistically significant if: 
+\begin{center}
+    $ |IDPW.numlt12(success)| < |IDPW.numlt12(success) \times 1.1| $ AND \\
+    $ |IDPW.numgt12(success)| < |IDPW.numlt20(success) \times 1.1| $ AND \\
+    $ |IDPW.numgt12(success)| < |IDPW.numlt36(success) \times 1.1| $ \\
+\end{center} 
+
+The results of this experiment prove H1 that there	is	a length	L	which	affects	the	rhythm	detection	rate. As the second and third comparisons in the equation do not evaluate to true, as 70 is greater than both 55 and 42.9. This could be an area for future research to identify exactly at what length of string the success of the rhythm authentication becomes less viable, I would propose however it is in the range of 20-30 characters. 
+
+\begin{center}
+    $ |70| < |77| $ AND \\
+    $ |70| < |55| $ AND \\
+    $ |70| < |42.9| $ \\
+\end{center} 
+
+
 \subsection{Extension: Hypothesis 5}
 \begin{center}
-\textit{Does the meaning of a word have any effect on the success of a user logging in? Comparing a password with meaning versus a password without meaning} \newline \\
+\textit{Does the meaning of a word within a password have any effect on the success of a user logging in? Comparing a password with meaning versus a password without meaning} \newline \\
+\textbf{H0:} \textit{The meaning of a word has no effect on the successful entry rate} \newline \\
+\textbf{H1:} \textit{The meaning of a word has an effect on the successful entry rate}
 \end{center}
+
+For this experiment I assigned users with a password with a meaningful word involved, banana6789 and contrasted this with a password with no meaning, yuvb10q5a9.  
 
 {
 \begin{table} [H]
@@ -764,6 +794,8 @@ For this hypothesis I had tested with a tolerance of 100ms however this meant th
 \end{table}
 }
 
+Table \ref{table:6} shows the results of contrasting the meaningful password with a password with no meaning. The results show that users logged in more successfully when using the password that had meaning. A rationale for this result could be it requires much less memory to type a word they know than to memorise a non descriptive 10 letter password. The results are graphically displayed in Figure \ref{fig:boxPlotHyp5}, there is little overlap between the two boxes, although both entrance criteria were successful the attempts using a word with meaning were more successful than using a string without meaning. However, this must be repeated with a variety of different passwords and a much wider participant base for the results to be considered substantial. 
+
 \begin{figure} [H]
     \centering
     \begin{tikzpicture}
@@ -797,9 +829,19 @@ For this hypothesis I had tested with a tolerance of 100ms however this meant th
     \label{fig:boxPlotHyp5}
 \end{figure}
 
+In accordance with the specification the difference is statistically significant if: 
+\begin{center}
+    $ |MeaningPW.num(success)| < |NoMeaningPW.num(success) \times 1.1|$ \\
+    $ |74| < |68 \times 1.1| $ \\
+    $ |74| < |74.8| $
+\end{center} 
+
+
 \subsection{Extension: Hypothesis 6}
 \begin{center}
 \textit{Does the complexity of the memory of the password have effect on success rate of passwords?} \newline \\
+\textbf{H0:} \textit{The complexity of memorising the password has no effect on the successful entry rate} \newline \\
+\textbf{H1:} \textit{The complexity of memorising the password has an effect on the successful entry rate}
 \end{center}
 
 For this hypothesis I tested the password entry of users using a simple to memorise password and a complex to memorise password. Simple password: asdfghjk and Complex password: wdxcybza. 
@@ -857,7 +899,7 @@ For this hypothesis I tested the password entry of users using a simple to memor
 \end{table}
 }
 
-
+Table \ref{table:7} shows the results of the hypothesis 6 experiment. Largely it showed that users were more successful at logging in when the password supplied was a simple memory task in comparison to a complex memory task. The total number of successes with a simple password was 73 this dramatically fell to 48 for a complex memory password. Along with this the average of the two results set show that simple memory passwords had an average of 7.3 which dropped to 4.8 when the complex memory password was introduced. Figure \ref{fig:boxPlotHyp6} shows the difference between the two result sets such that the simple memory results largely sit at the top end of the results spectrum and the complex memory password results are significantly lower. 
 
 \begin{figure} [H]
     \centering
@@ -892,6 +934,15 @@ For this hypothesis I tested the password entry of users using a simple to memor
     \label{fig:boxPlotHyp6}
 \end{figure}
 
+In accordance with the specification the difference is statistically significant if: 
+\begin{center}
+    $ |SimpleMemoryPW.num(success)| < |ComplexMemoryPW.num(success) \times 1.1|$ \\
+    $ |73| < |48 \times 1.1| $ \\
+    $ |73| < |52.8| $
+\end{center}
+
+\section{Difficulties}
+Having never conducted experimental research utilising statistics before I found this practical challenging as once I had implemented the program and collected the results I feel I spent a disproportional amount of time learning how to analyse this data. Although the analysis is good I do feel prior experience with statistics would have given me a more sound base to begin with which may have improved this section of the practical. Overall, I found this practical extremely interesting and this why I spent such a large amount of time on it as it was something which I think could be viable for implementation in authentication systems. In the future I would be very interested to keep up to date with research in this field and potentially conduct my own further research. 
 
 \section{Future Work}
 For this experiment to have real scientific weight it would need to be completed at a much larger scale with an increased number of participants from a variety of demographics. It would be very interesting to test the viability of typing characteristics in an authentication environment as it could enhance the security of a large range of systems that are reliant upon traditional username and password authentication. One area which requires a depth of future research is the threshold at which a timing value is accepted as if this value is too little it may make logging in for legitimate users more complicated which in turn would be detrimental to the uptake of the typing characteristics in an authentication environment. Conversely, if this value is too lenient it may allow illegitimate users access to a system which make it no more secure than the traidtional username and passowrd authentication. 
